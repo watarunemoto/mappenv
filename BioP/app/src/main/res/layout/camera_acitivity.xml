@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/cameraPreview"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/suface_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ZoomControls
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/zoomctrl"
+        android:layout_gravity="right|bottom"
+        >
+    </ZoomControls>
+    <Button
+        android:layout_gravity="center|right"
+        android:layout_marginRight="20dp"
+        android:id="@+id/shutter"
+        android:background="@drawable/camera_1"
+        android:layout_width="70dp"
+        android:layout_height="45dp"/>
+
+</FrameLayout>
+
+
+
+

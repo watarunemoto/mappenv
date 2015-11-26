@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:weightSum="1">
+
+    <TextView
+        android:text="ふぉとりすと"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:paddingTop="8dp"
+        android:textColor="@color/button_material_dark"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ListView
+        android:id="@+id/myListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+
+    <TextView
+        android:text="No data available"
+        android:id="@+id/emptyView"
+        android:padding="16dp"
+        android:layout_gravity="center"
+        android:textSize="24sp"
+        android:textColor="#990090"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
