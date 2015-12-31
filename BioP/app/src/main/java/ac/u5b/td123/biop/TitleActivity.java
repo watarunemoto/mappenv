@@ -62,7 +62,7 @@ public class TitleActivity extends Activity {
 		);
 		while (c.moveToNext()) {
 			sum_socre = sum_socre + Double.parseDouble(c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE)));
-			Log.v("sum",""+ sum_socre);
+			//Log.v("sum",""+ sum_socre);
 		}
 		TextView score = (TextView) findViewById(R.id.score);
 		score.setText("Score:" + String.format("%f",sum_socre));

@@ -1,6 +1,7 @@
 package ac.u5b.td123.biop;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
@@ -39,6 +40,9 @@ public class MapsActivity extends FragmentActivity {
 	final SpinerDialog dialogFragment = SpinerDialog.newInstance(R.string.dialog_title, R.string.dialog_message);
 	final ImgOpenHelper imgOpenHelper = new ImgOpenHelper(this);
 
+	private long locationId;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,9 +50,13 @@ public class MapsActivity extends FragmentActivity {
 
 
 		dialogFragment.show(getFragmentManager(), "dialog_fragment");
+
+		//マーカーの処理等
 		setUpMapIfNeeded();
+
 		activity = this;
 		context = getApplicationContext();
+
 		if (mMap != null) {
 			mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 				@Override
@@ -80,7 +88,6 @@ public class MapsActivity extends FragmentActivity {
 			mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
 				@Override
 				public boolean onMyLocationButtonClick() {
-
 					Log.v("Map", "Zoom Level = " + mMap.getCameraPosition().zoom);
 					return false;
 				}
@@ -88,6 +95,15 @@ public class MapsActivity extends FragmentActivity {
 		} else {
 			Toast.makeText(this, "マップが開けません", Toast.LENGTH_SHORT).show();
 		}
+
+		//フォトリストからの値の受け取り
+		Intent intent = getIntent();
+		locationId = intent.getLongExtra(PhotoResultFormActivity.MAP_ID, 0L);
+	}
+
+	@Override
+	public void onBackPressed() {
+		finish();
 	}
 
 	@Override
@@ -102,7 +118,7 @@ public class MapsActivity extends FragmentActivity {
 		setUpMapIfNeeded();
 	}
 
-	public void moveAndzoom(List<LatLng> latLngList) {
+	public void moveAndzoom(List<LatLng> latLngList, final Marker marker) {
 		if (mMap == null || latLngList.size() == 0)
 			return;
 
@@ -113,6 +129,15 @@ public class MapsActivity extends FragmentActivity {
 		//
 		mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 200));
 		mMap.setOnCameraChangeListener(null);
+
+		if (locationId != 0L) {
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					marker.showInfoWindow();
+				}
+			},1000);
+		}
 	}
 
 	private void setUpMapIfNeeded() {
@@ -126,7 +151,6 @@ public class MapsActivity extends FragmentActivity {
 			if (mMap != null) {
 				setUpMap();
 			}
-
 		}
 	}
 
@@ -137,7 +161,6 @@ public class MapsActivity extends FragmentActivity {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-
 
 				if (mMap == null)
 					return;
@@ -157,37 +180,78 @@ public class MapsActivity extends FragmentActivity {
 						"updated desc",
 						"50"
 				);
-				Log.v("DB_TEST", "Count: " + c.getCount());
+
+				//比較のための数字
+				String id2 = "0";
 				List<LatLng> latLngList = new ArrayList<>();
+				Marker marker = null;
+
+				if (locationId != 0L) {
+					Cursor c2 = db.query(
+							ImgContract.Images.TABLE_NAME,
+							null,
+							ImgContract.Images._ID + "=" + locationId,
+							null,
+							null,
+							null,
+							null,
+							null
+					);
+
+					c2.moveToFirst();
+					id2 = c2.getString(c2.getColumnIndex(ImgContract.Images._ID));
+					Double lat2 = Double.parseDouble(c2.getString(c2.getColumnIndex(ImgContract.Images.COL_LAT)));
+					Double lng2 = Double.parseDouble(c2.getString(c2.getColumnIndex(ImgContract.Images.COL_LNG)));
+					String pname2 = c2.getString(c2.getColumnIndex(ImgContract.Images.COL_PNAME));
+					BitmapDescriptor nonleaficon2 = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+					String snip2 = c2.getString(c2.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME));
+
+					marker = mMap.addMarker(new MarkerOptions().position(new LatLng(lat2, lng2)).title(pname2).icon(nonleaficon2).snippet(snip2));
+					LatLng point2 = new LatLng(lat2, lng2);
+					latLngList.add(point2);
+
+					c2.close();
+
+				}
+
+				Log.v("DB_TEST", "Count: " + c.getCount());
 				Double lat_ = 0.0;
 				Double lng_ = 0.0;
-				while (c.moveToNext()) {
-					String lat = c.getString(c.getColumnIndex(ImgContract.Images.COL_LAT));
-					String lng = c.getString(c.getColumnIndex(ImgContract.Images.COL_LNG));
-					String detect = c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE));
-					BitmapDescriptor nonleaficon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-					BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-					//snippetに画像のパスを渡してしまう
-					String snip = c.getString(c.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME));
 
-					lat_ = Double.parseDouble(lat);
-					lng_ = Double.parseDouble(lng);
-					LatLng point = new LatLng(lat_, lng_);
-					latLngList.add(point);
-					//BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.mark);
-					if (detect.equals("0")) {
-						mMap.addMarker(new MarkerOptions().position(new LatLng(lat_, lng_)).title("葉っぱ以外のなにか").icon(nonleaficon).snippet(snip));
-					} else if (Double.parseDouble(detect) < 1.00) {
-						mMap.addMarker(new MarkerOptions().position(new LatLng(lat_, lng_)).title("葉っぱかも...").icon(icon).snippet(snip));
-					} else {
-						mMap.addMarker(new MarkerOptions().position(new LatLng(lat_, lng_)).title("葉っぱです").icon(icon).snippet(snip));
+				while (c.moveToNext()) {
+					String id = c.getString(c.getColumnIndex(ImgContract.Images._ID));
+
+					if (!id.equals(id2)) {
+
+						String lat = c.getString(c.getColumnIndex(ImgContract.Images.COL_LAT));
+						String lng = c.getString(c.getColumnIndex(ImgContract.Images.COL_LNG));
+						String detect = c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE));
+						BitmapDescriptor nonleaficon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+						BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+						//snippetに画像のパスを渡してしまう
+						String snip = c.getString(c.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME));
+						String pname = c.getString(c.getColumnIndex(ImgContract.Images.COL_PNAME));
+
+						lat_ = Double.parseDouble(lat);
+						lng_ = Double.parseDouble(lng);
+						LatLng point = new LatLng(lat_, lng_);
+						latLngList.add(point);
+						//BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.mark);
+						if (detect.equals("0")) {
+							mMap.addMarker(new MarkerOptions().position(new LatLng(lat_, lng_)).title(pname).icon(nonleaficon).snippet(snip));
+						} else if (Double.parseDouble(detect) < 1.00) {
+							mMap.addMarker(new MarkerOptions().position(new LatLng(lat_, lng_)).title(pname).icon(icon).snippet(snip));
+						} else {
+							mMap.addMarker(new MarkerOptions().position(new LatLng(lat_, lng_)).title(pname).icon(icon).snippet(snip));
+						}
 					}
 				}
-				moveAndzoom(latLngList);
+
+				moveAndzoom(latLngList,marker);
+
 				c.close();
 				db.close();
 			}
 		}, 1000);
-
 	}
 }

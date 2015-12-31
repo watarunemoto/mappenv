@@ -15,6 +15,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -22,6 +23,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
@@ -36,8 +38,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class CameraPreview extends Activity implements com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -86,7 +86,6 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 	//connectionのフラッグ
 	private boolean flag = false;
 
-
 	/**
 	 * ************************************************************************************************
 	 */
@@ -105,8 +104,8 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 		//fuselocationapi
 		locationRequest = LocationRequest.create();
 		locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-		locationRequest.setInterval(10000);
-		locationRequest.setFastestInterval(16);
+		locationRequest.setInterval(1000);
+		locationRequest.setFastestInterval(500);
 
 		googleApiClient = new GoogleApiClient.Builder(this)
 				.addApi(LocationServices.API)
@@ -133,7 +132,7 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 				gpsStatus = android.provider.Settings.Secure
 						.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 				if (gpsStatus.indexOf("gps", 0) >= 0 && !flag) {
-					googleApiClient.connect();
+				googleApiClient.connect();
 					flag = true;
 				}
 
@@ -145,6 +144,17 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 				}
 			}
 		});
+		/**
+		FrameLayout frameLayout = (FrameLayout) findViewById(R.id.cameraPreview);
+		LinearLayout linearLayout = new LinearLayout(this);
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(1000,1000);
+		layoutParams.gravity = Gravity.CENTER;
+		layoutParams.setMargins(10, 10, 0, 0);
+		linearLayout.setLayoutParams(layoutParams);
+		linearLayout.setBackgroundColor(Color.BLUE);
+		frameLayout.addView(linearLayout);
+		 */
+
 	}
 
 	//onPostCreate...onCreateの実行が終わった時に実行される
@@ -162,7 +172,9 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 		//surfaceCreated...surfaceが形成されたときに実行
 		@Override
 		public void surfaceCreated(SurfaceHolder holder) {
-			//カメラ実行
+			/**
+			 * カメラ実行
+			 */
 			mCamera = Camera.open();
 			/**
 			 * ズームの設定
@@ -195,11 +207,9 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 					}
 				}
 			});
-
 			/**
 			 * 解像度の設定の追加
 			 */
-
 			Camera.Parameters params = mCamera.getParameters();
 
 			//解像度
@@ -235,7 +245,6 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 		}
 	};
 
-
 	// シャッターが押されたときに呼ばれるコールバック
 	private Camera.ShutterCallback mShutterListener = new Camera.ShutterCallback() {
 		public void onShutter() {
@@ -260,10 +269,9 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 				 String r = df.format(rlat);
 				 String r2 = df.format(rlog);
 				 loc = r + "," + r2;
-				 */
+				*/
 
-
-
+				
 				if (lati != null || longi != null) {
 					loc = lati + "," + longi;
 				}
@@ -311,12 +319,12 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 						ex.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, logi);
 						ex.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
 						ex.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
-						ex.setAttribute(ExifInterface.TAG_MAKE, sp.getString("MyID", "tom"));
 						ex.saveAttributes();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					yesornodialog(imgName);
+					yesornodialog(imgName,loc,sp.getString("MyID", "tom"));
+
 				}
 				camera.startPreview();
 			}
@@ -347,23 +355,55 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 	}
 
 	//アップロードするかどうかのダイアログを表示する
-	public String yesornodialog(final String iMGNAME) {
+	public String yesornodialog(final String iMGNAME,String locat, final String userID) {
 		NetworkInfo nwi = cm.getActiveNetworkInfo();
 
-		if (nwi.isAvailable()) {
+		final String loc_data[] = locat.split(",", 0);
+		final EditText editView = new EditText(CameraPreview.this);
+		editView.setHint("入力しないと[unknown]になります");
+		InputFilter[] inputFilters = new InputFilter[1];
+		inputFilters[0] = new InputFilter.LengthFilter(50);
+		editView.setFilters(inputFilters);
+
+		//ネットワークがオンあればアップロードオフなら別のデータベースに保存
+		if (nwi != null) {
+
 			new AlertDialog.Builder(CameraPreview.this)
 					.setTitle("画像を判定します")
-					.setMessage("判定のため通信を行いますか？")
+					.setMessage("通信を行います\n名前を入力してください")
+					.setView(editView)
 					.setNegativeButton("いいえ", null)
 					.setPositiveButton("はい", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialogInterface, int i) {
-							HttpPhotoTransfer hpt = new HttpPhotoTransfer(activity, CameraPreview.this);
-							hpt.execute("http://133.14.168.53/DojakJamrujyonWeg4.php", iMGNAME);
+							String pname ="";
+							pname = editView.getText().toString();
+							if (pname.equals("")) {
+								pname = "unknown";
+							}
+							HttpPhotoTransfer hpt = new HttpPhotoTransfer(activity, CameraPreview.this, loc_data[0], loc_data[1],pname);
+							hpt.execute("http://133.14.168.53/DojakJamrujyonWeg4.php", iMGNAME,userID);
 						}
 					}).show();
 		} else {
-			Toast.makeText(this, "No Network Connection!", Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "ネットワークが利用できません", Toast.LENGTH_LONG).show();
+			new AlertDialog.Builder(CameraPreview.this)
+					.setTitle("ネットワークが利用できません")
+					.setMessage("保存しておきますか\n名前を入力してください\n後からアップロードできます")
+					.setView(editView)
+					.setNegativeButton("いいえ", null)
+					.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i) {
+							String pname = "";
+							pname = editView.getText().toString();
+							if (pname.equals("")) {
+								pname = "unknown";
+							}
+							HttpPhotoTransfer hpt = new HttpPhotoTransfer(activity, CameraPreview.this, loc_data[0], loc_data[1], pname);
+							hpt.nouploaddb(iMGNAME);
+						}
+					}).show();
 		}
 		return iMGNAME;
 	}
@@ -413,21 +453,14 @@ public class CameraPreview extends Activity implements com.google.android.gms.lo
 		gpsStatus = android.provider.Settings.Secure
 				.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 		Location creentlocation = fusedLocationProviderApi.getLastLocation(googleApiClient);
-		if (creentlocation != null && creentlocation.getTime() > 20000) {
+		fusedLocationProviderApi.requestLocationUpdates(googleApiClient, locationRequest, CameraPreview.this);
+		if (creentlocation != null) {
 			location = creentlocation;
 			//桁数の指定
 			DecimalFormat df = new DecimalFormat("0.000000");
 			//locationから緯度経度の取得
 			lati = df.format(location.getLatitude());
 			longi = df.format(location.getLongitude());
-		} else {
-			fusedLocationProviderApi.requestLocationUpdates(googleApiClient, locationRequest, CameraPreview.this);
-			Executors.newScheduledThreadPool(1).schedule(new Runnable() {
-				@Override
-				public void run() {
-					fusedLocationProviderApi.removeLocationUpdates(googleApiClient, CameraPreview.this);
-				}
-			}, 60000, TimeUnit.MILLISECONDS);
 		}
 	}
 

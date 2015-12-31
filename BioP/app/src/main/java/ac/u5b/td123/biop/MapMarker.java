@@ -43,6 +43,8 @@ public class MapMarker extends AsyncTask<String,Integer,String> {
 	ArrayList<Double> longitude_list = new ArrayList<>();
 	ArrayList<String> score_list = new ArrayList<>();
 	ArrayList<String> snip_list = new ArrayList<>();
+	ArrayList<String> name_list = new ArrayList<>();
+
 
 
 	public MapMarker(GoogleMap mMap,Context context,FragmentActivity activity,ImgOpenHelper imgOpenHelper) {
@@ -85,6 +87,7 @@ public class MapMarker extends AsyncTask<String,Integer,String> {
 
 				score_list.add(c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE)));
 				snip_list.add(c.getString(c.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME)));
+				name_list.add(c.getString(c.getColumnIndex(ImgContract.Images.COL_PNAME)));
 			}
 			c.close();
 			db.close();
@@ -105,13 +108,13 @@ public class MapMarker extends AsyncTask<String,Integer,String> {
 
 			for (int i = 0; i < latitude_list.size(); i++) {
 				if (score_list.get(i).equals("0")) {
-					Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude_list.get(i), longitude_list.get(i))).title("葉っぱ以外のなにか").icon(nonleaficon).snippet(snip_list.get(i)));
+					Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude_list.get(i), longitude_list.get(i))).title(name_list.get(i)).icon(nonleaficon).snippet(snip_list.get(i)));
 					marker.showInfoWindow();
 				} else if (Double.parseDouble(score_list.get(i)) < 1.00) {
-					Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude_list.get(i), longitude_list.get(i))).title("葉っぱかも...").icon(icon).snippet(snip_list.get(i)));
+					Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude_list.get(i), longitude_list.get(i))).title(name_list.get(i)).icon(icon).snippet(snip_list.get(i)));
 					marker.showInfoWindow();
 				} else {
-					Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude_list.get(i), longitude_list.get(i))).title("葉っぱです").icon(icon).snippet(snip_list.get(i)));
+					Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude_list.get(i), longitude_list.get(i))).title(name_list.get(i)).icon(icon).snippet(snip_list.get(i)));
 					marker.showInfoWindow();
 				}
 			}

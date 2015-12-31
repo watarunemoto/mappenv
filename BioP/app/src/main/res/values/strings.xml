@@ -11,4 +11,5 @@
     <string name="title_activity_photo_result_form">PhotoResultForm</string>
     <string name="dialog_message">よみこみちゅう</string>
     <string name="dialog_title">マップデータ</string>
+    <string name="title_activity_no_upload">NoUploadActivity</string>
 </resources>

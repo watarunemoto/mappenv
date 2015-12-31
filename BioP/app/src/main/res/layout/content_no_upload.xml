@@ -17,29 +17,31 @@
             android:layout_weight="3"
             android:gravity="center"
             android:paddingTop="8dp"
-            android:text="ふぉとりすと"
+            android:text="未あっぷろーど"
             android:textColor="#00ff99"
             android:textSize="30sp"
             android:textStyle="bold"/>
 
         <Button
-            android:id="@+id/noUpload"
+            android:id="@+id/Uploaded"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:onClick="noupload"
-            android:text="未アップロード"/>
+            android:onClick="uploaded"
+            android:text="ふぉとりすと"/>
 
     </LinearLayout>
 
     <ListView
-        android:id="@+id/myListView"
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     </ListView>
+
+
 
     <TextView
         android:id="@+id/emptyView"
@@ -50,4 +52,7 @@
         android:text="No data available"
         android:textColor="#990090"
         android:textSize="24sp"/>
+
+
+
 </LinearLayout>

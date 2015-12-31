@@ -32,6 +32,15 @@
             android:textSize="24sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/toMap"
+            android:onClick="toMaps"
+            android:text="マップへ"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 
     </LinearLayout>

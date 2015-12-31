@@ -1,17 +1,17 @@
 package ac.u5b.td123.biop;
 
 import android.provider.BaseColumns;
+
 /**
- * Created by amimeyaY on 2015/11/05.
+ * Created by amimeyaY on 2015/12/02.
  */
+public class TempContract {
 
-public final class ImgContract {
+	public TempContract() {}
 
-	public ImgContract() {}
-
-	public static abstract class Images implements BaseColumns {
+	public static abstract class TempImages implements BaseColumns {
 		//テーブル名
-		public static final String TABLE_NAME = "images";
+		public static final String TABLE_NAME = "no_image";
 		//カラム名　画像バイナリデータ名
 		public static final String COLUMN_FILE_NAME = "fname";
 		//アップロード
@@ -21,10 +21,10 @@ public final class ImgContract {
 		//緯度経度
 		public static final String COL_LAT = "lat";
 		public static final String COL_LNG = "lng";
-		//自由に付ける名前
+		//個別につける名前
 		public static final String COL_PNAME = "pname";
-		//new表示するやつ
-		public static final String COL_VERSION = "nroo";
+		//アップロードしたか否か
+		public static final String COL_ISUPLOADED = "isUploaded";
 	}
 
 }

@@ -1,6 +1,7 @@
 package ac.u5b.td123.biop;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,17 +13,22 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -36,11 +42,19 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
 	private String str;
 	private Activity activity;
 	ProgressDialog dialog;
+	private String pname;
+	private String filename;
+
+	String lati;
+	String longi;
 
 
-	public HttpPhotoTransfer(Context c, Activity activity) {
+	public HttpPhotoTransfer(Context c, Activity activity, String lati, String longi,String pname) {
 		this.activity = activity;
 		this.context = c;
+		this.lati = lati;
+		this.longi = longi;
+		this.pname = pname;
 	}
 
 	//データベース関連
@@ -55,7 +69,8 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
 
 		//呼び出された時の引数
 		String url = params[0];
-		String filename = params[1];
+		filename = params[1];
+		String userid = params[2];
 
 		//インスタンスの作成
 		HttpClient httpClient = new DefaultHttpClient();
@@ -69,15 +84,21 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
 		File file = new File(filename);
 
 		//entityにデータをセット
-		entity.addBinaryBody("catb", file, ContentType.create("image/jpg"), filename);
+		ContentType textContentType = ContentType.create("text/plain","UTF-8");
 
+		entity.addBinaryBody("catb", file, ContentType.create("image/jpg"), filename);
+		entity.addTextBody("usrIDaafdfwe", userid, textContentType);
+		entity.addTextBody("ppersonalname", pname,textContentType);
 		/**entityにセットする
 		 * この操作にはapache-mime5j-core,httpcore,httpmimeの３つのラブラリが必要
 		 */
-
 		hpost.setEntity(entity.build());
 
 		str = null;
+
+
+
+
 
 		//レスポンスを取得
 		HttpResponse response = null;
@@ -88,13 +109,15 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
+			dbch(context, filename);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
 
-		dbch(context, filename);
 		return str;
 	}
 
@@ -119,89 +142,102 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
 		// サーバ側phpでechoした内容を表示
 		if (str != null) {
 			Log.v("resu", str);
-			data = str.split(",", 0);
 			String resu;
-			if (data[0].equals("0")) {
-				resu = "葉っぱ以外の何か スコア " + data[0];
-			} else if (Double.parseDouble(data[0]) < 1.0) {
-				resu = "葉っぱかも... スコア " + "0" + data[0];
+			if (str.equals("0")) {
+				resu = "葉っぱ以外の何か スコア " + str;
+			} else if (Double.parseDouble(str) < 1.0) {
+				resu = "葉っぱかも... スコア " + "0" + str;
 			} else {
-				resu = "葉っぱです スコア " + data[0];
+				resu = "葉っぱです スコア " + str;
 			}
-			Log.v("resu",resu);
+			Log.v("resu", resu);
 			Toast.makeText(context, "画像をアップロードしました。\n結果:" + resu, Toast.LENGTH_LONG).show();
 		} else {
-			Toast.makeText(context, "画像をアップロードできませんでした。", Toast.LENGTH_LONG).show();
+			new AlertDialog.Builder(activity)
+					.setTitle("画像をアップロードできませんでした")
+					.setMessage("保存しておきますか\n後でアップロードできます。")
+					.setNegativeButton("いいえ", null)
+					.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i) {
+							nouploaddb(filename);
+						}
+					}).show();
+			Toast.makeText(context, "画像を保存しました", Toast.LENGTH_LONG).show();
 		}
 		dialog.dismiss();
 	}
 
+	//アップロードできないやつを別のデータベースに書き込むやつ
+	public void nouploaddb(String filename) {
+
+		String score;
+		TempOpenHelper tempOpenHelper = new TempOpenHelper(context);
+		db = tempOpenHelper.getWritableDatabase();
+
+		Double lat = Double.parseDouble(lati);
+		Double lng = Double.parseDouble(longi);
+
+		String updated =
+				new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US)
+						.format(new Date());
+		String fname = filename;
+
+		score = "不明";
+		ContentValues values = new ContentValues();
+		values.put(TempContract.TempImages.COL_LAT, lat);
+		values.put(TempContract.TempImages.COL_LNG, lng);
+		values.put(TempContract.TempImages.COL_SCORE, score);
+		values.put(TempContract.TempImages.COL_UPDATED, updated);
+		values.put(TempContract.TempImages.COLUMN_FILE_NAME, fname);
+		values.put(TempContract.TempImages.COL_PNAME,pname);
+		values.put(TempContract.TempImages.COL_ISUPLOADED,"0");
+
+		db.insert(
+				TempContract.TempImages.TABLE_NAME,
+				null,
+				values
+		);
+	}
+
 	public void dbch(Context c, String filename) {
 		//データベースに帰ってきたデータをぶち込む
+		String score;
 		if (str != null) {
-			String score;
 			ImgOpenHelper imgOpenHelper = new ImgOpenHelper(c);
 			db = imgOpenHelper.getWritableDatabase();
-			List<Address> list_address = null;
 
-			data = str.split(",", 0);
-			if (data[0] != null) {
-				if (data[0].equals("0")) {
-					score = data[0];
-				} else if (Double.parseDouble(data[0]) < 1.0) {
-					score = "0" + data[0];
-				} else {
-					score = data[0];
-				}
-				Double lat = Double.parseDouble(data[1]);
-				Double lng = Double.parseDouble(data[2]);
-
-				String updated =
-						new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US)
-								.format(new Date());
-				String fname = filename;
-
-
-				/*
-				//座標から住所を算出
-				String string = new String();
-				Geocoder geocoder = new Geocoder(context, Locale.JAPAN);
-				try {
-					list_address = geocoder.getFromLocation(lon, lat, 5);
-					if (!list_address.isEmpty()) {
-						Address address = list_address.get(0);
-						StringBuffer stringBuffer = new StringBuffer();
-
-						String buf;
-						for (int i = 0; (buf = address.getAddressLine(i)) != null; i++) {
-							Log.v("geocode", "loop no." + i);
-							stringBuffer.append("addres.getAddressLine(" + i + ")" + buf + "\n");
-						}
-
-						string = stringBuffer.toString();
-					} else {
-						Log.v("geocode", "Fail Geocoding");
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				Log.v("geocode", string);
-				*/
-
-				ContentValues values = new ContentValues();
-				values.put(ImgContract.Images.COL_LAT, lat);
-				values.put(ImgContract.Images.COL_LNG, lng);
-				values.put(ImgContract.Images.COL_SCORE, score);
-				values.put(ImgContract.Images.COL_UPDATED, updated);
-				values.put(ImgContract.Images.COLUMN_FILE_NAME, fname);
-
-				db.insert(
-						ImgContract.Images.TABLE_NAME,
-						null,
-						values
-				);
+			//List<Address> list_address = null;
+			if (str.equals("0")) {
+				score = str;
+			} else if (Double.parseDouble(str) < 1.0) {
+				score = "0" + str;
+			} else {
+				score = str;
 			}
+
+			Double lat = Double.parseDouble(lati);
+			Double lng = Double.parseDouble(longi);
+
+			String updated =
+					new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US)
+							.format(new Date());
+			String fname = filename;
+
+			ContentValues values = new ContentValues();
+			values.put(ImgContract.Images.COL_LAT, lat);
+			values.put(ImgContract.Images.COL_LNG, lng);
+			values.put(ImgContract.Images.COL_SCORE, score);
+			values.put(ImgContract.Images.COL_UPDATED, updated);
+			values.put(ImgContract.Images.COLUMN_FILE_NAME, fname);
+			values.put(ImgContract.Images.COL_PNAME,pname);
+			values.put(ImgContract.Images.COL_VERSION,"new");
+
+			db.insert(
+					ImgContract.Images.TABLE_NAME,
+					null,
+					values
+			);
 		}
 	}
 }
