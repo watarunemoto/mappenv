@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">MappEnv</string>
+    <string name="title_activity_login">MappEnv</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_title">BioP</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_rank">RankActivity</string>
+    <string name="title_activity_photo_result">PhotoResultActivity</string>
+    <string name="title_activity_photo_result_form">ふぉとビューアー</string>
+    <string name="dialog_message">よみこみちゅう</string>
+    <string name="dialog_title">マップデータ</string>
+    <string name="title_activity_no_upload">NoUploadActivity</string>
+    <string name="title_grid_menu">操作メニュー</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_text1">BioPhoto</string>
+    <string name="nav_item_camera">カメラ</string>
+    <string name="nav_item_list">りすと</string>
+    <string name="nav_item_map">まっぷ</string>
+    <string name="nav_item_rank">らんきんぐ</string>
+    <string name="pref_dialog_object_name">写真の名前入力</string>
+    <string name="pref_dialog_object_name_summ">撮影時に写真の名前の入力欄を表示するか</string>
+    <string name="title_toolbar">MappEnv</string>
+    <string name="title_list_text">最近の写真</string>
+    <string name="rank_toolbar">ランキング</string>
+    <string name="rank_detail">個人の詳細</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- camera-->
+    <string name="cant_get_location">位置情報が取得できません</string>
+    <string name="if_not_input_unknown">名前を入力しないとunknownになります</string>
+    <string name="detect_img">写真の判定を行います</string>
+    <string name="do_you_upload">写真をアップロードしますか</string>
+    <string name="yes_dialog">はい</string>
+    <string name="do_uploading">写真をアップロードします</string>
+    <string name="cant_get_network">ネットワークが取得できません</string>
+    <string name="reserve_photo">保存しておきますか</string>
+    <string name="no_dialog">いいえ</string>
+    <string name="reserved">保存しました</string>
+    <string name="not_on_gps">位置情報がオンになってません</string>
+    <string name="turn_on_gps">位置情報をオンにしますか？</string>
+    <string name="unknown_name">unknown</string>
+    
+    <!-- HttpPhotoTransfer -->
+    <string name="uploaded">画像をアップロードしました。\n結果:</string>
+    <string name="cant_upload">アップロードできませんでした</string>
+    <string name="do_you_reserved">保存しておきますか?</string>
+    <string name="now_uploading">通信中です</string>
+
+    <!-- otherphotogetter -->
+    <string name="photo_loading">画像読み込み中</string>
+
+    <!-- login_activity -->
+    <string name="set_id"> IDを設定します</string>
+    <string name="input_id">IDを入力してください</string>
+    <string name="ok_dialog">OK</string>
+    <string name="your_id_ok">IDは変更できません\n以下のIDでいいですか？</string>
+    <string name="id_dialog">ID:</string>
+    <string name="your_id_is">あなたのIDは</string>
+
+    <!-- map activity -->
+
+    <string name="cant_open_map">マップが開けません</string>
+
+    <!-- noupload activity -->
+
+    <string name="do_you_delete">画像を削除しますか</string>
+    <string name="do_delete">いいですか</string>
+    <string name="deleted">削除しました</string>
+    <string name="file_edit">ファイル操作</string>
+
+    <!-- other photo eval -->
+    <string name="push_good">Goodしました</string>
+    <string name="push_bad">Badしました</string>
+
+    <!-- photoresultform-->
+    <string name="error">error</string>
+
+    <!-- rank custom adapter -->
+    <string name="pos_rank">pos_rank</string>
+
+
+    <!-- tablist -->
+    <string name="photo_list">ふぉとりすと</string>
+    <string name="no_upload_list">未アップロード</string>
+
+    <!-- tag ranking -->
+    <string name="rankings">ランキング</string>
+
+    <!-- title activity -->
+    <string name="photo_num">Photo:</string>
+
+
+    <!-- navgation -->
+    <string name="nav_upload" >全部アップロード</string>
+    <string name="nav_point">ポイント </string>
+    <string name="nav_photonum">写真 : </string>
+    <string name="title_nav_menu">extra menu</string>
+    <string name="nav_reset">reset_upload</string>
+
+
+
+</resources>

@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">BioP_Primrose</string>
+    <string name="title_activity_login">BioP_Primrose</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_title">BioP</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_rank">RankActivity</string>
+    <string name="title_activity_photo_result">PhotoResultActivity</string>
+    <string name="title_activity_photo_result_form">ふぉとビューアー</string>
+    <string name="dialog_message">よみこみちゅう</string>
+    <string name="dialog_title">マップデータ</string>
+    <string name="title_activity_no_upload">NoUploadActivity</string>
+    <string name="title_grid_menu">操作メニュー</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_text1">BioPhoto</string>
+    <string name="nav_item_camera">カメラ</string>
+    <string name="nav_item_list">りすと</string>
+    <string name="nav_item_map">まっぷ</string>
+    <string name="nav_item_rank">らんきんぐ</string>
+    <string name="pref_dialog_object_name">写真の名前入力</string>
+    <string name="pref_dialog_object_name_summ">撮影時に写真の名前の入力欄を表示するか</string>
+    <string name="title_toolbar">BIOPHOTO</string>
+    <string name="title_list_text">最近の写真</string>
+    <string name="rank_toolbar">ランキング</string>
+    <string name="rank_detail">個人の詳細</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

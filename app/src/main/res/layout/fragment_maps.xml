@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/map_fragment"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        class="biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views.OtherPhotoEvalFragment"
+        tools:layout="@layout/activity_other_photo_view_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </fragment>
+</FrameLayout>

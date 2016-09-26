@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="biopprimrose.d123.d5p.shuger.of.lamp.biopprim">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!--
+ The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but are recommended.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/iconleaf"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".Views.LoginActivity"
+            android:label="@string/title_activity_login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Views.CameraPreview"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.TitleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <provider
+            android:name=".Databases.ImgContentProvider"
+            android:authorities="biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContentProvider"
+            android:enabled="true"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
+
+        <activity
+            android:name=".Views.MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".Views.RankActivity"
+            android:label="@string/title_activity_rank"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.PhotoResultActivity"
+            android:label="@string/title_activity_photo_result"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.PhotoResultFormActivity"
+            android:label="@string/title_activity_photo_result_form"
+            android:parentActivityName=".Views.PhotoResultActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <provider
+            android:name=".Databases.TempImgContentProvider"
+            android:authorities="biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempImgContentProvider"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".Views.NoUploadActivity"
+            android:label="@string/title_activity_no_upload"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".Views.TabListview"
+            android:label="tabuview"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <provider
+            android:name=".Databases.OtherContentProvider"
+            android:authorities="biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.OtherContentProvider"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".Views.EvalOtherPhotos" />
+        <activity
+            android:name=".Views.OtherPhotoViewForm"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.TabRanking"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Views.Setting_Activity"
+            android:parentActivityName=".Views.TitleActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Views.RankUsersDetailActivity">
+
+        </activity>
+    </application>
+
+</manifest>
