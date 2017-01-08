@@ -17,4 +17,9 @@
     <dimen name="nav_header_height">100dp</dimen>
     <dimen name="nav_header_text_padding">5dp</dimen>
 
+    <!-- googleマップ　関連-->
+    <dimen name="map_load_button">10dp</dimen>
+    <dimen name="map_other_users_photo_list_margin">10dp</dimen>
+    <dimen name="data_load_button">10dp</dimen>
+
 </resources>

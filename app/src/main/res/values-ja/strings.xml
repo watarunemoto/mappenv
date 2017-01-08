@@ -24,7 +24,7 @@
     <string name="pref_dialog_object_name">写真の名前入力</string>
     <string name="pref_dialog_object_name_summ">撮影時に写真の名前の入力欄を表示するか</string>
     <string name="title_toolbar">MappEnv</string>
-    <string name="title_list_text">最近の写真</string>
+    <string name="title_list_text">周辺で取られた写真</string>
     <string name="rank_toolbar">ランキング</string>
     <string name="rank_detail">個人の詳細</string>
 
@@ -67,6 +67,10 @@
     <!-- map activity -->
 
     <string name="cant_open_map">マップが開けません</string>
+    <string name="map_load_button">周辺の写真を読み込む</string>
+
+    <!-- other users photo listfragment -->
+    <string name="data_load_button">さらに読み込む</string>
 
     <!-- noupload activity -->
 
@@ -84,6 +88,7 @@
 
     <!-- rank custom adapter -->
     <string name="pos_rank">pos_rank</string>
+    <string name="dialog_rangking_getter">つうしんちゅう</string>
 
 
     <!-- tablist -->
@@ -104,6 +109,38 @@
     <string name="title_nav_menu">extra menu</string>
     <string name="nav_reset">reset_upload</string>
 
+    <!-- photomulti -->
+    <string name="toast_upload_num">枚をアップロードしました</string>
+    <string name="toast_cant_upload">枚はアップロードできませんでした</string>
+    <string name="toast_network_not_work">ネットワークかサーバーの調子が悪いかもしれません</string>
+
+    <!-- other_users_eval -->
+    <string name="evaluate_other_photos">他人の写真を評価しよう!</string>
+
+    <!-- recyclerview-->
+    <string name="title_recyclerview_text">読み込み中</string>
+
+    <!-- menu_friend -->
+    <string name="add_friend">友達追加</string>
+    <!-- friend list adapter -->
+    <string name="friend">友達</string>
+    <string name="notfriend">申請中</string>
+    <string name="requested">申請</string>
+
+    <!-- friend request fragment -->
+    <string name="no_user_message">該当するユーザーはいません</string>
+    <!-- friend request form fragment -->
+    <string name="friend_request_sent_text">友達申請を送りました</string>
+    <string name="is_existed">申請が存在します</string>
+
+
+    <!-- something to wrong -->
+    <string name="something_to_wrong">なにかがおかしいようです</string>
+
+    <!-- friend activity -->
+    <string name="friend_toolbar">フレンドリスト</string>
+    <string name="friend_accept_title">承認</string>
+    <string name="friend_accept_message">承認しますか?</string>
 
 
 </resources>

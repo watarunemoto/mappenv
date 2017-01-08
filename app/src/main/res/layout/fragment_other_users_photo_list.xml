@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f0f0f0"
+        android:orientation="vertical">
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:verticalSpacing="5dp"
+            android:horizontalSpacing="1dp"
+            android:layout_margin="@dimen/map_other_users_photo_list_margin"
+            android:numColumns="3"
+            android:stretchMode="columnWidth">
+
+        </GridView>
+
+
+        <Button
+            android:layout_weight="8"
+            android:text="@string/data_load_button"
+            android:layout_margin="@dimen/map_load_button"
+            android:id="@+id/map_load_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <!--
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:text="No data available"
+            android:textColor="#ffffff"
+            android:textSize="24sp"/>
+            -->
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/contena_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+</FrameLayout>

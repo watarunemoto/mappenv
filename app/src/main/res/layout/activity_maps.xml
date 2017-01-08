@@ -6,14 +6,22 @@
     android:layout_height="match_parent">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        map:uiZoomControls="true"
         tools:context=".Views.MapsActivity" />
+
+
+    <Button
+        android:id="@+id/map_load_button"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="@dimen/map_load_button"
+        android:text="@string/map_load_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -22,5 +30,12 @@
         android:layout_height="match_parent">
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/map_eval_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </LinearLayout>
 
 </FrameLayout>

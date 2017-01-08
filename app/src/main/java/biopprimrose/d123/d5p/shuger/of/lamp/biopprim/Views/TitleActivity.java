@@ -13,10 +13,16 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -28,37 +34,64 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.text.AttributedCharacterIterator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.OtherUsersList;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.RecycleAdapter;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.GetMyLocation;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.LoadDataTask;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.MyLocation;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.PhotoMultiTransfer;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.OnRecycleListener;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankingGeter;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
 
 /**
- * Created by amimeyaY on 2015/04/21.
+ * Commented by amimeyaY on 2016/12
+ * This class role is hub.
+ * 1.camera activity 2.list activity 3.map activity 4.ranking activity
+ *
  */
 
 /**
  * ActivityとはAndroidアプリの画面
  */
-public class TitleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class TitleActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
+        OnRecycleListener{
 
     NavigationView navigationView;
+    RecyclerView recyclerView;
+    List<OtherUsersList> otherUsersLists = new ArrayList<>();
+    RecycleAdapter recycleAdapter;
+    TextView title_dummy_textview;
+    LatLng latLng;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navi_title);
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
 
         /**
          * navigation drawerとtoolbarの取得と設定
@@ -77,6 +110,11 @@ public class TitleActivity extends AppCompatActivity implements NavigationView.O
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TitleActivity.this);
+
+        sp.edit().putBoolean("Recyclerisdonwloadingnow",true).apply();
+
+        title_dummy_textview = (TextView) findViewById(R.id.title_dummy_text);
 
         /**
          * gridview上のImageButtonの遷移先
@@ -116,6 +154,12 @@ public class TitleActivity extends AppCompatActivity implements NavigationView.O
             }
         });
 
+        if (latLng == null && sp.getBoolean("Recyclerisdonwloadingnow",true)) {
+            GetMyLocation getMyLocation = new GetMyLocation(this);
+            getMyLocation.getMylocation();
+            sp.edit().putBoolean("Recyclerisdonwloadingnow",false).apply();
+            Log.v("titleactivity",sp.getBoolean("Recyclerisdonwloadingnow",false)+"");
+        }
     }
 
     @Override
@@ -156,8 +200,14 @@ public class TitleActivity extends AppCompatActivity implements NavigationView.O
         } else {
             Log.v("getrank", "no");
         }
+        recyclerView = (RecyclerView) findViewById(R.id.title_recycle);
+        recyclerView.setLayoutManager
+                (new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL));
+
+
     }
 
+    /**
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -168,6 +218,7 @@ public class TitleActivity extends AppCompatActivity implements NavigationView.O
         }
         return super.onKeyDown(keyCode, event);
     }
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -213,6 +264,8 @@ public class TitleActivity extends AppCompatActivity implements NavigationView.O
             upload_dialog();
         } else if (id == R.id.nav_reset_upload_state) {
             dbupdate();
+//            Intent intent = new Intent(TitleActivity.this,FriendActivity.class);
+//            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -354,12 +407,76 @@ public class TitleActivity extends AppCompatActivity implements NavigationView.O
                 db.endTransaction();
             }
         }
-
-
-
-
         db.close();
         toh.close();
     }
+
+    @Subscribe
+    public void onListload(List<OtherUsersList> otherUsersLists) {
+
+        Log.v("titleacitivy_",otherUsersLists.size() +"");
+
+        if (title_dummy_textview != null) {
+            title_dummy_textview.setText("");
+        }
+        if (title_dummy_textview != null) {
+            title_dummy_textview.setText("");
+        }
+
+        this.otherUsersLists = otherUsersLists;
+        if (recyclerView.getAdapter() == null) {
+            recycleAdapter = new RecycleAdapter(this, otherUsersLists, this);
+            recyclerView.setAdapter(recycleAdapter);
+        }
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TitleActivity.this);
+        sp.edit().putBoolean("Recyclerisdonwloadingnow",true).apply();
+
+    }
+
+    @Subscribe
+    public void onMylocationload(MyLocation myLocation) {
+        latLng =
+                new LatLng(myLocation.getMylocation().latitude,
+                        myLocation.getMylocation().longitude
+                );
+
+
+
+        LoadDataTask loadDataTask = new LoadDataTask(this,latLng);
+        loadDataTask.execute();
+        Log.v("titleactivity","ranran"
+                + "," + myLocation.getMylocation().latitude
+                + "," + myLocation.getMylocation().longitude
+        );
+    }
+
+
+
+    @Override
+    public void onRecycleClicked(View v, int Position) {
+
+        Log.v("otheruserslist",otherUsersLists.size() + "," + Position);
+        String filename_ = otherUsersLists.get(Position).getFilepath();
+        String name_ =  otherUsersLists.get(Position).getName();
+        String class_ = "others";
+        String userid_ = otherUsersLists.get(Position).getUserid();
+        String[] data = {filename_, name_, class_, userid_};
+
+        OtherPhotoEvalFragment fragment = new OtherPhotoEvalFragment();
+        Bundle args = new Bundle();
+        args.putStringArray("filename_name_class", data);
+        fragment.setArguments(args);
+
+        Log.v("filename_name_class", String.valueOf(data[0])+","+String.valueOf(data[1])+","+String.valueOf(data[2]));
+
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+
+        transaction.add(R.id.container, fragment);
+        transaction.addToBackStack("fragment_map_list");
+        transaction.commit();
+    }
+
+
 
 }

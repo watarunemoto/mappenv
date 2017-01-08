@@ -81,9 +81,11 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
         //entityにデータをセット
         ContentType textContentType = ContentType.create("text/plain", "UTF-8");
 
-        entity.addBinaryBody("catb", file, ContentType.create("image/jpg"), filename);
-        entity.addTextBody("usrIDaafdfwe", userid, textContentType);
-        entity.addTextBody("ppersonalname", pname, textContentType);
+        entity.addBinaryBody("images", file, ContentType.create("image/jpg"), filename);
+        entity.addTextBody("userid", userid, textContentType);
+        entity.addTextBody("photoname", pname, textContentType);
+        entity.addTextBody("filename",filename,textContentType);
+
         /**entityにセットする
          * この操作にはapache-mime5j-core,httpcore,httpmimeの３つのラブラリが必要
          */

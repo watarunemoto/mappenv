@@ -1,120 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    android:background="#ffffff"
-    android:orientation="vertical">
+    android:background="#ffffff">
 
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:background="#ffffff"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/title_grid_text_margin"
-                android:gravity="center"
-                android:background="@drawable/text_frame"
-                android:text="@string/title_list_text"
-                android:textSize="@dimen/title_list_text_size" />
-
-            <TextView
-                android:text="Coming soon..."
-                android:textSize="24sp"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/layout_title_frame"
-            android:layout_margin="10dp"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/title_grid_text_margin"
-                android:gravity="center"
-                android:background="@drawable/text_frame"
-                android:text="@string/title_grid_menu"
-                android:textSize="@dimen/title_menu_text_size" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="3"
                 android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/title_grid_text_margin"
+                    android:background="@drawable/text_frame"
+                    android:gravity="center"
+                    android:text="@string/title_list_text"
+                    android:textSize="@dimen/title_list_text_size" />
+
+                <FrameLayout
+                    android:id="@+id/title_framelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:id="@+id/title_recycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#EEEEEE"
+                        android:scrollbars="horizontal"
+                        tools:context=".Views.TitleActivity" />
+
+                    <TextView
+                        android:id="@+id/title_dummy_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/title_recyclerview_text" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/layout_title_frame"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/title_grid_text_margin"
+                    android:background="@drawable/text_frame"
+                    android:gravity="center"
+                    android:text="@string/title_grid_menu"
+                    android:textSize="@dimen/title_menu_text_size" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <ImageButton
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:padding="@dimen/title_grid_padding"
-                        android:scaleType="fitXY"
-                        android:id="@+id/camera_button"
-                        android:src="@drawable/icon_camera_256" />
+                        android:orientation="horizontal">
 
-                    <ImageButton
+                        <ImageButton
+                            android:id="@+id/camera_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/icon_camera_256" />
+
+                        <ImageButton
+                            android:id="@+id/list_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/icon_list_256" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:padding="@dimen/title_grid_padding"
-                        android:scaleType="fitXY"
-                        android:id="@+id/list_button"
-                        android:src="@drawable/icon_list_256" />
+                        android:orientation="horizontal">
 
-                </LinearLayout>
+                        <ImageButton
+                            android:id="@+id/map_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/icon_map_256" />
 
+                        <ImageButton
+                            android:id="@+id/rank_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/icon_rank_256" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <ImageButton
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:padding="@dimen/title_grid_padding"
-                        android:scaleType="fitXY"
-                        android:id="@+id/map_button"
-                        android:src="@drawable/icon_map_256" />
-
-                    <ImageButton
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:padding="@dimen/title_grid_padding"
-                        android:scaleType="fitXY"
-                        android:id="@+id/rank_button"
-                        android:src="@drawable/icon_rank_256" />
-
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </LinearLayout>
+</FrameLayout>
 

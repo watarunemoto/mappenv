@@ -54,7 +54,6 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
 
-
         <activity
             android:name=".Views.MapsActivity"
             android:label="@string/title_activity_maps" />
@@ -104,11 +103,15 @@
         <activity
             android:name=".Views.Setting_Activity"
             android:parentActivityName=".Views.TitleActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Views.RankUsersDetailActivity">
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Views.RankUsersDetailActivity" />
+        <activity android:name=".Views.FriendActivity" />
 
-        </activity>
+        <provider
+            android:name=".Databases.FriendContentProvider"
+            android:authorities="bioprimrose.d123.d5p.shuger.of.lampbiopprim.FriendContentProvider"
+            android:enabled="false"
+            android:exported="false"></provider>
     </application>
 
 </manifest>

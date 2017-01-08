@@ -24,7 +24,7 @@
     <string name="pref_dialog_object_name">Please input name</string>
     <string name="pref_dialog_object_name_summ">input dialog on or off</string>
     <string name="title_toolbar">MappEnv</string>
-    <string name="title_list_text">last photos</string>
+    <string name="title_list_text">Taking at around here</string>
     <string name="rank_toolbar">Ranking</string>
     <string name="rank_detail">Stats</string>
 
@@ -67,6 +67,12 @@
     <!-- map activity -->
 
     <string name="cant_open_map">"Can't open map"</string>
+    <string name="map_load_button">Loading photos</string>
+
+    <!-- other users photo listfragment -->
+    <string name="data_load_button">add load</string>
+
+
 
     <!-- noupload activity -->
 
@@ -92,6 +98,7 @@
 
     <!-- tag ranking -->
     <string name="rankings">Ranking</string>
+    <string name="dialog_rangking_getter">Downloading</string>
 
     <!-- title activity -->
     <string name="photo_num">Photo:</string>
@@ -103,5 +110,35 @@
     <string name="title_nav_menu">extra menu</string>
     <string name="nav_reset">reset_upload</string>
 
+    <!-- photomulti -->
+    <string name="toast_upload_num">photos</string>
+    <string name="toast_cant_upload">photos could not be uploaded</string>
+    <string name="toast_network_not_work">Condition of the server or network be bad</string>
+
+    <!-- other_users_eval -->
+    <string name="evaluate_other_photos">"Let's evaluate the photo!"</string>
+
+    <!-- recyclerview-->
+    <string name="title_recyclerview_text">Loading now...</string>
+    <!-- menu_friend -->
+    <string name="add_friend">Add friend</string>
+    <!-- friend list adapter -->
+    <string name="friend">Friend</string>
+    <string name="notfriend">Not\nFriend</string>
+    <string name="requested">Requested</string>
+    <string name="request">Request</string>
+    <!-- friend request fragment -->
+    <string name="no_user_message">no user</string>
+    <string name="friend_request_sent_text">sended</string>
+
+
+    <!-- something to wrong -->
+    <string name="something_to_wrong">Something to wrong</string>
+    <string name="is_existed">Request existed</string>
+
+    <!-- friend activity -->
+    <string name="friend_toolbar">Friends list</string>
+    <string name="friend_accept_title">Accept?</string>
+    <string name="friend_accept_message">Do you accept friend</string>
 
 </resources>

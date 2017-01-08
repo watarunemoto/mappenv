@@ -8,7 +8,7 @@
     >
 
     <TextView
-        android:text="他の人の写真を評価しよう"
+        android:text="@string/evaluate_other_photos"
         android:gravity="center"
         android:padding="6dp"
         android:textSize="24sp"

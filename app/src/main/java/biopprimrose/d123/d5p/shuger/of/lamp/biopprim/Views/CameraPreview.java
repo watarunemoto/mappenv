@@ -46,6 +46,14 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.HttpPhotoTransf
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
+/**
+ * Changed by amemiya 24/12/2016
+ * カメラで撮影を行い、位置情報のExifに書き込み
+ * 本体に保存し、データベースに書き込む
+ *
+ */
+
+
 
 public class CameraPreview extends Activity implements
 		com.google.android.gms.location.LocationListener,
@@ -111,15 +119,12 @@ public class CameraPreview extends Activity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera_acitivity);
-		//
+
 		activity = this;
 		mView = (SurfaceView) findViewById(R.id.suface_id);
 
-
-		//Locationmanagerの参照
 		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		//fuselocationapi
 		locationRequest = LocationRequest
 				.create()
 				.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -144,6 +149,7 @@ public class CameraPreview extends Activity implements
 				.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
 		//シャッターのボタン
+        //GPSがONであれば
 		Button btn = (Button) findViewById(R.id.shutter);
 		btn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -165,9 +171,7 @@ public class CameraPreview extends Activity implements
 			}
 		});
 
-		//RelativeLayout取得
 		myRelativeLayout = (RelativeLayout)findViewById(R.id.my_relative);
-		//レイアウト定義
 
 	}
 
@@ -326,7 +330,7 @@ public class CameraPreview extends Activity implements
 					//exifの形式変換を行っている改善の余地がある
 					String lat = lata[0] + "/1," + lata[1].substring(0, 2) + "/1," + lata[1].substring(2, 6) + "/1000";
 					String logi = logia[0] + "/1," + logia[1].substring(0, 2) + "/1," + logia[1].substring(2, 6) + "/1000";
-
+					Log.v("positions",lat+"<"+logi);
 
 					try {
 						ExifInterface ex = new ExifInterface(imgName);
@@ -335,6 +339,9 @@ public class CameraPreview extends Activity implements
 						ex.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
 						ex.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
 						ex.saveAttributes();
+
+
+						Log.v("location", lat +","+logi);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -418,10 +425,11 @@ public class CameraPreview extends Activity implements
 					public void onClick(DialogInterface dialogInterface, int i) {
 						String pname = "unknown";
 						HttpPhotoTransfer hpt = new HttpPhotoTransfer(activity, CameraPreview.this, loc_data[0], loc_data[1], pname);
-						hpt.execute("http://133.14.168.203/inviawefiLigand.php", iMGNAME, userID);
+						hpt.execute(UrlCollections.URL_UPLOAD_PHOTO, iMGNAME, userID);
 					}
 				});
 			}
+
 			builder.show();
 
 		} else {

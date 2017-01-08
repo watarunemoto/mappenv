@@ -75,9 +75,9 @@ public class OtherPhotoGetter extends AsyncTask<String, Integer, String> {
 		String message =  context.getResources().getString(R.string.photo_loading);
 
 		progressDialog = new ProgressDialog(context);
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progressDialog.setMessage(message);
 		progressDialog.show();
-
 	}
 
 	@Override

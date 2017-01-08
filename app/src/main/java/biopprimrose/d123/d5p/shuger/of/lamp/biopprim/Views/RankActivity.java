@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.RankCustomAdapter;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.RankCustomAdapter;
 
 
 public class RankActivity extends AppCompatActivity {

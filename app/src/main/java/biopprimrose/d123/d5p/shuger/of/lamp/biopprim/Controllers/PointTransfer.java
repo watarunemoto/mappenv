@@ -3,11 +3,15 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -16,6 +20,13 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by amemiyaY on 2016/01/15.
@@ -23,8 +34,8 @@ import java.util.List;
 public class PointTransfer extends AsyncTask<String,Integer,String> {
 
 	String filename,point,eva_user,evaed_user;
-	HttpResponse res;
 	String str;
+	String res_st;
 
 	public  PointTransfer(String filename, String point, String eva_user, String evaed_user){
 		this.filename = filename;
@@ -36,36 +47,50 @@ public class PointTransfer extends AsyncTask<String,Integer,String> {
 	protected String doInBackground(String... strings) {
 		String url_s = strings[0];
 
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost post = new HttpPost(url_s);
-		List<NameValuePair> post_params = new ArrayList<NameValuePair>();
-		post_params.add(new BasicNameValuePair("fileName", filename));
-		post_params.add(new BasicNameValuePair("poINT", point));
-		post_params.add(new BasicNameValuePair("eva_User", eva_user));
-		post_params.add(new BasicNameValuePair("evaed_UseR", evaed_user));
+		MultipartEntityBuilder entity = MultipartEntityBuilder.create();
+
+		entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+		RequestBody body = new MultipartBody.Builder()
+				.setType(MultipartBody.FORM)
+
+				.addFormDataPart(
+						"filename", filename
+				)
+				.addFormDataPart(
+						"point", point
+				)
+				.addFormDataPart(
+						"my_id", eva_user
+				)
+				.addFormDataPart(
+						"other_id", evaed_user
+				)
+				.build();
+
+		Request request = new Request.Builder()
+				.url(url_s)
+				.post(body)
+				.build();
+
+
+		OkHttpClient client = new OkHttpClient().newBuilder().
+				readTimeout(15 * 1000, TimeUnit.MILLISECONDS)
+				.writeTimeout(20 * 1000, TimeUnit.MILLISECONDS)
+				.connectTimeout(20 * 1000, TimeUnit.MILLISECONDS)
+				.build();
 
 		try {
-			post.setEntity(new UrlEncodedFormEntity(post_params, "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		try {
-			res = httpClient.execute(post);
-			try {
-				str = EntityUtils.toString(res.getEntity());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (UnsupportedOperationException e) {
-			e.printStackTrace();
-			Log.v("test", "taroumaru");
+			Response res = client.newCall(request).execute();
+			res_st = res.body().string();
+
+
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.v("test", "ikachan");
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-			Log.v("test","runtime");
 		}
-		return str;
+
+		return res_st;
+
+
 	}
 }

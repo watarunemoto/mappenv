@@ -5,6 +5,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +43,31 @@ public class PhotoResultFormFragment extends Fragment {
             Bundle bundle = getArguments();
             data = bundle.getStringArray("packdata");
         }
-
+        view.setClickable(true);
         TextView title = (TextView) view.findViewById(R.id.fragment_form_title);
         ImageView imageView = (ImageView) view.findViewById(R.id.fragment_form_image);
 
         title.setText(data[1]);
         imageView.setImageBitmap(BitmapFactory.decodeFile(data[0]));
+
+
+        view.setFocusableInTouchMode(true);
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                FragmentManager manager = getChildFragmentManager();
+                Fragment fragment = manager.findFragmentByTag("fragment_map_list");
+                Log.v("OtherPhotoEvalFragment","push back button");
+                if (fragment != null) {
+                    if (i == KeyEvent.KEYCODE_BACK) {
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        transaction.remove(fragment);
+                        transaction.commit();
+                    }
+                }
+                return true;
+            }
+        });
 
         return view;
     }

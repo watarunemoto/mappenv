@@ -5,10 +5,15 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.LoadDataTask;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.OtherOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.OtherPhotoGetter;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.OtherUsersPhotoData;
@@ -40,7 +46,7 @@ public class OtherPhotoEvalFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null){
-            packdata = getArguments().getStringArray("packdata");
+            packdata = getArguments().getStringArray("filename_name_class");
         } else {
             return null;
         }
@@ -54,15 +60,14 @@ public class OtherPhotoEvalFragment extends Fragment {
         final Button goodButton = (Button) rootView.findViewById(R.id.btn_good);
         final Button badButton = (Button) rootView.findViewById(R.id.btn_bad);
         final TextView pname = (TextView)rootView.findViewById(R.id.text_pname);
-        final TextView classs = (TextView)rootView.findViewById(R.id.classname);
         final TextView scores = (TextView)rootView.findViewById(R.id.score);
         final ImageView imageView = (ImageView) rootView.findViewById(R.id.image);
 
         goodButton.setEnabled(false);
         badButton.setEnabled(false);
 
-        pname.setText(packdata[0]);
-        scores.setText( packdata[2]);
+        pname.setText(packdata[1]);
+        scores.setText(packdata[2]);
 
         goodButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,18 +104,49 @@ public class OtherPhotoEvalFragment extends Fragment {
         while (c.moveToNext()) {
             String picname = c.getString(c.getColumnIndex(OtherUsersPhotoData.OtherImages.COLUMN_FILE_NAME));
 
-            if (picname.equals(packdata[3])) {
+            if (picname.equals(packdata[0])) {
                 badButton.setEnabled(false);
                 goodButton.setEnabled(false);
                 flag = false;
             }
         }
 
-        OtherPhotoGetter opg = new OtherPhotoGetter(getActivity(),imageView,goodButton,badButton,flag);
-        opg.execute(UrlCollections.URL_OTHER_PHOTO, packdata[3]);
+        if (flag) {
+            badButton.setEnabled(true);
+            goodButton.setEnabled(true);
+        }
+
+        /**
+        LoadDataTask ldt = new LoadDataTask(getActivity(),imageView);
+        ldt.execute(packdata[0]);
+         */
+
+        imageView.setImageBitmap(BitmapFactory.decodeFile(packdata[0]));
 
         c.close();
         db.close();
+
+
+        rootView.setClickable(true);
+        rootView.setFocusableInTouchMode(true);
+        rootView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                FragmentManager manager = getChildFragmentManager();
+                Fragment fragment = manager.findFragmentByTag("fragment_map_list");
+                Log.v("OtherPhotoEvalFragment","push back button");
+                if (fragment != null) {
+                    if (i == KeyEvent.KEYCODE_BACK) {
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        transaction.remove(fragment);
+                        transaction.commit();
+
+                    }
+                }
+                return true;
+            }
+        });
+
 
         return rootView;
     }
@@ -121,14 +157,18 @@ public class OtherPhotoEvalFragment extends Fragment {
 
         ContentValues cv = new ContentValues();
         cv.put(OtherUsersPhotoData.OtherImages.COL_EVAED, selected);
-        cv.put(OtherUsersPhotoData.OtherImages.COL_PNAME,packdata[0]);
-        cv.put(OtherUsersPhotoData.OtherImages.COLUMN_FILE_NAME,packdata[3]);
+        cv.put(OtherUsersPhotoData.OtherImages.COL_PNAME,packdata[2]);
+        cv.put(OtherUsersPhotoData.OtherImages.COLUMN_FILE_NAME,packdata[0]);
         db.insert(
                 OtherUsersPhotoData.OtherImages.TABLE_NAME,
                 null,
                 cv
         );
-        PointTransfer pt = new PointTransfer(packdata[3],selected,username,packdata[4]);
-        pt.execute();
+
+//        (String filename, String point, String eva_user, String evaed_user
+        PointTransfer pt = new PointTransfer(packdata[2],selected,username,packdata[3]);
+        pt.execute(UrlCollections.URL_EVAL_UPLOAD);
     }
+
+
 }

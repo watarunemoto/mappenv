@@ -3,17 +3,18 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListView;
-import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -25,8 +26,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.RankCustomAdapter;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.RankCustomAdapter;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by amimeyaY on 2015/11/05.
@@ -34,7 +42,7 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.RankCustomAdapter;
 public class RankingGeter extends AsyncTask<String, Integer, String> {
 
 	ProgressDialog dialog;
-	HttpResponse res = null;
+	String  res = null;
 	private RankCustomAdapter customAdapter;
 	Activity activity;
 
@@ -48,48 +56,53 @@ public class RankingGeter extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected void onPreExecute() {
+		/**
 		dialog = new ProgressDialog(activity);
-		dialog.setMessage("つうしんちゅう");
+		String message = activity.getResources().getString(R.string.dialog_rangking_getter);
+		dialog.setMessage(message);
 		dialog.setCancelable(true);
 		dialog.show();
+		 */
 	}
 
 	@Override
 	protected String doInBackground(String... params) {
 
-		String url_1 = params[0];
+		String url = params[0];
 
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost post = new HttpPost(url_1);
-		publishProgress(10);
-		List<NameValuePair> post_params = new ArrayList<NameValuePair>();
-		post_params.add(new BasicNameValuePair("`y3=vCYX=W)4!dN8xB", ":p<Mqf=xpsb{.5sBkUrA{Ew#vC]TM}7N~zmS"));
-		try {
-			post.setEntity(new UrlEncodedFormEntity(post_params, "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		MultipartEntityBuilder entity = MultipartEntityBuilder.create();
+		entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		RequestBody body = new MultipartBody.Builder()
+				.setType(MultipartBody.FORM)
+				.addFormDataPart(
+						"`y3=vCYX=W)4!dN8xB", ":p<Mqf=xpsb{.5sBkUrA{Ew#vC]TM}7N~zmS"
+				)
+				.build();
 
+		Request request = new Request.Builder()
+				.url(url)
+				.post(body)
+				.build();
+
+
+		OkHttpClient client = new OkHttpClient().newBuilder().
+				readTimeout(15 * 1000, TimeUnit.MILLISECONDS)
+				.writeTimeout(20 * 1000, TimeUnit.MILLISECONDS)
+				.connectTimeout(20 * 1000, TimeUnit.MILLISECONDS)
+				.build();
+
+		String res_st = null;
 		try {
-			res = httpClient.execute(post);
-			publishProgress(40);
-			try {
-				str = EntityUtils.toString(res.getEntity());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			publishProgress(70);
-		} catch (UnsupportedOperationException e) {
-			e.printStackTrace();
-			Log.v("test", "taroumaru");
+			Response res = client.newCall(request).execute();
+			res_st = res.body().string();
+
+			//Log.v("respose", res_st);
+
 		} catch (IOException e) {
 			e.printStackTrace();
-			Log.v("test", "ikachan");
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-			Log.v("test", "runtime");
 		}
-		return str;
+
+		return res_st;
 	}
 
 	@Override

@@ -15,6 +15,11 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Proxy;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,17 +27,28 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
+import okhttp3.Authenticator;
+import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.Route;
 
 
 /**
@@ -84,11 +100,9 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
         for (int id : idlist) {
 
             count += 1;
-
             Log.v("upload", String.valueOf(count) + "枚目");
 
             dialog.setProgress(count);
-
 
             c = db.query(
                     TempContract.TempImages.TABLE_NAME,
@@ -109,9 +123,7 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                 pname = c.getString(c.getColumnIndex(ImgContract.Images.COL_PNAME));
             }
 
-
             //インスタンスの作成
-
             MultipartEntityBuilder entity = MultipartEntityBuilder.create();
 
             entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -119,24 +131,24 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
             //ファイルパスをファイル型として取得？
             File file = new File(filename);
             String[] dist = filename.split("/");
-            String fname = dist[dist.length -1];
-            Log.v("filename",fname);
+            String fname = dist[dist.length - 1];
+            Log.v("filename", fname);
 
 
             final MediaType IMAGE = MediaType.parse("image/img");
             RequestBody body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart(
-                            "filename",fname
+                            "filename", fname
                     )
                     .addFormDataPart(
-                            "ppersonalname",pname
+                            "photoname", pname
                     )
                     .addFormDataPart(
-                            "usrIDaafdfwe", userid
+                            "userid", userid
                     )
-                    .addFormDataPart("catb", fname,
-                            RequestBody.create(IMAGE,file)
+                    .addFormDataPart("images", fname,
+                            RequestBody.create(IMAGE, file)
                     )
                     .build();
 
@@ -145,21 +157,55 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                     .post(body)
                     .build();
 
-            OkHttpClient client = new OkHttpClient().newBuilder()
-                    .readTimeout(15*1000, TimeUnit.MILLISECONDS)
-                    .writeTimeout(20*1000, TimeUnit.MILLISECONDS)
-                    .connectTimeout(20*1000, TimeUnit.MILLISECONDS)
-                    .build();
-            try
-            {
+
+
+
+
+            try {
+                final TrustManager[] trustAllCerts = new TrustManager[]{
+                        new X509TrustManager() {
+                            @Override
+                            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType)
+                                    throws CertificateException {
+                            }
+
+                            @Override
+                            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType)
+                                    throws CertificateException {
+                            }
+
+                            @Override
+                            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                                return new X509Certificate[0];
+                            }
+                        }
+                };
+                final SSLContext sslContext = SSLContext.getInstance("SSL");
+                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+                final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+                OkHttpClient client = new OkHttpClient().newBuilder().
+                        readTimeout(15 * 1000, TimeUnit.MILLISECONDS)
+                        .writeTimeout(20 * 1000, TimeUnit.MILLISECONDS)
+                        .connectTimeout(20 * 1000, TimeUnit.MILLISECONDS)
+                        .sslSocketFactory(sslSocketFactory)
+
+                        .hostnameVerifier(new HostnameVerifier() {
+                            @Override
+                            public boolean verify(String s, SSLSession sslSession) {
+                                return true;
+                            }
+                        })
+
+                .build();
+
+
                 Response res = client.newCall(request).execute();
                 str = res.body().string();
 
-                dbch(context,filename,bounus,str);
-                dbupdate(context,String.valueOf(id));
-            }
-            catch (IOException e)
-            {
+                dbch(context, filename, bounus, str);
+                dbupdate(context, String.valueOf(id));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -200,19 +246,24 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
         // サーバ側phpでechoした内容を表
         Log.v("res", String.valueOf(res_ar));
 
+        String message_1 = context.getResources().getString(R.string.toast_upload_num);
+        String message_2 = context.getResources().getString(R.string.toast_cant_upload);
+        String message_3 = context.getResources().getString(R.string.toast_network_not_work);
+
+
         if (res_ar != null && res_ar.size() != 0) {
             if (res_ar.size() == count) {
 
                 Toast.makeText(
                         context,
-                        count + "枚をアップロードしました。"
+                        count + message_1
                         , Toast.LENGTH_LONG
                 ).show();
             } else {
                 int resu = res_ar.size() - count;
                 Toast.makeText(
                         context,
-                        count + "枚をアップロードしました。\n" + resu + "枚はアップロードできませんでした。",
+                        count + message_1 + "\n" + resu + message_2,
                         Toast.LENGTH_LONG
                 ).show();
             }
@@ -227,10 +278,10 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
 
 
         /**
-        PhotoUploadEvent pue = new PhotoUploadEvent();
-        pue.setEnded("end");
+         PhotoUploadEvent pue = new PhotoUploadEvent();
+         pue.setEnded("end");
 
-        EventBus.getDefault().post(pue);
+         EventBus.getDefault().post(pue);
          */
 
     }

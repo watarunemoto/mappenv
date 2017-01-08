@@ -11,13 +11,16 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -28,18 +31,23 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.VisibleRegion;
 
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.Draw_line;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.MapMarker;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.MarkerCollection;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.MapMarker;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.OtherOpenHelper;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.OtherPonitMapGetter;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends FragmentActivity
+        implements OnMapReadyCallback {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -53,24 +61,35 @@ public class MapsActivity extends FragmentActivity {
 
     private int flag = 0;
 
+    Draw_line draw_line;
+
     SharedPreferences sp;
     String username;
+
+    private Button map_load_button;
+
 
     SupportMapFragment mapfragment;
 
     public static final String MAP_EVA = "MapsActivity";
 
     public static String now_pos = "35.985877, 139.373096, 17.0";
+    private List<MarkerCollection> markerCollections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
         //フォトリストからの値の受け取り
         Intent intent = getIntent();
         locationId = intent.getLongExtra(PhotoResultFormActivity.MAP_ID, 0L);
 
+        map_load_button = (Button)  findViewById(R.id.map_load_button);
         //自分のidの取得
         sp = PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
         username = sp.getString("MyID", "null");
@@ -90,15 +109,17 @@ public class MapsActivity extends FragmentActivity {
         }
 
         if (mMap == null) {
-            mMap = ((SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map)).getMap();
+            mapfragment = ((SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map));
+            mMap =  mapfragment.getMap();
         }
+
 
         activity = this;
         context = getApplicationContext();
         if (mMap != null) {
-            //初期位置の変更
 
+            //初期位置の変更
             iniPos();
 
             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -134,12 +155,97 @@ public class MapsActivity extends FragmentActivity {
                 }
             });
 
+
+            //グリッド読み込み
+
+            map_load_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    /**
+                    mMap.clear();
+                    Projection proj = mMap.getProjection();
+                    VisibleRegion vR = proj.getVisibleRegion();
+                    String tLat = String.valueOf(vR.latLngBounds.northeast.latitude);
+                    String bLat = String.valueOf(vR.latLngBounds.southwest.latitude);
+                    String lLong = String.valueOf(vR.latLngBounds.southwest.longitude);
+                    String rLong = String.valueOf(vR.latLngBounds.northeast.longitude);
+                    LatLng now_latlng = vR.latLngBounds.getCenter();
+                    float zoomer = mMap.getCameraPosition().zoom;
+                    LatLng latLng =  new LatLng(vR.latLngBounds.getCenter().latitude,vR.latLngBounds.getCenter().longitude);
+
+                    draw_line.execute(latLng);
+                     */
+
+                    Projection proj = mMap.getProjection();
+                    VisibleRegion vR = proj.getVisibleRegion();
+                    String bLat = String.valueOf(vR.latLngBounds.southwest.latitude);
+                    String lLong = String.valueOf(vR.latLngBounds.southwest.longitude);
+                    String tLat = String.valueOf(vR.latLngBounds.northeast.latitude);
+                    String rLong = String.valueOf(vR.latLngBounds.northeast.longitude);
+
+                    String[] packdata = new String[] {bLat,lLong,tLat,rLong};
+
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArray("packdata",packdata);
+
+                    OtherUsersPhotoListFragment ouplf = new OtherUsersPhotoListFragment();
+
+                    ouplf.setArguments(bundle);
+
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.map_form_fragment, ouplf)
+                            .addToBackStack("fragment_map_list")
+                            .show(ouplf)
+                            .commit();
+
+
+                }
+            });
+
+            /**
+            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+
+
+                    Projection proj = mMap.getProjection();
+                    VisibleRegion vR = proj.getVisibleRegion();
+                    String bLat = String.valueOf(vR.latLngBounds.southwest.latitude);
+                    String lLong = String.valueOf(vR.latLngBounds.southwest.longitude);
+                    String tLat = String.valueOf(vR.latLngBounds.northeast.latitude);
+                    String rLong = String.valueOf(vR.latLngBounds.northeast.longitude);
+
+
+
+                    String[] packdata = new String[] {bLat,lLong,tLat,rLong};
+
+
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArray("packdata",packdata);
+
+                    OtherUsersPhotoListFragment ouplf = new OtherUsersPhotoListFragment();
+                    ouplf.setArguments(bundle);
+
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.map_form_fragment, ouplf)
+                            .addToBackStack("fragmetn_map_list")
+                            .show(ouplf)
+                            .commit();
+                }
+            });
+
+             */
+
             //マップ閲覧の際の位置情報が変わったらその画面内に表示されている座標範囲を表示
+
             mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                 @Override
                 public void onCameraChange(CameraPosition cameraPosition) {
                     if (flag == 1) {
-                        mMap.clear();
+
                         Projection proj = mMap.getProjection();
                         VisibleRegion vR = proj.getVisibleRegion();
                         String tLat = String.valueOf(vR.latLngBounds.northeast.latitude);
@@ -154,15 +260,27 @@ public class MapsActivity extends FragmentActivity {
                                 + String.valueOf(now_latlng.longitude) + ","
                                 + String.valueOf(zoomer);
 
-                        MapMarker mapMarker = new MapMarker(mMap, MapsActivity.this, imgOpenHelper, locationId, tLat, bLat, lLong, rLong);
+                        Log.v("now_pos",now_pos);
+
+                        MapMarker mapMarker = new MapMarker(mMap, MapsActivity.this, imgOpenHelper,
+                                locationId, tLat, bLat, lLong, rLong,markerCollections);
                         mapMarker.execute();
 
-                        OtherPonitMapGetter opmg = new OtherPonitMapGetter(mMap, MapsActivity.this, tLat, bLat, lLong, rLong);
-                        opmg.execute(UrlCollections.URL_OTHER_LATLNG);
+                        //OtherPonitMapGetter opmg = new OtherPonitMapGetter(mMap, MapsActivity.this, tLat, bLat, lLong, rLong);
+                        //opmg.execute(UrlCollections.URL_OTHER_LATLNG);
+
+                        //LatLng latLng =  new LatLng(vR.latLngBounds.getCenter().latitude,vR.latLngBounds.getCenter().longitude);
+
+
+                        //draw_line.execute(latLng);
+                        //TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
+
 
                     }
                 }
             });
+
+
             //マップが形成された時に呼び出される処理
             mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 @Override
@@ -203,7 +321,7 @@ public class MapsActivity extends FragmentActivity {
                         FragmentManager manager = getSupportFragmentManager();
                         FragmentTransaction transaction = manager.beginTransaction();
 
-                        transaction.add(R.id.map_form_fragment, fragment, "fragment_form");
+                        transaction.replace(R.id.map_form_fragment, fragment, "fragment_form");
                         transaction.addToBackStack("photoformfragment");
                         transaction.commit();
 
@@ -225,6 +343,8 @@ public class MapsActivity extends FragmentActivity {
                     .findFragmentById(R.id.map));
             mMap = mapfragment.getMap();
         }
+        draw_line = new Draw_line(mMap);
+
     }
 
     public void moveAndzoom(List<LatLng> latLngList, final Marker marker) {
@@ -320,5 +440,18 @@ public class MapsActivity extends FragmentActivity {
         CameraPosition cameraPosition =
                 new CameraPosition(new LatLng(lats, lons), zoomt, 0.0f, 0.0f);
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
+
+    @Subscribe
+    public void markercreated(List<MarkerCollection> markerCollections) {
+
+        if (markerCollections.size() > 0 && markerCollections.get(0) instanceof MarkerCollection ) {
+            this.markerCollections = markerCollections;
+        }
     }
 }
