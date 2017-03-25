@@ -1,7 +1,5 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,7 +18,6 @@ import java.util.List;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.FriendList;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.OtherUsersList;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.RecycleAdapter;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.DataController;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.FriendDatabase;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.LoadDataTask;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.OnRecycleListener;

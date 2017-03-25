@@ -157,47 +157,15 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                     .post(body)
                     .build();
 
-
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .readTimeout(15*1000, TimeUnit.MILLISECONDS)
+                    .writeTimeout(20*1000, TimeUnit.MILLISECONDS)
+                    .connectTimeout(20*1000, TimeUnit.MILLISECONDS)
+                    .build();
 
 
 
             try {
-                final TrustManager[] trustAllCerts = new TrustManager[]{
-                        new X509TrustManager() {
-                            @Override
-                            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType)
-                                    throws CertificateException {
-                            }
-
-                            @Override
-                            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType)
-                                    throws CertificateException {
-                            }
-
-                            @Override
-                            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                                return new X509Certificate[0];
-                            }
-                        }
-                };
-                final SSLContext sslContext = SSLContext.getInstance("SSL");
-                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-                final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-                OkHttpClient client = new OkHttpClient().newBuilder().
-                        readTimeout(15 * 1000, TimeUnit.MILLISECONDS)
-                        .writeTimeout(20 * 1000, TimeUnit.MILLISECONDS)
-                        .connectTimeout(20 * 1000, TimeUnit.MILLISECONDS)
-                        .sslSocketFactory(sslSocketFactory)
-
-                        .hostnameVerifier(new HostnameVerifier() {
-                            @Override
-                            public boolean verify(String s, SSLSession sslSession) {
-                                return true;
-                            }
-                        })
-
-                .build();
 
 
                 Response res = client.newCall(request).execute();

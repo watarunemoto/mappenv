@@ -75,10 +75,7 @@ public class OtherPhotoViewForm extends AppCompatActivity {
 		sp = PreferenceManager.getDefaultSharedPreferences(OtherPhotoViewForm.this);
 		username = sp.getString("MyID", "null");
 
-		/**
-		OtherPhotoGetter opg = new OtherPhotoGetter(OtherPhotoViewForm.this, imageView);
-		opg.execute("http://133.14.168.203/ifjvjngkjDKcm.php", packdata[3]);
-		 */
+
 
 		OtherOpenHelper oph = new OtherOpenHelper(OtherPhotoViewForm.this);
 		SQLiteDatabase db = oph.getReadableDatabase();

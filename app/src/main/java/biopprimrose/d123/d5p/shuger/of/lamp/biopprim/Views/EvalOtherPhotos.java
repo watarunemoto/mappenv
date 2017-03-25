@@ -10,7 +10,6 @@ import android.widget.GridView;
 import android.widget.SimpleCursorAdapter;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.OtherOpenHelper;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.OtherPhotoListGetter;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.OtherUsersPhotoData;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 
@@ -67,7 +66,6 @@ public class EvalOtherPhotos extends AppCompatActivity {
 	}
 
 	public void getPhotos(View v) {
-		OtherPhotoListGetter oplg = new OtherPhotoListGetter(EvalOtherPhotos.this);
-		oplg.execute("http://133.14.168.203/yuYURc12.php");
+
 	}
 }

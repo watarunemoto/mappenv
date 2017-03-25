@@ -14,11 +14,9 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.FriendList;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.DataController;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.FriendDatabase;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.FriendRequestTask;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.FriendResponse;

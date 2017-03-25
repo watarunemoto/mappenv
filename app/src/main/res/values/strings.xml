@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">BioP_Primrose</string>
-    <string name="title_activity_login">BioP_Primrose</string>
+    <string name="app_name">MappEnv</string>
+    <string name="title_activity_login">MappEnv</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -23,11 +23,125 @@
     <string name="nav_item_rank">らんきんぐ</string>
     <string name="pref_dialog_object_name">写真の名前入力</string>
     <string name="pref_dialog_object_name_summ">撮影時に写真の名前の入力欄を表示するか</string>
-    <string name="title_toolbar">BIOPHOTO</string>
-    <string name="title_list_text">最近の写真</string>
+    <string name="title_toolbar">MappEnv</string>
+    <string name="title_list_text">周辺で取られた写真</string>
     <string name="rank_toolbar">ランキング</string>
     <string name="rank_detail">個人の詳細</string>
+    <string name="wrong_text">英数字を入力してください</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- camera-->
+    <string name="cant_get_location">位置情報が取得できません</string>
+    <string name="if_not_input_unknown">名前を入力しないとunknownになります</string>
+    <string name="detect_img">写真の判定を行います</string>
+    <string name="do_you_upload">写真をアップロードしますか</string>
+    <string name="yes_dialog">はい</string>
+    <string name="do_uploading">写真をアップロードします</string>
+    <string name="cant_get_network">ネットワークが取得できません</string>
+    <string name="reserve_photo">保存しておきますか</string>
+    <string name="no_dialog">いいえ</string>
+    <string name="reserved">保存しました</string>
+    <string name="not_on_gps">位置情報がオンになってません</string>
+    <string name="turn_on_gps">位置情報をオンにしますか？</string>
+    <string name="unknown_name">unknown</string>
+
+    <string name="uploaded">画像をアップロードしました。\n結果:</string>
+    <string name="cant_upload">アップロードできませんでした</string>
+    <string name="do_you_reserved">保存しておきますか?</string>
+    <string name="now_uploading">通信中です</string>
+
+    <!-- otherphotogetter -->
+    <string name="photo_loading">画像読み込み中</string>
+
+    <!-- login_activity -->
+    <string name="set_id"> IDを設定します</string>
+    <string name="input_id">IDを入力してください</string>
+    <string name="ok_dialog">OK</string>
+    <string name="your_id_ok">IDは変更できません\n以下のIDでいいですか？</string>
+    <string name="id_dialog">ID:</string>
+    <string name="your_id_is">あなたのIDは</string>
+
+    <!-- map activity -->
+
+    <string name="cant_open_map">マップが開けません</string>
+    <string name="map_load_button">周辺の写真を読み込む</string>
+
+    <!-- other users photo listfragment -->
+    <string name="data_load_button">さらに読み込む</string>
+
+    <!-- noupload activity -->
+
+    <string name="do_you_delete">画像を削除しますか</string>
+    <string name="do_delete">いいですか</string>
+    <string name="deleted">削除しました</string>
+    <string name="file_edit">ファイル操作</string>
+
+    <!-- other photo eval -->
+    <string name="push_good">Goodしました</string>
+    <string name="push_bad">Badしました</string>
+
+    <!-- photoresultform-->
+    <string name="error">error</string>
+
+    <!-- rank custom adapter -->
+    <string name="pos_rank">pos_rank</string>
+    <string name="dialog_rangking_getter">つうしんちゅう</string>
+
+
+    <!-- tablist -->
+    <string name="photo_list">ふぉとりすと</string>
+    <string name="no_upload_list">未アップロード</string>
+
+    <!-- tag ranking -->
+    <string name="rankings">ランキング</string>
+
+    <!-- title activity -->
+    <string name="photo_num">Photo:</string>
+
+
+    <!-- navgation -->
+    <string name="nav_upload" >全部アップロード</string>
+    <string name="nav_point">ポイント </string>
+    <string name="nav_photonum">写真 : </string>
+    <string name="title_nav_menu">extra menu</string>
+    <string name="nav_reset">reset_upload</string>
+
+    <!-- photomulti -->
+    <string name="toast_upload_num">枚をアップロードしました</string>
+    <string name="toast_cant_upload">枚はアップロードできませんでした</string>
+    <string name="toast_network_not_work">ネットワークかサーバーの調子が悪いかもしれません</string>
+
+    <!-- other_users_eval -->
+    <string name="evaluate_other_photos">他人の写真を評価しよう!</string>
+
+    <!-- recyclerview-->
+    <string name="title_recyclerview_text">読み込み中</string>
+
+    <!-- menu_friend -->
+    <string name="add_friend">友達追加</string>
+    <!-- friend list adapter -->
+    <string name="friend">友達</string>
+    <string name="notfriend">申請中</string>
+    <string name="requested">申請</string>
+
+    <!-- friend request fragment -->
+    <string name="no_user_message">該当するユーザーはいません</string>
+    <!-- friend request form fragment -->
+    <string name="friend_request_sent_text">友達申請を送りました</string>
+    <string name="is_existed">申請が存在します</string>
+    <string name="request">Request</string>
+
+
+    <!-- something to wrong -->
+    <string name="something_to_wrong">なにかがおかしいようです</string>
+
+    <!-- friend activity -->
+    <string name="friend_toolbar">フレンドリスト</string>
+    <string name="friend_accept_title">承認</string>
+    <string name="friend_accept_message">承認しますか?</string>
+
+
 </resources>

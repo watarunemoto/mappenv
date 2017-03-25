@@ -215,7 +215,7 @@ public class LoadDataTask extends AsyncTask<String, Void, Void> {
 
             FileOutputStream myFOS;
 
-            File file = new File("/data/data/biopprimrose.d123.d5p.shuger.of.lamp" + "/ops/");
+            File file = new File("/data/data/biopprimrose.d123.d5p.shuger.of.lamp" + "/cmr/");
 
             //フォルダが存在しなかった場合にフォルダを作成
             if (!file.exists()) {
@@ -238,7 +238,7 @@ public class LoadDataTask extends AsyncTask<String, Void, Void> {
 
                 myFOS.close();
                 res.close();
-                //Log.v("filename", imgName);
+                Log.v("filename", imgName);
                 return imgName;
 
 
@@ -331,12 +331,15 @@ public class LoadDataTask extends AsyncTask<String, Void, Void> {
                 String photo_name = point_to_array[0];
                 Log.v("filename_loaddatatask",filename);
                 String catch_path = downloadimg(url_photo, filename);
-                Log.v("filename_loaddatatask",catch_path);
-
+                if (catch_path != null) {
+                    Log.v("filename_loaddatatask", catch_path);
+                }
                 opul.setId(count);
                 opul.setName(photo_name);
                 opul.setFilepath(catch_path);
                 opul.setUserid(point_to_array[3]);
+
+                Log.v("photoffdf",count+","+ photo_name +","+ catch_path+","+point_to_array[3]);
 
                 photo_list_and_native_path.add(opul);
                 count++;

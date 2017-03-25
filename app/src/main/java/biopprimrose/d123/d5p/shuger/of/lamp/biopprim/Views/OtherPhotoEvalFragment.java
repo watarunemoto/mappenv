@@ -5,7 +5,9 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -22,9 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.LoadDataTask;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.OtherOpenHelper;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.OtherPhotoGetter;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.OtherUsersPhotoData;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.PointTransfer;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
@@ -116,12 +116,20 @@ public class OtherPhotoEvalFragment extends Fragment {
             goodButton.setEnabled(true);
         }
 
-        /**
-        LoadDataTask ldt = new LoadDataTask(getActivity(),imageView);
-        ldt.execute(packdata[0]);
-         */
 
-        imageView.setImageBitmap(BitmapFactory.decodeFile(packdata[0]));
+        Bitmap bitmap =  BitmapFactory.decodeFile(packdata[0]);
+
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+
+        Matrix matrix = new Matrix();
+        matrix.setRotate(90f);
+
+        if (height < width) {
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        }
+
+        imageView.setImageBitmap(bitmap);
 
         c.close();
         db.close();
@@ -132,20 +140,18 @@ public class OtherPhotoEvalFragment extends Fragment {
         rootView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                FragmentManager manager = getChildFragmentManager();
-                Fragment fragment = manager.findFragmentByTag("fragment_map_list");
-                Log.v("OtherPhotoEvalFragment","push back button");
-                if (fragment != null) {
+                FragmentManager manager = getFragmentManager();
+                if (manager != null) {
                     if (i == KeyEvent.KEYCODE_BACK) {
-                        FragmentTransaction transaction = manager.beginTransaction();
-                        transaction.remove(fragment);
-                        transaction.commit();
-
+                        manager.popBackStack();
                     }
                 }
                 return true;
             }
         });
+
+
+
 
 
         return rootView;
