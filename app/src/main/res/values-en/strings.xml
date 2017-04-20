@@ -24,7 +24,7 @@
     <string name="pref_dialog_object_name">Please input name</string>
     <string name="pref_dialog_object_name_summ">input dialog on or off</string>
     <string name="title_toolbar">MappEnv</string>
-    <string name="title_list_text">Taked at around here</string>
+    <string name="title_list_text">Taken photo at around here</string>
     <string name="rank_toolbar">Ranking</string>
     <string name="rank_detail">Stats</string>
     <string name="wrong_text">Please input ascii</string>

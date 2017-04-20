@@ -8,6 +8,7 @@
     string in this file.
     -->
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
-         AIzaSyD3HSRJidbku_3ZJ0RumSMo5wpOm-Uc2HQ
+         <!--AIzaSyD3HSRJidbku_3ZJ0RumSMo5wpOm-Uc2HQ-->
+        AIzaSyBdYU68GF3qSSA47yKLsZvFD5pj_vC6wx4
     </string>
 </resources>
