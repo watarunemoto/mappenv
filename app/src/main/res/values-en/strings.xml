@@ -46,6 +46,7 @@
     <string name="not_on_gps">Not on gps</string>
     <string name="turn_on_gps">Turn on gps?</string>
     <string name="unknown_name">unknown</string>
+    <string name="edit_pname">Enter photo name if you want</string>
 
     <string name="uploaded">Result:</string>
     <string name="cant_upload">"Can't upload"</string>

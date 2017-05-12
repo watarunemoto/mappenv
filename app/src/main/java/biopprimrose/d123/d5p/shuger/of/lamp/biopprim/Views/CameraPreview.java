@@ -397,6 +397,7 @@ public class CameraPreview extends FragmentActivity implements
             AlertDialog.Builder builder = new AlertDialog.Builder(CameraPreview.this);
             builder.setTitle(R.string.detect_img);
             builder.setNegativeButton(R.string.no_dialog, null);
+//            builder.setView(editView);
 
             /**
              * オプションでてキストボックスの表示を許可していれば
