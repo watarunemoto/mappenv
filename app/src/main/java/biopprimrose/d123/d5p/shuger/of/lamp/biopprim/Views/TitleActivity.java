@@ -362,7 +362,7 @@ public class TitleActivity
                                             PreferenceManager.getDefaultSharedPreferences(
                                                     TitleActivity.this
                                             );
-                                    String username = sp.getString("username", "");
+                                    String username = sp.getString("MyID", "");
 
                                     Log.v("idlist184", String.valueOf(idlist));
 
