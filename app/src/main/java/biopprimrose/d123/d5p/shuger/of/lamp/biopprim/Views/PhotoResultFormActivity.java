@@ -41,7 +41,6 @@ public class PhotoResultFormActivity extends ActionBarActivity {
 	public final static String RINGO ="biopprimrose.d123.d5p.shuger.of.lamp.LIST";
 	private String photoFile;
 
-	final int degree = 90;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -9,7 +9,6 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
-import java.net.URLConnection;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -85,7 +84,7 @@ public class FriendRequestTask extends AsyncTask<String, Void, Void> {
         result = result.replace("{", "").replace("[", "").replace("}", "").replace("]", "");
 
         Log.v("result", result);
-        Map<String, String> map = new Json_to_list().parse(result);
+        Map<String, String> map = new Json2List().parse(result);
 
         result = result.replace('"', ' ');
         result = result.replaceAll(" ", "");

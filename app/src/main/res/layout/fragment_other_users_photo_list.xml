@@ -32,17 +32,6 @@
             android:id="@+id/map_load_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <!--
-        <TextView
-            android:id="@+id/emptyView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="16dp"
-            android:text="No data available"
-            android:textColor="#ffffff"
-            android:textSize="24sp"/>
-            -->
 
     </LinearLayout>
 

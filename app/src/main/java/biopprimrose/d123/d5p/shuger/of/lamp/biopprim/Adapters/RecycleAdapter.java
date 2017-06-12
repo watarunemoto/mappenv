@@ -1,7 +1,9 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,7 +55,15 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
         Log.v("recycleradapter",position+"");
 
         if (data != null && data.size() > position && data.get(position) != null ) {
-            holder.imageView.setImageBitmap(BitmapFactory.decodeFile(data.get(position).getFilepath()));
+            String img_path =  data.get(position).getFilepath();
+            Bitmap bitmap = BitmapFactory.decodeFile(img_path);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+
+            if (bitmap != null && bitmap.getHeight() < bitmap.getWidth()) {
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            }
+            holder.imageView.setImageBitmap(bitmap);
 
 //            holder.imageView.setRotation(90);
         }
@@ -73,6 +83,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
         } else {
             return 0;
         }
+    }
+
+    public List<OtherUsersList> getOtherUsersList() {
+        return this.data;
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {

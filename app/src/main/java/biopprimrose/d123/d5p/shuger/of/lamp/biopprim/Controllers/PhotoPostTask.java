@@ -8,36 +8,34 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by amimeyaY on 2015/11/05.
  */
-public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
+public class PhotoPostTask extends AsyncTask<String, Integer, String> {
 
-    public Context context;
     private String str;
     private Activity activity;
     ProgressDialog dialog;
@@ -51,9 +49,8 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
     SQLiteDatabase db;
 
 
-    public HttpPhotoTransfer(Context c, Activity activity, String lati, String longi, String pname) {
+    public PhotoPostTask( Activity activity, String lati, String longi, String pname) {
         this.activity = activity;
-        this.context = c;
         this.lati = lati;
         this.longi = longi;
         this.pname = pname;
@@ -68,46 +65,49 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
         String userid = params[2];
 
         //インスタンスの作成
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost hpost = new HttpPost(url);
-        MultipartEntityBuilder entity = MultipartEntityBuilder.create();
 
-
-        entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-
-        //ファイルパスをファイル型として取得？
         File file = new File(filename);
+        final MediaType IMAGE = MediaType.parse("image/jpg");
 
-        //entityにデータをセット
-        ContentType textContentType = ContentType.create("text/plain", "UTF-8");
+        MultipartEntityBuilder entity = MultipartEntityBuilder.create();
+        entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(
+                        "images", "images",
+                        RequestBody.create(IMAGE,file)
+                )
+                .addFormDataPart(
+                        "photoname",pname
+                )
+                .addFormDataPart(
+                        "userid", userid
+                )
+                .addFormDataPart(
+                        "filename", filename
+                )
+                .build();
 
-        entity.addBinaryBody("images", file, ContentType.create("image/jpg"), filename);
-        entity.addTextBody("userid", userid, textContentType);
-        entity.addTextBody("photoname", pname, textContentType);
-        entity.addTextBody("filename",filename,textContentType);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
 
-        /**entityにセットする
-         * この操作にはapache-mime5j-core,httpcore,httpmimeの３つのラブラリが必要
-         */
-        hpost.setEntity(entity.build());
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .readTimeout(15*1000, TimeUnit.MILLISECONDS)
+                .writeTimeout(20*1000, TimeUnit.MILLISECONDS)
+                .connectTimeout(20*1000, TimeUnit.MILLISECONDS)
+                .build();
+        try
+        {
 
-        str = null;
+            Response res = client.newCall(request).execute();
+            str = res.body().string();
+            str = str.replace("{","").replace("}","").replace("\\","").replace("\"","");
+            dbch(activity, filename);
 
-        //レスポンスを取得
-        HttpResponse response = null;
-        try {
-            response = httpClient.execute(hpost);
-            try {
-                str = EntityUtils.toString(response.getEntity(), "UTF-8");
-                str = str.replace("{","").replace("}","");
-                Log.v("resu", str);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            dbch(context, filename);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e) {
+            //dbch(activity,filename,bounus);
+        }catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -137,12 +137,10 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
         // サーバ側phpでechoした内容を表示
 
         String message = activity.getResources().getString(R.string.uploaded);
-
         String no1 =  str.split(",")[0].split(":")[0].replace("'","").replace(" ","").replace("{","").replace("}","");
 
-
         if (str != null) {
-            Toast.makeText(context, message + no1, Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, message + no1, Toast.LENGTH_LONG).show();
         } else {
             new AlertDialog.Builder(activity)
                     .setTitle(R.string.cant_upload)
@@ -154,7 +152,8 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
                             nouploaddb(filename);
                         }
                     }).show();
-            Toast.makeText(context, R.string.reserved, Toast.LENGTH_LONG).show();
+
+            Toast.makeText(activity, R.string.reserved, Toast.LENGTH_LONG).show();
         }
         dialog.dismiss();
     }
@@ -163,7 +162,7 @@ public class HttpPhotoTransfer extends AsyncTask<String, Integer, String> {
     public void nouploaddb(String filename) {
 
         String score;
-        TempOpenHelper tempOpenHelper = new TempOpenHelper(context);
+        TempOpenHelper tempOpenHelper = new TempOpenHelper(activity);
         db = tempOpenHelper.getWritableDatabase();
 
         Double lat = Double.parseDouble(lati);

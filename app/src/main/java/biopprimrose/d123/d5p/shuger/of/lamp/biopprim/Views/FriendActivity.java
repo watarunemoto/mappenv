@@ -1,18 +1,12 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,19 +21,10 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.FriendList;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.FriendListAdapter;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.FriendListViewAdapter;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.RecycleAdapter;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.DataController;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.DividerItemDecoration;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.FriendDatabase;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.FriendRequestTask;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.FriendResponse;
@@ -67,7 +52,7 @@ public class FriendActivity extends AppCompatActivity implements OnRecycleListen
         FriendDatabase fd = new FriendDatabase(this);
         List<FriendList> lists = fd.Read_db();
 
-        DividerItemDecoration di = new DividerItemDecoration(this);
+//        DividerItemDecoration di = new DividerItemDecoration(this);
 
 //        FriendListAdapter adapter = new FriendListAdapter(this, lists, this);
 //        recyclerView.setAdapter(adapter);

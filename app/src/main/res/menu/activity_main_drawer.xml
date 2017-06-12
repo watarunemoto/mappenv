@@ -37,7 +37,8 @@
         </menu>
     </item>
 
-    <item android:id="@+id/nav_reset_upload_state"
-        android:title="@string/nav_reset"/>
+
+    <!--<item android:id="@+id/nav_reset_upload_state"-->
+        <!--android:title="@string/nav_reset"/>-->
 
 </menu>

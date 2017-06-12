@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -68,13 +69,15 @@ public class MapsActivity extends FragmentActivity
 
     private Button map_load_button;
 
+    private boolean is_button_clicked = false;
+
 
     SupportMapFragment mapfragment;
 
     public static final String MAP_EVA = "MapsActivity";
 
     public static String now_pos = "35.985877, 139.373096, 17.0";
-    private List<MarkerCollection> markerCollections;
+    private List<MarkerCollection> markerCollections = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,27 +159,13 @@ public class MapsActivity extends FragmentActivity
             });
 
 
-            //グリッド読み込み
 
+            //グリッド読み込み
             map_load_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    /**
-                    mMap.clear();
-                    Projection proj = mMap.getProjection();
-                    VisibleRegion vR = proj.getVisibleRegion();
-                    String tLat = String.valueOf(vR.latLngBounds.northeast.latitude);
-                    String bLat = String.valueOf(vR.latLngBounds.southwest.latitude);
-                    String lLong = String.valueOf(vR.latLngBounds.southwest.longitude);
-                    String rLong = String.valueOf(vR.latLngBounds.northeast.longitude);
-                    LatLng now_latlng = vR.latLngBounds.getCenter();
-                    float zoomer = mMap.getCameraPosition().zoom;
-                    LatLng latLng =  new LatLng(vR.latLngBounds.getCenter().latitude,vR.latLngBounds.getCenter().longitude);
-
-                    draw_line.execute(latLng);
-                     */
-
+                    map_load_button.setEnabled(false);
                     Projection proj = mMap.getProjection();
                     VisibleRegion vR = proj.getVisibleRegion();
                     String bLat = String.valueOf(vR.latLngBounds.southwest.latitude);
@@ -197,47 +186,10 @@ public class MapsActivity extends FragmentActivity
                             .beginTransaction()
                             .add(R.id.map_form_fragment, ouplf)
                             .addToBackStack("fragment_map_list")
-                            .show(ouplf)
                             .commit();
-
 
                 }
             });
-
-            /**
-            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                @Override
-                public void onMapLongClick(LatLng latLng) {
-
-
-                    Projection proj = mMap.getProjection();
-                    VisibleRegion vR = proj.getVisibleRegion();
-                    String bLat = String.valueOf(vR.latLngBounds.southwest.latitude);
-                    String lLong = String.valueOf(vR.latLngBounds.southwest.longitude);
-                    String tLat = String.valueOf(vR.latLngBounds.northeast.latitude);
-                    String rLong = String.valueOf(vR.latLngBounds.northeast.longitude);
-
-
-
-                    String[] packdata = new String[] {bLat,lLong,tLat,rLong};
-
-
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArray("packdata",packdata);
-
-                    OtherUsersPhotoListFragment ouplf = new OtherUsersPhotoListFragment();
-                    ouplf.setArguments(bundle);
-
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .add(R.id.map_form_fragment, ouplf)
-                            .addToBackStack("fragmetn_map_list")
-                            .show(ouplf)
-                            .commit();
-                }
-            });
-
-             */
 
             //マップ閲覧の際の位置情報が変わったらその画面内に表示されている座標範囲を表示
 
@@ -245,6 +197,13 @@ public class MapsActivity extends FragmentActivity
                 @Override
                 public void onCameraChange(CameraPosition cameraPosition) {
                     if (flag == 1) {
+
+
+                        if (is_button_clicked) {
+                            map_load_button.setEnabled(true);
+                        }
+
+                        is_button_clicked = true;
 
                         Projection proj = mMap.getProjection();
                         VisibleRegion vR = proj.getVisibleRegion();
@@ -266,19 +225,13 @@ public class MapsActivity extends FragmentActivity
                                 locationId, tLat, bLat, lLong, rLong,markerCollections);
                         mapMarker.execute();
 
-                        //OtherPonitMapGetter opmg = new OtherPonitMapGetter(mMap, MapsActivity.this, tLat, bLat, lLong, rLong);
-                        //opmg.execute(UrlCollections.URL_OTHER_LATLNG);
-
-                        //LatLng latLng =  new LatLng(vR.latLngBounds.getCenter().latitude,vR.latLngBounds.getCenter().longitude);
-
-
-                        //draw_line.execute(latLng);
-                        //TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
-
-
                     }
                 }
             });
+
+
+
+
 
 
             //マップが形成された時に呼び出される処理
@@ -291,53 +244,81 @@ public class MapsActivity extends FragmentActivity
             });
 
 
+
+
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     // 渡すデータを準備する
                     String[] packdata;
-                    packdata = marker.getSnippet().split(",");
-                    if (packdata[1].equals(username)) {
+                    packdata =  marker.getSnippet().split((","));
 
-                        PhotoResultFormFragment fragment = new PhotoResultFormFragment();
+                    List<MarkerCollection> markerCollection_tmp = isPiledMarker(marker, markerCollections);
+
+                    if (markerCollection_tmp.size() > 1) {
+
+                        int array_size = markerCollection_tmp.size();
+
+                        String[] snippets = new String[array_size];
+
+                        int count = 0;
+                        for (MarkerCollection m : markerCollection_tmp) {
+                            snippets[count] = m.getMarker().getSnippet();
+                            count++;
+                        }
+
+                        /**
+                         * 重なったマーカーをリスト形式で閲覧できる
+                         * フラグメント
+                         */
+
+                        PileMarkerListFragment fragment = new PileMarkerListFragment();
                         Bundle args = new Bundle();
-                        args.putStringArray("packdata", packdata);
+                        args.putStringArray("snippets", snippets);
                         fragment.setArguments(args);
 
                         FragmentManager manager = getSupportFragmentManager();
                         FragmentTransaction transaction = manager.beginTransaction();
 
-                        transaction.add(R.id.map_form_fragment, fragment, "fragment_form");
-                        transaction.addToBackStack("photoformfragment");
+                        transaction.add(R.id.map_form_fragment, fragment);
+                        transaction.addToBackStack("list_fragment");
                         transaction.commit();
+                        map_load_button.setEnabled(false);
 
+
+                        return true;
                     } else {
 
-                        OtherPhotoEvalFragment fragment = new OtherPhotoEvalFragment();
-                        Bundle args = new Bundle();
-                        args.putStringArray("packdata", packdata);
-                        fragment.setArguments(args);
+                        if (packdata[1].equals(username)) {
 
-                        FragmentManager manager = getSupportFragmentManager();
-                        FragmentTransaction transaction = manager.beginTransaction();
+                            PhotoResultFormFragment fragment = new PhotoResultFormFragment();
+                            Bundle args = new Bundle();
+                            args.putStringArray("packdata", packdata);
+                            fragment.setArguments(args);
 
-                        transaction.replace(R.id.map_form_fragment, fragment, "fragment_form");
-                        transaction.addToBackStack("photoformfragment");
-                        transaction.commit();
+                            FragmentManager manager = getSupportFragmentManager();
+                            FragmentTransaction transaction = manager.beginTransaction();
 
+                            transaction.add(R.id.map_form_fragment, fragment, "fragment_form");
+                            transaction.addToBackStack("photoformfragment");
+                            transaction.commit();
+
+                        }
+                        return true;
                     }
-                    return true;
                 }
             });
+
+
         } else {
             Toast.makeText(this, R.string.cant_open_map, Toast.LENGTH_SHORT).show();
         }
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
+
         if (mMap == null) {
             mapfragment = ((SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map));
@@ -346,6 +327,64 @@ public class MapsActivity extends FragmentActivity
         draw_line = new Draw_line(mMap);
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sp.edit().putString("last_map_center", now_pos).apply();
+    }
+
+    public void iniPos() {
+        //zoom = 2-21 float
+        Double lats = null;
+        Double lons = null;
+        Float zoomt = null;
+
+        String tmp_pos = sp.getString("last_map_center", "noone");
+        if (!tmp_pos.equals("noone")) {
+            String[] pos = tmp_pos.split(",");
+            lats = Double.valueOf(pos[0]);
+            lons = Double.valueOf(pos[1]);
+            zoomt = Float.valueOf(pos[2]);
+        } else {
+            String[] pos = now_pos.split(",");
+            lats = Double.valueOf(pos[0]);
+            lons = Double.valueOf(pos[1]);
+            zoomt = Float.valueOf(pos[2]);
+        }
+
+
+        CameraPosition cameraPosition =
+                new CameraPosition(new LatLng(lats, lons), zoomt, 0.0f, 0.0f);
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+
+    private List<MarkerCollection> isPiledMarker(Marker marker, List<MarkerCollection> markers) {
+
+        List<MarkerCollection> markerCollection_out = new ArrayList<>();
+        Log.v("markers",markers+"");
+
+        if (markers == null) {
+            Log.v("markers","jull");
+
+            return markerCollection_out;
+        }
+        for (MarkerCollection markerCollection : markers) {
+            LatLng marker_pos =  marker.getPosition();
+            LatLng other_markerpos = markerCollection.getMarker().getPosition();
+
+            float[] results = new float[3];
+            Location.distanceBetween(marker_pos.latitude,marker_pos.longitude,other_markerpos.latitude,other_markerpos.longitude, results);
+            if (results[0] < 10) {
+                markerCollection_out.add(markerCollection);
+            }
+        }
+
+        return markerCollection_out;
+    }
+
+
 
     public void moveAndzoom(List<LatLng> latLngList, final Marker marker) {
         if (mMap == null || latLngList.size() == 0)
@@ -411,47 +450,18 @@ public class MapsActivity extends FragmentActivity
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        sp.edit().putString("last_map_center", now_pos).apply();
-    }
-
-    public void iniPos() {
-        //zoom = 2-21 float
-        Double lats = null;
-        Double lons = null;
-        Float zoomt = null;
-
-        String tmp_pos = sp.getString("last_map_center", "noone");
-        if (!tmp_pos.equals("noone")) {
-            String[] pos = tmp_pos.split(",");
-            lats = Double.valueOf(pos[0]);
-            lons = Double.valueOf(pos[1]);
-            zoomt = Float.valueOf(pos[2]);
-        } else {
-            String[] pos = now_pos.split(",");
-            lats = Double.valueOf(pos[0]);
-            lons = Double.valueOf(pos[1]);
-            zoomt = Float.valueOf(pos[2]);
-        }
-
-
-        CameraPosition cameraPosition =
-                new CameraPosition(new LatLng(lats, lons), zoomt, 0.0f, 0.0f);
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-    }
 
     @Subscribe
     public void markercreated(List<MarkerCollection> markerCollections) {
 
         if (markerCollections.size() > 0 && markerCollections.get(0) instanceof MarkerCollection ) {
             this.markerCollections = markerCollections;
+            Log.v("marker_collections",markerCollections+"");
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }

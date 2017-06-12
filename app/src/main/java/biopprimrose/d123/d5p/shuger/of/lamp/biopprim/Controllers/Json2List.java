@@ -9,16 +9,15 @@ import java.util.List;
 /**
  * Created by amemiyaY on 2016/11/28.
  */
-public class Json_to_list {
+public class Json2List {
 
     private String json;
 
-    public Json_to_list() {}
+    public Json2List() {}
 
     public HashMap<String,String> parse(String json) {
 
         HashMap<String,String> output = new HashMap<>();
-
 
 
         if (json != null) {

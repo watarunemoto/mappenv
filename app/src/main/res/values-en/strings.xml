@@ -24,9 +24,10 @@
     <string name="pref_dialog_object_name">Please input name</string>
     <string name="pref_dialog_object_name_summ">input dialog on or off</string>
     <string name="title_toolbar">MappEnv</string>
-    <string name="title_list_text">Taking at around here</string>
+    <string name="title_list_text">Taken photo at around here</string>
     <string name="rank_toolbar">Ranking</string>
     <string name="rank_detail">Stats</string>
+    <string name="wrong_text">Please input ascii</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -45,8 +46,8 @@
     <string name="not_on_gps">Not on gps</string>
     <string name="turn_on_gps">Turn on gps?</string>
     <string name="unknown_name">unknown</string>
+    <string name="edit_pname">Enter photo name if you want</string>
 
-    <!-- HttpPhotoTransfer -->
     <string name="uploaded">Result:</string>
     <string name="cant_upload">"Can't upload"</string>
     <string name="do_you_reserved">"Do you reserved?"</string>
@@ -58,7 +59,7 @@
 
     <!-- login_activity -->
     <string name="set_id">Set id</string>
-    <string name="input_id">Plese input your id</string>
+    <string name="input_id">Please input your id</string>
     <string name="ok_dialog">OK</string>
     <string name="your_id_ok">This id is ok</string>
     <string name="id_dialog">ID:</string>

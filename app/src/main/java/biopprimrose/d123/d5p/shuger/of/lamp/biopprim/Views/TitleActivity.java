@@ -13,19 +13,16 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +36,6 @@ import com.google.android.gms.maps.model.LatLng;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.AttributedCharacterIterator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,30 +54,29 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.OnRecycleListener;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankingGeter;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankDonwloader;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
 
 /**
  * Commented by amimeyaY on 2016/12
- * This class role is hub.
- * 1.camera activity 2.list activity 3.map activity 4.ranking activity
+ * カメラ、リスト、マップ、ランキングに遷移できる画面
+ * navigation drawerからも遷移可となっている
  *
  */
 
-/**
- * ActivityとはAndroidアプリの画面
- */
-public class TitleActivity extends AppCompatActivity
+public class TitleActivity
+        extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        OnRecycleListener{
+        OnRecycleListener
+{
 
-    NavigationView navigationView;
-    RecyclerView recyclerView;
-    List<OtherUsersList> otherUsersLists = new ArrayList<>();
-    RecycleAdapter recycleAdapter;
-    TextView title_dummy_textview;
-    LatLng latLng;
+    private NavigationView navigationView;
+    private RecyclerView recyclerView;
+    private List<OtherUsersList> otherUsersLists = new ArrayList<>();
+    private RecycleAdapter recycleAdapter;
+    private TextView title_dummy_textview;
+    private LatLng latLng;
 
 
     @Override
@@ -102,28 +97,34 @@ public class TitleActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle =
+                new ActionBarDrawerToggle(
+                        this,
+                        drawer,
+                        toolbar,
+                        R.string.navigation_drawer_open,
+                        R.string.navigation_drawer_close
+        );
 
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TitleActivity.this);
 
-        sp.edit().putBoolean("Recyclerisdonwloadingnow",true).apply();
+
 
         title_dummy_textview = (TextView) findViewById(R.id.title_dummy_text);
 
         /**
-         * gridview上のImageButtonの遷移先
+         * ImageButtonの読み込みと遷移先の設定
          */
 
         ImageButton camera = (ImageButton) findViewById(R.id.camera_button);
         ImageButton list = (ImageButton) findViewById(R.id.list_button);
         ImageButton map = (ImageButton) findViewById(R.id.map_button);
         ImageButton rank = (ImageButton) findViewById(R.id.rank_button);
+
 
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +155,13 @@ public class TitleActivity extends AppCompatActivity
             }
         });
 
+        /**
+         * 位置情報の読み込み
+         * 今ココ[位置情報の読み込み]→位置情報から周辺の画像取得→recycleadapterにセット
+         * 非同期処理を多重に起動しないようにしているが、起動してしまう
+         */
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TitleActivity.this);
+        sp.edit().putBoolean("Recyclerisdonwloadingnow",true).apply();
         if (latLng == null && sp.getBoolean("Recyclerisdonwloadingnow",true)) {
             GetMyLocation getMyLocation = new GetMyLocation(this);
             getMyLocation.getMylocation();
@@ -166,15 +174,20 @@ public class TitleActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         /**
-         * navigation drawerからアイテムの取得
+         * データベースからデータ数を取得
+         *
          */
         ImgOpenHelper imgOpenHelper = new ImgOpenHelper(this);
         SQLiteDatabase sqLiteDatabase = imgOpenHelper.getReadableDatabase();
-        int deta_num = (int) DatabaseUtils.queryNumEntries(sqLiteDatabase, ImgContract.Images.TABLE_NAME);
+        int deta_num = (int) DatabaseUtils.queryNumEntries(
+                sqLiteDatabase, ImgContract.Images.TABLE_NAME);
 
-        MenuItem menuItem = navigationView.getMenu().getItem(0);
+        /**
+         * res/values-ja/strings.xmから文字列取得
+         */
         String nums = getResources().getString(R.string.photo_num);
 
+        MenuItem menuItem = navigationView.getMenu().getItem(0);
         menuItem.setTitle(nums + String.valueOf(deta_num));
 
         sqLiteDatabase.close();
@@ -183,8 +196,6 @@ public class TitleActivity extends AppCompatActivity
          * navgation drawerのヘッダーにユーザー名を挿入
          */
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TitleActivity.this);
-
-
         String ids = getResources().getString(R.string.id_dialog);
         ((TextView) findViewById(R.id.nav_header_text)).setText(ids + sp.getString("MyID", "null"));
 
@@ -193,8 +204,10 @@ public class TitleActivity extends AppCompatActivity
         final DateFormat df = new SimpleDateFormat("MM/dd/HH");
         nowtime = "About " + df.format(date);
 
-        if (!(sp.getString("ctime", "null")).equals(nowtime) || sp.getString("rank_list", "null").equals("")) {
-            RankingGeter rg = new RankingGeter(TitleActivity.this, sp);
+        if (!(sp.getString("ctime", "null")).equals(nowtime) ||
+                sp.getString("rank_list", "null").equals(""))
+        {
+            RankDonwloader rg = new RankDonwloader(TitleActivity.this, sp);
             rg.execute(UrlCollections.URL_RANKINGS);
             Log.v("getrank", "ok");
         } else {
@@ -207,18 +220,20 @@ public class TitleActivity extends AppCompatActivity
 
     }
 
-    /**
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            this.finish();
-            Intent intent = new Intent(TitleActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
+    protected void onPause() {
+        super.onPause();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
-        return super.onKeyDown(keyCode, event);
     }
+
+    /**
+     * @param menu
+     * @return
+     * メニューの読み込みと定義
      */
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -236,6 +251,10 @@ public class TitleActivity extends AppCompatActivity
         }
         return false;
     }
+
+    /**
+     * ナビゲーションドロワーメニューの処理の設定
+     */
 
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -262,8 +281,9 @@ public class TitleActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_upload) {
             upload_dialog();
-        } else if (id == R.id.nav_reset_upload_state) {
-            dbupdate();
+
+//        } else if (id == R.id.nav_reset_upload_state) {
+//            dbupdate();
 //            Intent intent = new Intent(TitleActivity.this,FriendActivity.class);
 //            startActivity(intent);
         }
@@ -274,6 +294,11 @@ public class TitleActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * アップロードしていない、つまり
+     * sqliteのTempContract.TempImages.COL_ISUPLOADEが0
+     * のデータをリストで取得して返す
+     */
     public List<Integer> getNotUploadedid() {
 
         Log.v("gets", "1");
@@ -298,7 +323,11 @@ public class TitleActivity extends AppCompatActivity
 
 
         while (c.moveToNext()) {
-            String id = c.getString(c.getColumnIndex(ImgContract.Images._ID));
+            String id = c.getString(
+                    c.getColumnIndex(
+                            ImgContract.Images._ID
+                    )
+            );
             idlist.add(Integer.valueOf(id));
         }
 
@@ -310,8 +339,13 @@ public class TitleActivity extends AppCompatActivity
         return idlist;
     }
 
+    /**
+     * 写真をアップロードするかしないかのダイアログ
+     *
+     */
     public void upload_dialog() {
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo info = cm.getActiveNetworkInfo();
 
@@ -324,8 +358,11 @@ public class TitleActivity extends AppCompatActivity
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     List<Integer> idlist = getNotUploadedid();
 
-                                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TitleActivity.this);
-                                    String username = sp.getString("username", "");
+                                    SharedPreferences sp =
+                                            PreferenceManager.getDefaultSharedPreferences(
+                                                    TitleActivity.this
+                                            );
+                                    String username = sp.getString("MyID", "");
 
                                     Log.v("idlist184", String.valueOf(idlist));
 
@@ -349,6 +386,10 @@ public class TitleActivity extends AppCompatActivity
 
     }
 
+    /**
+     * データベースの再読み込み
+     * とアップデート
+     */
     public void dbupdate() {
 
 
@@ -411,6 +452,15 @@ public class TitleActivity extends AppCompatActivity
         toh.close();
     }
 
+
+    /**
+     * @param otherUsersLists
+     * Eventbusからのイベント受け取り
+     * LoadDatataskから
+     * otherUsersListsに情報が打ち込まれたやつをリスト化
+     * それをリサイクルアダプターにセット
+     */
+
     @Subscribe
     public void onListload(List<OtherUsersList> otherUsersLists) {
 
@@ -432,6 +482,13 @@ public class TitleActivity extends AppCompatActivity
         sp.edit().putBoolean("Recyclerisdonwloadingnow",true).apply();
 
     }
+
+    /**
+     *
+     * @param myLocation
+     * Eventbusのイベント受け取り
+     * GetMyLocationから
+     */
 
     @Subscribe
     public void onMylocationload(MyLocation myLocation) {
@@ -455,11 +512,14 @@ public class TitleActivity extends AppCompatActivity
     @Override
     public void onRecycleClicked(View v, int Position) {
 
-        Log.v("otheruserslist",otherUsersLists.size() + "," + Position);
-        String filename_ = otherUsersLists.get(Position).getFilepath();
-        String name_ =  otherUsersLists.get(Position).getName();
+        RecycleAdapter recycleAdapter = (RecycleAdapter) recyclerView.getAdapter();
+        List<OtherUsersList> list = recycleAdapter.getOtherUsersList();
+
+        Log.v("otheruserslist",list.size() + "," + Position);
+        String filename_ = list.get(Position).getFilepath();
+        String name_ =  list.get(Position).getName();
         String class_ = "others";
-        String userid_ = otherUsersLists.get(Position).getUserid();
+        String userid_ = list.get(Position).getUserid();
         String[] data = {filename_, name_, class_, userid_};
 
         OtherPhotoEvalFragment fragment = new OtherPhotoEvalFragment();
@@ -467,7 +527,9 @@ public class TitleActivity extends AppCompatActivity
         args.putStringArray("filename_name_class", data);
         fragment.setArguments(args);
 
-        Log.v("filename_name_class", String.valueOf(data[0])+","+String.valueOf(data[1])+","+String.valueOf(data[2]));
+        Log.v("filename_name_class",
+                String.valueOf(data[0])+","+String.valueOf(data[1])+","+String.valueOf(data[2])
+        );
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -476,7 +538,4 @@ public class TitleActivity extends AppCompatActivity
         transaction.addToBackStack("fragment_map_list");
         transaction.commit();
     }
-
-
-
 }

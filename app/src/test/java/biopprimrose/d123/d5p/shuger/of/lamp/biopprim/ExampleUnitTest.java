@@ -1,7 +1,6 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 /**

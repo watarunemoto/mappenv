@@ -39,7 +39,7 @@ import okhttp3.Response;
 /**
  * Created by amimeyaY on 2015/11/05.
  */
-public class RankingGeter extends AsyncTask<String, Integer, String> {
+public class RankDonwloader extends AsyncTask<String, Integer, String> {
 
 	ProgressDialog dialog;
 	String  res = null;
@@ -49,7 +49,7 @@ public class RankingGeter extends AsyncTask<String, Integer, String> {
 	SharedPreferences sp;
 	String str;
 
-	public RankingGeter(Activity activity, SharedPreferences sp) {
+	public RankDonwloader(Activity activity, SharedPreferences sp) {
 		this.activity = activity;
 		this.sp = sp;
 	}

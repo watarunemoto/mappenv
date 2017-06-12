@@ -27,6 +27,7 @@
     <string name="title_list_text">周辺で取られた写真</string>
     <string name="rank_toolbar">ランキング</string>
     <string name="rank_detail">個人の詳細</string>
+    <string name="wrong_text">英数字を入力してください</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -46,8 +47,8 @@
     <string name="not_on_gps">位置情報がオンになってません</string>
     <string name="turn_on_gps">位置情報をオンにしますか？</string>
     <string name="unknown_name">unknown</string>
+    <string name="edit_pname">写真に名前をつける場合はここに入力してください</string>
     
-    <!-- HttpPhotoTransfer -->
     <string name="uploaded">画像をアップロードしました。\n結果:</string>
     <string name="cant_upload">アップロードできませんでした</string>
     <string name="do_you_reserved">保存しておきますか?</string>
@@ -132,6 +133,8 @@
     <!-- friend request form fragment -->
     <string name="friend_request_sent_text">友達申請を送りました</string>
     <string name="is_existed">申請が存在します</string>
+    <string name="request">Request</string>
+
 
 
     <!-- something to wrong -->
