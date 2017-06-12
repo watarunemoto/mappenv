@@ -7,15 +7,12 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.util.StringBuilderPrinter;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.PhotoPostTask;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
@@ -46,9 +43,13 @@ public class PhotoPreviewFragment extends Fragment {
 
         Bundle bundle = getArguments();
         final String img_path  = bundle.getString("img_path","");
+//      /data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/
         final String last_latitude = bundle.getString("last_latitude","");
         final String last_longitude = bundle.getString("last_longitude","");
         final String userID = bundle.getString("userid");
+        final String imgname = img_path.replace("/data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/","");
+
+
 
         Bitmap bitmap = BitmapFactory.decodeFile(img_path);
         Matrix matrix = new Matrix();
@@ -73,7 +74,9 @@ public class PhotoPreviewFragment extends Fragment {
 
                 Log.v("photopreview",last_latitude+last_longitude+pname);
                 PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname);
-                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID);
+//                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID);
+                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID, imgname);
+                Log.v("imgname",imgname);
             }
         });
 

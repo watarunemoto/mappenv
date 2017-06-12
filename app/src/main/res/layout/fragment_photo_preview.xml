@@ -45,8 +45,9 @@
                     android:hint="@string/edit_pname"
                     android:layout_gravity="center|bottom"
                     android:id="@+id/editpname"
+                    android:inputType="text"
 
-                    />
+                />
 
                 <LinearLayout
                     android:layout_width="match_parent"
