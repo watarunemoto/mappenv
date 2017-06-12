@@ -1,0 +1,28 @@
+@startuml
+actor ユーザー as user
+actor MySQLDB as my
+left to right direction
+rectangle mappenv {
+    (画像の撮影をする) as takephoto
+    (保存済み画像の個別アップロードを行う) as ind
+    (保存済み画像の一括アップロードを行う) as all
+
+    rectangle オンライン時の挙動 as online {
+        (画像にメタデータを付与して保存) as step1
+        (画像とメタデータをアップロードする) as step2
+    }
+
+    rectangle オフライン時の挙動 as offline {
+       (画像の一時保存) as tmp
+    }
+}
+user ->  takephoto
+takephoto .> offline :<<include>>
+takephoto .> online :<<include>>
+'takephoto   ..step1
+'step1       ..step2
+takephoto - my
+ind - my
+all - my
+
+@enduml

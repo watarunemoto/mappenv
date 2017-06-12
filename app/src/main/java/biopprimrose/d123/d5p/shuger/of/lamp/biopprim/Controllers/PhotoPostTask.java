@@ -41,6 +41,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
     ProgressDialog dialog;
     private String pname;
     private String filename;
+    private String imgpath;
 
     String lati;
     String longi;
@@ -61,12 +62,13 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
 
         //呼び出された時の引数
         String url = params[0];
-        filename = params[1];
+        imgpath = params[1];
         String userid = params[2];
+        filename = params[3];
 
         //インスタンスの作成
 
-        File file = new File(filename);
+        File file = new File(imgpath);
         final MediaType IMAGE = MediaType.parse("image/jpg");
 
         MultipartEntityBuilder entity = MultipartEntityBuilder.create();
@@ -82,6 +84,9 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                 )
                 .addFormDataPart(
                         "userid", userid
+                )
+                .addFormDataPart(
+                        "imgpath" , imgpath
                 )
                 .addFormDataPart(
                         "filename", filename
@@ -104,7 +109,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
             Response res = client.newCall(request).execute();
             str = res.body().string();
             str = str.replace("{","").replace("}","").replace("\\","").replace("\"","");
-            dbch(activity, filename);
+            dbch(activity, imgpath);
 
             //dbch(activity,filename,bounus);
         }catch (Exception e) {
@@ -149,7 +154,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                     .setPositiveButton(R.string.no_dialog, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            nouploaddb(filename);
+                            nouploaddb(imgpath);
                         }
                     }).show();
 
@@ -159,7 +164,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
     }
 
     //アップロードできないやつを別のデータベースに書き込むやつ
-    public void nouploaddb(String filename) {
+    public void nouploaddb(String imgpath) {
 
         String score;
         TempOpenHelper tempOpenHelper = new TempOpenHelper(activity);
@@ -171,7 +176,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         String updated =
                 new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US)
                         .format(new Date());
-        String fname = filename;
+        String fname = imgpath;
 
         score = "不明";
         ContentValues values = new ContentValues();
@@ -191,7 +196,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         );
     }
 
-    public void dbch(Context c, String filename) {
+    public void dbch(Context c, String imgpath) {
         //データベースに帰ってきたデータをぶち込む
         if (str != null) {
             ImgOpenHelper imgOpenHelper = new ImgOpenHelper(c);
@@ -204,7 +209,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
             String updated =
                     new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US)
                             .format(new Date());
-            String fname = filename;
+            String fname = imgpath;
 
             ContentValues values = new ContentValues();
             values.put(ImgContract.Images.COL_LAT, lat);
