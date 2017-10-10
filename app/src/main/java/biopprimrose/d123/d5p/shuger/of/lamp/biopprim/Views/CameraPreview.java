@@ -16,8 +16,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputFilter;
 import android.util.Log;
@@ -48,7 +48,6 @@ import java.util.List;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.PhotoPostTask;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
 /**
  * Changed by amemiya 24/12/2016
@@ -173,6 +172,31 @@ public class CameraPreview extends FragmentActivity implements
         });
 
         myRelativeLayout = (RelativeLayout) findViewById(R.id.my_relative);
+//
+//        Button mapfragmentbutton = new Button(this);
+//        mapfragmentbutton.findViewById(R.id.CameraMapbutton);
+        final CameraMapFragment CMF = new CameraMapFragment();
+        Button mapfragmentbutton = (Button) findViewById(R.id.CameraMapbutton);
+        mapfragmentbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                android.app.Fragment CMF = new android.app.Fragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.container , CMF);
+                transaction.add(R.id.container,CMF);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+//        PhotoPreviewFragment fragment = new PhotoPreviewFragment();
+//        fragment.setArguments(bundle);
+//
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.add(R.id.container,fragment);
+//        transaction.addToBackStack("camera");
+//
+//        transaction.commit();
+
 
     }
 
@@ -184,6 +208,7 @@ public class CameraPreview extends FragmentActivity implements
         holder.addCallback(surfaceHolderCallback);
         Log.v("post", "postCreate");
     }
+
 
     //カメラのコールバック
     private SurfaceHolder.Callback surfaceHolderCallback = new SurfaceHolder.Callback() {
@@ -490,6 +515,8 @@ public class CameraPreview extends FragmentActivity implements
                     }
                 }).show();
     }
+
+
 
     @Override
     public void onLocationChanged(Location location) {
