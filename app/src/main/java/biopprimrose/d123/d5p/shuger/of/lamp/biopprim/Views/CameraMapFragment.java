@@ -3,6 +3,7 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class CameraMapFragment extends Fragment {
 //                googleMap.addMarker(new MarkerOptions().position(now).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(now).zoom(80).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(now).zoom(18).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });

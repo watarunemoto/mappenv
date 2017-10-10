@@ -48,7 +48,7 @@
     <string name="turn_on_gps">位置情報をオンにしますか？</string>
     <string name="unknown_name">unknown</string>
     <string name="edit_pname">写真に名前をつける場合は入力してください</string>
-    <string name="cameramap_button">マップを表示</string>
+    <string name="cameramap_button">地図を表示</string>
 
     <string name="uploaded">画像をアップロードしました。\n結果:</string>
     <string name="cant_upload">アップロードできませんでした</string>
