@@ -78,7 +78,7 @@ public class GetMyLocation implements
                 .create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 //                .setInterval(3000)
-                .setInterval((1000))
+                .setInterval(1000)
                 .setFastestInterval(500);
 
         googleApiClient = new GoogleApiClient.Builder(context)

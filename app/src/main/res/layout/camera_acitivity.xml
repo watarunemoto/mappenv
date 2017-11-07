@@ -15,7 +15,7 @@
         android:layout_height="45dp"
         android:id="@+id/CameraMapbutton"
         android:text="@string/cameramap_button"
-        android:layout_gravity="right|top"
+        android:layout_gravity="left|top"
         />
     <LinearLayout
         android:layout_width="match_parent"
