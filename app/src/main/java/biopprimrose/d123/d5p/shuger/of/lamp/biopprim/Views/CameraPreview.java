@@ -128,7 +128,7 @@ public class CameraPreview extends FragmentActivity implements
         locationRequest = LocationRequest
                 .create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(3000)
+                .setInterval(1000)
                 .setFastestInterval(500);
 
         googleApiClient = new GoogleApiClient.Builder(this)
