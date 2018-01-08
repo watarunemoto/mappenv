@@ -15,8 +15,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputFilter;
@@ -197,6 +195,14 @@ public class CameraPreview extends FragmentActivity implements
 //
 //        transaction.commit();
 
+        Button anobutton = (Button) findViewById(R.id.anobutton);
+        anobutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(CameraPreview.this, AnotationMain.class);
+                startActivity(intent2);
+            }
+        });
 
     }
 

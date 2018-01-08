@@ -145,5 +145,11 @@
     <string name="friend_accept_title">承認</string>
     <string name="friend_accept_message">承認しますか?</string>
 
+    <!--  anotation list -->
+    <string name="expandmessage">展開する</string>
+    <string name="no_data">のーでーた</string>
+    <string name="add">add</string>
+    <string name="del">del</string>
+    <string name="toggle_choice_mode">とぐる</string>
 
 </resources>
