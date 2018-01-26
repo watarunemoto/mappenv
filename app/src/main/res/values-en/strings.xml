@@ -142,5 +142,7 @@
     <string name="friend_toolbar">Friends list</string>
     <string name="friend_accept_title">Accept?</string>
     <string name="friend_accept_message">Do you accept friend</string>
+    <string name="anotxt">NO DATA</string>
+    <string name="anotation">Add more data</string>
 
 </resources>

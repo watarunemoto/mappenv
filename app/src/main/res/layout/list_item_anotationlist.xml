@@ -11,12 +11,24 @@
         android:paddingLeft="36dip"
         android:layout_centerVertical="true"
         />
-    <Button
-        android:id="@+id/button"
+    <!--<Button-->
+        <!--android:id="@+id/button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignRight="@id/member_list"-->
+        <!--android:textSize="10sp"-->
+        <!--android:text="@string/expandmessage"-->
+        <!--/>-->
+    <CheckBox
+        android:id="@+id/checkbox1"
+        android:layout_alignRight="@id/member_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/member_list"
-        android:textSize="10sp"
-        android:text="@string/expandmessage"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
         />
+    <!--<Switch-->
+        <!--android:id="@+id/switch1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 </RelativeLayout>

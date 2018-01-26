@@ -145,6 +145,8 @@
     <string name="friend_toolbar">フレンドリスト</string>
     <string name="friend_accept_title">承認</string>
     <string name="friend_accept_message">承認しますか?</string>
+    <string name="anotation">アノテーションを行う</string>
+    <string name="anotxt">情報がありません</string>
 
 
 </resources>

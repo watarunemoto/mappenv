@@ -1,7 +1,6 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +74,6 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
         // TODO Auto-generated method stub
         return arg1;
     }
-
     @Override
     public View getChildView(int arg0, int arg1, boolean arg2, View arg3,
                              ViewGroup arg4) {
@@ -84,12 +82,6 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
         TextView textView = (TextView)childView.findViewById(R.id.member_list);
         ItemDto dto  = children.get(arg0).get(arg1);
         textView.setText(dto.getName());
-
-        Drawable icon = context.getResources().getDrawable(dto.getResourceId());
-        int width = (int)(48 * context.getResources().getDisplayMetrics().density + 0.5f);
-        icon.setBounds(0, 0, width, width);
-        textView.setCompoundDrawables(icon, null, null, null);
-
         return childView;
     }
 
@@ -131,4 +123,19 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
     }
 
 }
+
+
+
+//        CheckBox checkBox = (CheckBox)childView.findViewById(R.id.checkbox);
+//        checkBox.setText(dto.getName());
+
+//        checkBox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            // チェックボックスがクリックされた時に呼び出されます
+//            public void onClick(View v) {
+//                CheckBox checkBox = (CheckBox) v;
+//                // チェックボックスのチェック状態を取得します
+//                boolean checked = checkBox.isChecked();
+//            }
+//        });
 
