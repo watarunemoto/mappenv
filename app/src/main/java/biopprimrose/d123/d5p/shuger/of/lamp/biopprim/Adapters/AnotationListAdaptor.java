@@ -25,14 +25,20 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
     private Context context = null;
     private int[] rowId;
 
+    private List<Boolean> items;
+
+
+
+
     /**
      * Constructor
      */
-    public AnotationListAdaptor(Context ctx, int[] rowId, List<String> groups, List<List<ItemDto>> children) {
+    public AnotationListAdaptor(Context ctx, int[] rowId, List<String> groups, List<List<ItemDto>> children,List<Boolean> items) {
         this.context = ctx;
         this.groups = groups;
         this.children = children;
         this.rowId = rowId;
+        this.items = items;
     }
 
     /**
@@ -44,6 +50,7 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.list_item_anotationlist, null);
         return view;
     }
+
 
 
     public TextView getGroupGenericView() {
@@ -58,6 +65,7 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
 
         return textView;
     }
+
 
     public int getRowId(int groupPosition) {
         return rowId[groupPosition];
@@ -79,9 +87,39 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
                              ViewGroup arg4) {
         // 子供のViewオブジェクトを作成
         View childView = getGenericView();
+//        if (arg3 == null) {
+//            Log.i("MultipleChoiceListActivity", "constructing a new view for " + String.valueOf(arg1) + "-th list row");
+//            View childView = getGenericView();
+//            childView = LayoutInflater.from(context).inflate(R.layout.list_item_anotationlist, null);
+//        } else {
+//            Log.i("MultipleChoiceListActivity", "reusing the view for " + String.valueOf(arg1) + "-th list row");
+//        }
+
+
+
         TextView textView = (TextView)childView.findViewById(R.id.member_list);
         ItemDto dto  = children.get(arg0).get(arg1);
         textView.setText(dto.getName());
+//        final CheckBox chkBox = (CheckBox)childView.findViewById(R.id.checkbox1);
+//        final int p = arg1;
+//
+////        chkBox.setText(dto.getName());
+//        chkBox.setOnCheckedChangeListener(null);
+////        chkBox.setOnCheckedChangeListener(null);
+//        chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+////                if (isChecked) {
+////                    chkBox.setText("aaa");
+////                } else {
+////                    chkBox.setText("bbb");
+////                }
+//                items.set(p , isChecked);
+//            }
+//        });
+//        chkBox.setChecked(items.get(arg1));
+//
+
         return childView;
     }
 
@@ -111,6 +149,7 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
         textView.setText(getGroup(arg0).toString());
         return textView;
     }
+
 
     @Override
     public boolean hasStableIds() {

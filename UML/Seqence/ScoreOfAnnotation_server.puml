@@ -1,0 +1,23 @@
+@startuml
+
+actor ユーザ as u
+
+box "撮影画面" #LightGreen
+participant CameraPreview as cp
+cp -> cp :画面の作成
+u -> cp:撮影画面(図5.(a))の呼び出し
+end box
+
+
+
+box "サーバ"
+
+database サーバ側のデータベース as db2
+
+endbox
+cp -> db2:撮影した画像と位置情報に加えて、特徴をサーバへ送信
+db2 --> cp:
+
+
+
+@enduml

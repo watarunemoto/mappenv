@@ -4,9 +4,7 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,8 +138,11 @@ public class AnotationMain extends AppCompatActivity {
 
         ExpandableListView listView = (ExpandableListView)findViewById(R.id.sample_list);
         int[] rowId = {0,1,2};
-        listView.setAdapter(new AnotationListAdaptor(this, rowId, createGroupItemList(), createChildrenItemList()));
+//        listView.setAdapter(new AnotationListAdaptor(this, rowId, createGroupItemList(), createChildrenItemList()));
+        listView.setAdapter(new AnotationListAdaptor(this, rowId, createGroupItemList(), createChildrenItemList(),buildTestData()));
 //
+
+
 //
 //
 //        // リスト項目がクリックされた時の処理
@@ -184,18 +185,19 @@ public class AnotationMain extends AppCompatActivity {
 //        });
 //
 
-        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        "child clicked "
-                        , Toast.LENGTH_LONG)
-                        .show();
 
-                return false;
-            }
-        });
+//        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+//            @Override
+//            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+//                Toast.makeText(
+//                        getApplicationContext(),
+//                        "child clicked "
+//                        , Toast.LENGTH_LONG)
+//                        .show();
+//
+//                return false;
+//            }
+//        });
 //
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -213,6 +215,34 @@ public class AnotationMain extends AppCompatActivity {
 
 
     }
+
+     List<Boolean> buildTestData() {
+        List<Boolean> items = new ArrayList<Boolean>();
+//        items.add(true);
+//        items.add(false);
+//        items.add(true);
+//        items.add(false);
+//        items.add(true);
+//        items.add(false);
+//        items.add(true);
+//        items.add(false);
+//        items.add(true);
+//        items.add(false);
+//        items.add(true);
+//        items.add(false);
+//        items.add(true);
+//        items.add(false);
+        items.add(false);
+        items.add(false);
+        items.add(false);
+        items.add(false);
+        items.add(false);
+        items.add(false);
+        items.add(false);
+
+        return items;
+    }
+
 
     private List<List<ItemDto>> createChildrenItemList() {
         List<ItemDto> child = new ArrayList<ItemDto>();

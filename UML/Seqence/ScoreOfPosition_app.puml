@@ -1,0 +1,53 @@
+@startuml
+
+actor ユーザ as u
+participant MappEnv as m
+
+
+box "サーバ側" #LightBlue
+participant api_v1.py as main
+participant ScoreOfPosition.py as calc
+participant SQLmanager.py as sql
+database データベース as db
+end box
+
+
+
+u -> m :撮影
+
+
+m-> main:位置情報(経度、緯度)と画像を送信
+
+
+
+group api_v1.py
+main -> calc :クラスの呼び出し
+note right :引数としてユーザidと経度、緯度(x,y)を与える
+group ScoreOfPosition.py
+calc ->calc:経度、緯度をもとに周囲500mの範囲(Rxy)を算出
+note left: 緯度方向の範囲は地球の丸みによる影響を考慮し\n経度(x)と赤道半径を利用して算出
+
+
+calc ->  sql :Rxy内で撮影された地点の経度、緯度(X, Y)を要求
+group SQLmanager.py
+sql -> db :データベースへ接続し、撮影結果を要求
+db --> sql :撮影結果をリストとして返却
+end
+sql -->calc :　Rxy内で撮影された地点の経度、緯度(X, Y)を要求
+calc -> calc:fによる点数の計算
+
+calc --> main : 点数を返す
+
+end
+
+main -> db:受け取った点数を保存
+
+main -->m:点数を送信
+
+end
+
+
+m --> u:　点数の表示
+
+
+@enduml
