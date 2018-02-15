@@ -7,8 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.ItemDto;
@@ -25,7 +29,12 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
     private Context context = null;
     private int[] rowId;
 
-    private List<Boolean> items;
+    private ArrayList<List<Boolean>> items;
+
+
+    String anos =  "記録した特徴 : ";
+//    String anos;
+    private Toast t;
 
 
 
@@ -33,7 +42,7 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
     /**
      * Constructor
      */
-    public AnotationListAdaptor(Context ctx, int[] rowId, List<String> groups, List<List<ItemDto>> children,List<Boolean> items) {
+    public AnotationListAdaptor(Context ctx, int[] rowId, List<String> groups, List<List<ItemDto>> children,ArrayList<List<Boolean>> items) {
         this.context = ctx;
         this.groups = groups;
         this.children = children;
@@ -87,41 +96,100 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
                              ViewGroup arg4) {
         // 子供のViewオブジェクトを作成
         View childView = getGenericView();
-//        if (arg3 == null) {
-//            Log.i("MultipleChoiceListActivity", "constructing a new view for " + String.valueOf(arg1) + "-th list row");
-//            View childView = getGenericView();
-//            childView = LayoutInflater.from(context).inflate(R.layout.list_item_anotationlist, null);
-//        } else {
-//            Log.i("MultipleChoiceListActivity", "reusing the view for " + String.valueOf(arg1) + "-th list row");
-//        }
 
 
 
         TextView textView = (TextView)childView.findViewById(R.id.member_list);
         ItemDto dto  = children.get(arg0).get(arg1);
         textView.setText(dto.getName());
-//        final CheckBox chkBox = (CheckBox)childView.findViewById(R.id.checkbox1);
-//        final int p = arg1;
+        final String name = dto.getName();
+
+
+
+        final int p = arg0;
+        final int q = arg1;
+        final CheckBox chkBox = (CheckBox)childView.findViewById(R.id.checkbox1);
+
+//        chkBox.setText(dto.getName());
+
+        chkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            // チェックボックスがクリックされた時に呼び出されます
+            public void onClick(View v) {
+                CheckBox checkBox = (CheckBox) v;
+                // チェックボックスのチェック状態を取得します
+                boolean checked = checkBox.isChecked();
+                if (checked) {
+//                    chkBox.setText("aaa");
+                    if (anos == null|| anos.length() == 0 ) {
+                        anos = anos + "記録した特徴 : ";
+                    }
+                    anos = anos + name;
+                    if(t != null) {
+                        t.cancel();
+                    }
+                    t = Toast.makeText(context, anos, Toast.LENGTH_LONG);
+                    t.show();
+                } else {
+//                    String hoge = ".*"+ name+ ".*";
+                    String hoge = name;
+                    anos = anos.replaceAll(hoge, " ");
+//                    chkBox.setText(name);
+//                    if (anos.length() == 0 ) {
+//                        anos = anos + "撮影した特徴 : ";
+//                    }
+
+                    if (t != null) {
+                        t.cancel();
+                    }
+//                    t = Toast.makeText(context, "キャンセルしました" + anos + "置換"+ hoge, Toast.LENGTH_LONG);
+                    if (anos.equals("記録した特徴 : ")) {
+                        t = Toast.makeText(context, "キャンセルしました\n" + anos + "なし", Toast.LENGTH_LONG);
+                    } else{
+                        t = Toast.makeText(context, "キャンセルしました\n" + anos, Toast.LENGTH_LONG);
+                    }
+                    t.show();
+                }
+            }
+        });
+
+
+        chkBox.setOnCheckedChangeListener(null);
+        chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    chkBox.setText("aaa");
+//                    if (anos == null|| anos.length() == 0 ) {
+//                        anos = anos + "撮影した特徴";
+//                    }
+//                    anos = anos + name;
+//                    if(t != null) {
+//                        t.cancel();
+//                    }
+//                    t = Toast.makeText(context, anos, Toast.LENGTH_SHORT);
+//                    t.show();
+//                } else {
+//                    anos.replaceAll(name, "");
+//                    chkBox.setText(name);
 //
-////        chkBox.setText(dto.getName());
-//        chkBox.setOnCheckedChangeListener(null);
-////        chkBox.setOnCheckedChangeListener(null);
-//        chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-////                if (isChecked) {
-////                    chkBox.setText("aaa");
-////                } else {
-////                    chkBox.setText("bbb");
-////                }
-//                items.set(p , isChecked);
-//            }
-//        });
-//        chkBox.setChecked(items.get(arg1));
-//
+//                    if(t != null) {
+//                        t.cancel();
+//                    }
+//                    t = Toast.makeText(context, "キャンセルしました", Toast.LENGTH_SHORT);
+//                    t.show();
+//                }
+
+                items.get(p).set(q,isChecked);
+            }
+        });
+
+        chkBox.setChecked(items.get(arg0).get(arg1));
+
 
         return childView;
     }
+
 
     @Override
     public int getChildrenCount(int arg0) {

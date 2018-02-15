@@ -42,6 +42,8 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
     private String pname;
     private String filename;
     private String imgpath;
+    private String annotations;
+    private int anocount;
 
     String lati;
     String longi;
@@ -51,10 +53,13 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
 
 
     public PhotoPostTask( Activity activity, String lati, String longi, String pname) {
+//    public PhotoPostTask( Activity activity, String lati, String longi, String pname, String annotations ,int anocount) {
         this.activity = activity;
         this.lati = lati;
         this.longi = longi;
         this.pname = pname;
+        this.annotations = annotations;
+        this.anocount = anocount;
     }
 
     @Override
@@ -65,6 +70,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         imgpath = params[1];
         String userid = params[2];
         filename = params[3];
+//        annotations = params[4]
 
         //インスタンスの作成
 
@@ -90,6 +96,9 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                 )
                 .addFormDataPart(
                         "filename", filename
+                )
+                .addFormDataPart(
+                        "annotation", annotations
                 )
                 .build();
 

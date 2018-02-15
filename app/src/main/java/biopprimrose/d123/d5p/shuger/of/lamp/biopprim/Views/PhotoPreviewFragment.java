@@ -46,6 +46,7 @@ public class PhotoPreviewFragment extends Fragment {
 //      /data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/
         final String last_latitude = bundle.getString("last_latitude","");
         final String last_longitude = bundle.getString("last_longitude","");
+//        final String annotation = bundle.getstring("annotation")
         final String userID = bundle.getString("userid");
         final String imgname = img_path.replace("/data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/","");
 

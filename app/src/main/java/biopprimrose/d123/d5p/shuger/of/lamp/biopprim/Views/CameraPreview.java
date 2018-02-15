@@ -108,6 +108,7 @@ public class CameraPreview extends FragmentActivity implements
 
     RelativeLayout myRelativeLayout;
 
+    static final int RESULT_SUBACTIVITY = 1000;
     /**
      * ************************************************************************************************
      */
@@ -170,37 +171,27 @@ public class CameraPreview extends FragmentActivity implements
         });
 
         myRelativeLayout = (RelativeLayout) findViewById(R.id.my_relative);
-//
-//        Button mapfragmentbutton = new Button(this);
-//        mapfragmentbutton.findViewById(R.id.CameraMapbutton);
+
         final CameraMapFragment CMF = new CameraMapFragment();
         Button mapfragmentbutton = (Button) findViewById(R.id.CameraMapbutton);
         mapfragmentbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                android.app.Fragment CMF = new android.app.Fragment();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                transaction.replace(R.id.container , CMF);
                 transaction.add(R.id.container,CMF);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
-//        PhotoPreviewFragment fragment = new PhotoPreviewFragment();
-//        fragment.setArguments(bundle);
-//
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.add(R.id.container,fragment);
-//        transaction.addToBackStack("camera");
-//
-//        transaction.commit();
+
 
         Button anobutton = (Button) findViewById(R.id.anobutton);
         anobutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent2 = new Intent(CameraPreview.this, AnotationMain.class);
-                startActivity(intent2);
+//                startActivity(intent2);
+                startActivityForResult(intent2, RESULT_SUBACTIVITY);
             }
         });
 
@@ -428,6 +419,9 @@ public class CameraPreview extends FragmentActivity implements
             AlertDialog.Builder builder = new AlertDialog.Builder(CameraPreview.this);
             builder.setTitle(R.string.detect_img);
             builder.setNegativeButton(R.string.no_dialog, null);
+
+
+
 //            builder.setView(editView);
 
             /**
@@ -473,6 +467,7 @@ public class CameraPreview extends FragmentActivity implements
             bundle.putString("last_latitude",loc_data[0]);
             bundle.putString("last_longitude",loc_data[1]);
             bundle.putString("userid",userID);
+//            bundle.putString("annotation"annotation)
             PhotoPreviewFragment fragment = new PhotoPreviewFragment();
             fragment.setArguments(bundle);
 
@@ -569,6 +564,18 @@ public class CameraPreview extends FragmentActivity implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent2) {
+        super.onActivityResult(requestCode, resultCode, intent2);
+
+
+        if(resultCode == RESULT_OK && requestCode == RESULT_SUBACTIVITY &&
+                null != intent2) {
+            String res = intent2.getStringExtra("MESSAGE2");
+        }
     }
 
     public void setCameraPreviewOrientation(int cameraid) {
