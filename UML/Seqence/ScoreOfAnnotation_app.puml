@@ -25,6 +25,7 @@ cp -> main:特徴を記録する画面(図5.(b))の呼び出し
 
 group AnnotationActivity
 
+
 main -> main :画面の作成
 main -> adapter : リストの作成を命令
 note left :

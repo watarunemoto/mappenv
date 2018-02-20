@@ -12,12 +12,28 @@ end box
 
 box "サーバ"
 
+participant api_v1.py as main
+participant ScoreOfAnnotation.py as sa
+participant SQLmanager.py as sql
 database サーバ側のデータベース as db2
 
+
 endbox
-cp -> db2:撮影した画像と位置情報に加えて、特徴をサーバへ送信
-db2 --> cp:
 
+cp -> main:撮影した画像と位置情報に加え\n特徴を文字列として、特徴の数を数値としてをサーバへ送信
+main-> sa :クラスの呼び出し
+note left:引数として特徴の数を与える
+group ScoreOfAnnotation
+sa --> main:点数を計算して返す
+end
+main->sql:クラスの呼び出し
+note left :引数として点数を与える
+group SQLmanager
+sql -> db2:点数の保存
+end
 
+main -->cp: 点数を送信
+
+cp -->u :点数を表示
 
 @enduml

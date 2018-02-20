@@ -52,7 +52,7 @@
     <string name="anotation">アノテーションを行う</string>
     <string name="anotxt">情報がありません</string>
 
-    <string name="uploaded">画像をアップロードしました。\n結果:</string>
+    <string name="uploaded">画像をアップロードしました。\n獲得した点数:</string>
     <string name="cant_upload">アップロードできませんでした</string>
     <string name="do_you_reserved">保存しておきますか?</string>
     <string name="now_uploading">通信中です</string>

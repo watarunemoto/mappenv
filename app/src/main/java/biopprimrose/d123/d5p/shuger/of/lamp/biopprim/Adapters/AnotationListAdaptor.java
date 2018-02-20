@@ -124,20 +124,27 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
                     if (anos == null|| anos.length() == 0 ) {
                         anos = anos + "記録した特徴 : ";
                     }
-                    anos = anos + name;
+                    if (anos.equals("記録した特徴 : ")) {
+                        anos = anos + name + "";
+                    }else{
+                        anos = anos + "、" + name ;
+                    }
+
+//                    anos = anos + name + "";
                     if(t != null) {
                         t.cancel();
                     }
-                    t = Toast.makeText(context, anos, Toast.LENGTH_LONG);
+                    t = Toast.makeText(context, "特徴を記録しました\n"+ anos, Toast.LENGTH_LONG);
                     t.show();
                 } else {
+
 //                    String hoge = ".*"+ name+ ".*";
                     String hoge = name;
-                    anos = anos.replaceAll(hoge, " ");
-//                    chkBox.setText(name);
-//                    if (anos.length() == 0 ) {
-//                        anos = anos + "撮影した特徴 : ";
-//                    }
+                    anos = anos.replaceAll("、" + hoge + "、", "、");
+                    anos = anos.replaceAll(hoge+"、", "");
+                    anos = anos.replaceAll("、" + hoge, "");
+                    anos = anos.replaceAll(hoge, "");
+
 
                     if (t != null) {
                         t.cancel();

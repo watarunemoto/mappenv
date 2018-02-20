@@ -97,9 +97,9 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                 .addFormDataPart(
                         "filename", filename
                 )
-                .addFormDataPart(
-                        "annotation", annotations
-                )
+//                .addFormDataPart(
+//                        "annotation", annotations
+//                )
                 .build();
 
         Request request = new Request.Builder()
