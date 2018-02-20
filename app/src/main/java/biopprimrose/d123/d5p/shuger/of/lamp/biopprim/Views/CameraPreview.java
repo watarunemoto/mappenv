@@ -108,7 +108,7 @@ public class CameraPreview extends FragmentActivity implements
     private boolean flag = false;
 
     private String annotation = "";
-    static String anoret;
+    private String anoret;
 
     RelativeLayout myRelativeLayout;
 
@@ -417,7 +417,7 @@ public class CameraPreview extends FragmentActivity implements
 
 
     //アップロードするかどうかのダイアログを表示する
-    public String yesornodialog(final String iMGNAME, String locat, final String userID) {
+    public String yesornodialog(final String iMGNAME, String locat, final String userID ) {
         NetworkInfo nwi = cm.getActiveNetworkInfo();
         final String loc_data[] = locat.split(",", 0);
         final EditText editView = new EditText(CameraPreview.this);
@@ -474,14 +474,14 @@ public class CameraPreview extends FragmentActivity implements
              builder.show();
 
              */
-
+//            Log.v("anoret?:",""+ anoret);
 
             Bundle bundle = new Bundle();
             bundle.putString("img_path",iMGNAME);
             bundle.putString("last_latitude",loc_data[0]);
             bundle.putString("last_longitude",loc_data[1]);
             bundle.putString("userid",userID);
-//            bundle.putString("annotation"annotation);
+            bundle.putString("annotation",anoret);
             PhotoPreviewFragment fragment = new PhotoPreviewFragment();
             fragment.setArguments(bundle);
 
@@ -508,12 +508,13 @@ public class CameraPreview extends FragmentActivity implements
                             if (pname.equals("")) {
                                 pname = "unknown";
                             }
-                            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname);
+                            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname,anoret);
                             hpt.nouploaddb(iMGNAME);
                             Toast.makeText(CameraPreview.this, R.string.reserved, Toast.LENGTH_SHORT).show();
                         }
                     }).show();
         }
+        Log.v("anoret?:",""+ anoret);
         return iMGNAME;
     }
 

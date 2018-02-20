@@ -46,9 +46,11 @@ public class PhotoPreviewFragment extends Fragment {
 //      /data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/
         final String last_latitude = bundle.getString("last_latitude","");
         final String last_longitude = bundle.getString("last_longitude","");
-//        final String annotation = bundle.getstring("annotation")
         final String userID = bundle.getString("userid");
+        final String annotation = bundle.getString("annotation","");
+        Log.v("aotation?:",""+ annotation);
         final String imgname = img_path.replace("/data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/","");
+
 
 
 
@@ -74,9 +76,11 @@ public class PhotoPreviewFragment extends Fragment {
 
 
                 Log.v("photopreview",last_latitude+last_longitude+pname);
-                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname);
+//                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname);
+                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname,annotation);
 //                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID);
-                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID, imgname);
+                Log.v("hogehoge?:",""+ annotation);
+                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID, imgname, annotation);
                 Log.v("imgname",imgname);
             }
         });
@@ -98,7 +102,8 @@ public class PhotoPreviewFragment extends Fragment {
 
 
                 Log.v("photopreview",last_latitude+last_longitude+pname);
-                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname);
+                Log.v("annotation:",""+ annotation);
+                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname, annotation);
                 hpt.nouploaddb(img_path);
             }
         });

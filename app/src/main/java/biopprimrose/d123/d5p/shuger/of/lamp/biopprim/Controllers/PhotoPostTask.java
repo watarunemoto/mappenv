@@ -52,7 +52,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
     SQLiteDatabase db;
 
 
-    public PhotoPostTask( Activity activity, String lati, String longi, String pname) {
+    public PhotoPostTask( Activity activity, String lati, String longi, String pname ,String annotations) {
 //    public PhotoPostTask( Activity activity, String lati, String longi, String pname, String annotations ,int anocount) {
         this.activity = activity;
         this.lati = lati;
@@ -70,7 +70,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         imgpath = params[1];
         String userid = params[2];
         filename = params[3];
-//        annotations = params[4]
+        annotations = params[4];
 
         //インスタンスの作成
 
@@ -97,9 +97,9 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                 .addFormDataPart(
                         "filename", filename
                 )
-//                .addFormDataPart(
-//                        "annotation", annotations
-//                )
+                .addFormDataPart(
+                        "annotation", annotations
+                )
                 .build();
 
         Request request = new Request.Builder()
@@ -197,6 +197,8 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         values.put(TempContract.TempImages.COL_PNAME, pname);
         values.put(TempContract.TempImages.COL_ISUPLOADED, "0");
         values.put(TempContract.TempImages.COL_ISDELETED, "0");
+        values.put(TempContract.TempImages.COL_ISDELETED, annotations);
+//        values.put(ImgContract.Images.COL_ANOTATION, annotations);
 
         db.insert(
                 TempContract.TempImages.TABLE_NAME,
@@ -229,6 +231,8 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
             values.put(ImgContract.Images.COL_PNAME, pname);
             values.put(ImgContract.Images.COL_VERSION, "new");
             values.put(ImgContract.Images.COL_ISDELETED, "0");
+            values.put(ImgContract.Images.COL_ANOTATION, annotations);
+
 
             db.insert(
                     ImgContract.Images.TABLE_NAME,

@@ -1,39 +1,61 @@
 @startuml
 
-actor ユーザ as u
-
-box "撮影画面" #LightGreen
+hide footbox
+box "MappEnv側の処理を担当するクラス" #LightGreen
 participant CameraPreview as cp
+activate cp
 cp -> cp :画面の作成
-u -> cp:撮影画面(図5.(a))の呼び出し
+activate cp#DarkSalmon
+deactivate cp
+
+cp -> cp:撮影画面(図5.(a))の表示
+activate cp#DarkSalmon
 end box
 
 
 
-box "サーバ"
+box "サーバ側の処理を担当するクラス" #Lightblue
 
 participant api_v1.py as main
 participant ScoreOfAnnotation.py as sa
 participant SQLmanager.py as sql
-database サーバ側のデータベース as db2
+'database データベース as db2
 
 
 endbox
-
+deactivate cp
 cp -> main:撮影した画像と位置情報に加え\n特徴を文字列として、特徴の数を数値としてをサーバへ送信
+deactivate cp
+activate main
+
 main-> sa :クラスの呼び出し
+deactivate main
+activate sa
 note left:引数として特徴の数を与える
-group ScoreOfAnnotation
+
+
+
+
 sa --> main:点数を計算して返す
-end
-main->sql:クラスの呼び出し
+deactivate sa
+activate main
+main->sql:サーバへ点数を保存するように命令
+deactivate main
 note left :引数として点数を与える
-group SQLmanager
-sql -> db2:点数の保存
-end
+activate sql
+sql -> sql:サーバへ点数の保存
+activate sql#DarkSalmon
+deactivate sql
+sql --> main:点数の保存完了を通知
+deactivate sql
+activate main
 
 main -->cp: 点数を送信
+activate cp
+deactivate main
+cp -->cp :点数を表示
+activate cp #DarkSalmon
 
-cp -->u :点数を表示
-
+deactivate cp
+deactivate cp
 @enduml
