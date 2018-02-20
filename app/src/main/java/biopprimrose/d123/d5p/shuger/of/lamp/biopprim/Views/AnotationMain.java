@@ -1,9 +1,12 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
@@ -16,10 +19,22 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 public class AnotationMain extends AppCompatActivity {
     /** Called when the activity is first created. */
 //    int PARENT_DATA = 3;
-//    int CHILD_DATA = 3;
+//    int CHILD_DATA = 3
 
 
 
+    static String anotation;
+    int counts;
+//    SharedPreferences sp = getSharedPreferences("Annotation", Context.MODE_PRIVATE);
+//    public String aaa = "aaa";
+
+    public void setAnotation(String anotation) {
+        this.anotation = anotation;
+    }
+
+    public String getAnotation() {
+        return anotation;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,8 +42,26 @@ public class AnotationMain extends AppCompatActivity {
         setContentView(R.layout.fragment_anotation_main);
 
 
+//        final Intent intent = getIntent();
+//        anotation = "hhogheohijehoijoij";
+
+
         Resources res = getResources();
         String initialcom = res.getString(R.string.anotxt);
+        Button button1 = (Button) findViewById(R.id.AnoToCamera);
+
+        button1.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent();
+                intent.putExtra("Annotation", anotation);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
+
 
         ExpandableListView listView = (ExpandableListView)findViewById(R.id.sample_list);
         int[] rowId = {0,1,2};

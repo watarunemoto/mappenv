@@ -1,6 +1,7 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.ItemDto;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views.AnotationMain;
 
 /**
  * Created by tsuchiya on 2017/12/21.
@@ -30,12 +32,22 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
     private int[] rowId;
 
     private ArrayList<List<Boolean>> items;
-
+    private String adapt;
 
     String anos =  "記録した特徴 : ";
-//    String anos;
     private Toast t;
 
+
+
+//    private Context mContext;
+//    public Droidkun(Context context) {
+//        mContext = context;
+//
+//    }
+//
+//    public void cupcakeDroid() {
+//        mContext.getSharedPreferences("Cupcake",Context.MODE_PRIVATE);
+//    }
 
 
 
@@ -48,18 +60,23 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
         this.children = children;
         this.rowId = rowId;
         this.items = items;
+
+//
+
+
     }
 
     /**
      *
      * @return
      */
+
+
     public View getGenericView() {
         // xmlをinflateしてViewを作成する
         View view = LayoutInflater.from(context).inflate(R.layout.list_item_anotationlist, null);
         return view;
     }
-
 
 
     public TextView getGroupGenericView() {
@@ -74,6 +91,8 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
 
         return textView;
     }
+
+
 
 
     public int getRowId(int groupPosition) {
@@ -96,8 +115,6 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
                              ViewGroup arg4) {
         // 子供のViewオブジェクトを作成
         View childView = getGenericView();
-
-
 
         TextView textView = (TextView)childView.findViewById(R.id.member_list);
         ItemDto dto  = children.get(arg0).get(arg1);
@@ -136,6 +153,14 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
                     }
                     t = Toast.makeText(context, "特徴を記録しました\n"+ anos, Toast.LENGTH_LONG);
                     t.show();
+
+                    adapt = anos.replaceAll("記録した特徴 : ","");
+                    AnotationMain setanos = new AnotationMain();
+                    AnotationMain getanos = new AnotationMain();
+                    setanos.setAnotation(adapt);
+                    String hoge2 = getanos.getAnotation();
+                    Log.v("ano2","hogeeeee" + adapt);
+                    Log.v("anoget","hogeeeeeeeee" + hoge2);
                 } else {
 
 //                    String hoge = ".*"+ name+ ".*";
@@ -144,6 +169,7 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
                     anos = anos.replaceAll(hoge+"、", "");
                     anos = anos.replaceAll("、" + hoge, "");
                     anos = anos.replaceAll(hoge, "");
+                    adapt = anos.replaceAll("記録した特徴 : ","");
 
 
                     if (t != null) {
@@ -155,6 +181,19 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
                     } else{
                         t = Toast.makeText(context, "キャンセルしました\n" + anos, Toast.LENGTH_LONG);
                     }
+
+                    AnotationMain setanos = new AnotationMain();
+                    setanos.setAnotation(adapt);
+                    AnotationMain getanos = new AnotationMain();
+                    String hoge2 = getanos.getAnotation();
+                    Log.v("ano2","hogeeeee" + adapt);
+                    Log.v("anoget","hogeeeeeeeee" + hoge2);
+
+
+//
+//                    editor.putString("logs", adapt);
+//                    editor.apply();
+
                     t.show();
                 }
             }
@@ -165,27 +204,6 @@ public class AnotationListAdaptor extends BaseExpandableListAdapter {
         chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    chkBox.setText("aaa");
-//                    if (anos == null|| anos.length() == 0 ) {
-//                        anos = anos + "撮影した特徴";
-//                    }
-//                    anos = anos + name;
-//                    if(t != null) {
-//                        t.cancel();
-//                    }
-//                    t = Toast.makeText(context, anos, Toast.LENGTH_SHORT);
-//                    t.show();
-//                } else {
-//                    anos.replaceAll(name, "");
-//                    chkBox.setText(name);
-//
-//                    if(t != null) {
-//                        t.cancel();
-//                    }
-//                    t = Toast.makeText(context, "キャンセルしました", Toast.LENGTH_SHORT);
-//                    t.show();
-//                }
 
                 items.get(p).set(q,isChecked);
             }

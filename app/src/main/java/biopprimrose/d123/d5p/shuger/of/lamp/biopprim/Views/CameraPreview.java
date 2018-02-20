@@ -59,6 +59,7 @@ public class CameraPreview extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
+    private Toast t;
     public Context context;
 
     /**
@@ -105,6 +106,9 @@ public class CameraPreview extends FragmentActivity implements
 
     //connectionのフラッグ
     private boolean flag = false;
+
+    private String annotation = "";
+    static String anoret;
 
     RelativeLayout myRelativeLayout;
 
@@ -189,8 +193,15 @@ public class CameraPreview extends FragmentActivity implements
         anobutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent2 = new Intent(CameraPreview.this, AnotationMain.class);
 //                startActivity(intent2);
+
+
+                intent2.putExtra("Annottion",annotation);
+                Log.v("ano1",annotation);
+
+
                 startActivityForResult(intent2, RESULT_SUBACTIVITY);
             }
         });
@@ -204,7 +215,9 @@ public class CameraPreview extends FragmentActivity implements
         SurfaceHolder holder = mView.getHolder();
         holder.addCallback(surfaceHolderCallback);
         Log.v("post", "postCreate");
+
     }
+
 
 
     //カメラのコールバック
@@ -320,6 +333,7 @@ public class CameraPreview extends FragmentActivity implements
                 //loc = Gpskun();
                 if (loc == null) {
                     Toast.makeText(CameraPreview.this, R.string.cant_get_location, Toast.LENGTH_LONG).show();
+
                 } else {
                     //このアプリ専用のフォルダを使用
                     FileOutputStream myFOS = null;
@@ -467,7 +481,7 @@ public class CameraPreview extends FragmentActivity implements
             bundle.putString("last_latitude",loc_data[0]);
             bundle.putString("last_longitude",loc_data[1]);
             bundle.putString("userid",userID);
-//            bundle.putString("annotation"annotation)
+//            bundle.putString("annotation"annotation);
             PhotoPreviewFragment fragment = new PhotoPreviewFragment();
             fragment.setArguments(bundle);
 
@@ -489,6 +503,7 @@ public class CameraPreview extends FragmentActivity implements
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             String pname = "";
+                            Log.v("anohpton",""+ anoret);
                             pname = editView.getText().toString();
                             if (pname.equals("")) {
                                 pname = "unknown";
@@ -574,7 +589,10 @@ public class CameraPreview extends FragmentActivity implements
 
         if(resultCode == RESULT_OK && requestCode == RESULT_SUBACTIVITY &&
                 null != intent2) {
-            String res = intent2.getStringExtra("MESSAGE2");
+//            String res = intent2.getStringExtra("MESSAGE2");
+
+            anoret  = intent2.getStringExtra("Annotation");
+            Log.v("anomain",""+ anoret);
         }
     }
 
@@ -610,6 +628,8 @@ public class CameraPreview extends FragmentActivity implements
 
         mCamera.setDisplayOrientation(result);
     }
+
+
 
 }
 

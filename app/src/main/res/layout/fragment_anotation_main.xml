@@ -28,6 +28,14 @@
                     <!--android:layout_height="wrap_content"-->
                     <!--android:id="@+id/anotext"-->
                 <!--/>-->
+
+                <Button
+                    android:id="@+id/AnoToCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="カメラ画面に戻る"
+                    />
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
