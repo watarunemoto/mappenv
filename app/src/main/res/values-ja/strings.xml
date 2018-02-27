@@ -145,8 +145,14 @@
     <string name="friend_toolbar">フレンドリスト</string>
     <string name="friend_accept_title">承認</string>
     <string name="friend_accept_message">承認しますか?</string>
-    <string name="anotation">アノテーションを行う</string>
+    <string name="anotation">植物の特徴を記録する</string>
     <string name="anotxt">情報がありません</string>
+    <string name="annotationtocamera">カメラ画面に戻る</string>
+    <string name="no_data">データがありません</string>
+    <string name="del">del</string>
+    <string name="expandmessage">展開する</string>
+    <string name="score1">点数1:</string>
+    <string name="score2">点数2:</string>
 
 
 </resources>

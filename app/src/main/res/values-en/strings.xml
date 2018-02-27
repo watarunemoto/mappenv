@@ -144,5 +144,12 @@
     <string name="friend_accept_message">Do you accept friend</string>
     <string name="anotxt">NO DATA</string>
     <string name="anotation">Add more data</string>
+    <string name="annotationtocamera">Return to Camera</string>
+    <string name="no_data">No Data</string>
+    <string name="del">del</string>
+    <string name="expandmessage">Expand</string>
+    <string name="toggle_choice_mode"></string>
+    <string name="score1">Score1:</string>
+    <string name="score2">Score2:</string>
 
 </resources>

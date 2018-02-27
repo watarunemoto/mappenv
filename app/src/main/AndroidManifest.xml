@@ -115,7 +115,7 @@
             android:enabled="false"
             android:exported="false" />
 
-        <activity android:name=".Views.AnotationMain"></activity>
+        <activity android:name=".Views.AnnotationActivity"></activity>
     </application>
 
 </manifest>

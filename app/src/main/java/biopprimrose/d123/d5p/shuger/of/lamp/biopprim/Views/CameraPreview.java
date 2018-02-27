@@ -194,7 +194,7 @@ public class CameraPreview extends FragmentActivity implements
             @Override
             public void onClick(View v) {
 
-                Intent intent2 = new Intent(CameraPreview.this, AnotationMain.class);
+                Intent intent2 = new Intent(CameraPreview.this, AnnotationActivity.class);
 //                startActivity(intent2);
 
 
@@ -434,47 +434,6 @@ public class CameraPreview extends FragmentActivity implements
             builder.setTitle(R.string.detect_img);
             builder.setNegativeButton(R.string.no_dialog, null);
 
-
-
-//            builder.setView(editView);
-
-            /**
-             * オプションでてキストボックスの表示を許可していれば
-             * テキストボックスを表示
-             */
-            /**
-             if (sp.getBoolean("pref_dialog_object_name",true)) {
-
-
-
-             builder.setMessage(R.string.do_you_upload);
-             builder.setView(editView);
-             builder.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialogInterface, int i) {
-            String pname = "";
-            pname = editView.getText().toString();
-            if (pname.equals("")) {
-            pname = "unknown";
-            }
-            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname);
-            hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , iMGNAME, userID);
-            }
-            });
-             } else {
-             builder.setMessage(R.string.do_uploading);
-             builder.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialogInterface, int i) {
-            String pname = "unknown";
-            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname);
-            hpt.execute(UrlCollections.URL_UPLOAD_PHOTO, iMGNAME, userID);
-            }
-            });
-             }
-
-             builder.show();
-
-             */
-//            Log.v("anoret?:",""+ anoret);
 
             Bundle bundle = new Bundle();
             bundle.putString("img_path",iMGNAME);

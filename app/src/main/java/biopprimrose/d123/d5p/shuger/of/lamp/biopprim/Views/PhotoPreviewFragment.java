@@ -79,7 +79,7 @@ public class PhotoPreviewFragment extends Fragment {
 //                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname);
                 PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname,annotation);
 //                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID);
-                Log.v("hogehoge?:",""+ annotation);
+                Log.v("annotation",annotation);
                 hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID, imgname, annotation);
                 Log.v("imgname",imgname);
             }
