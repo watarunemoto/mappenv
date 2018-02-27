@@ -1,0 +1,103 @@
+@startuml
+
+'actor ユーザ as u
+
+box "撮影画面(図5.(a))上での処理を担当するクラス" #LightGreen
+participant CameraPreview as cp
+
+'u -> cp:撮影画面(図5.(a))の呼び出し
+activate cp
+
+cp -> cp :撮影画面の作成
+activate cp #DarkSalmon
+deactivate cp
+end box
+
+hide footbox
+
+box "特徴を記録する画面(図5.(b))での処理を担当するクラス" #LightBlue
+participant AnnotationActiviy as main
+participant AnnotationListadapter as adapter
+participant GetItemlist as get
+end box
+
+'
+'==　図5.(b)の画面の作成開始 ==
+
+
+
+cp -> main:特徴を記録する画面(図5.(b))の呼び出し
+note right :図5.(b)の作成開始
+deactivate cp
+activate main
+
+
+
+main -> main :画面の作成
+activate main #DarkSalmon
+deactivate main
+main -> adapter : リストの作成を命令
+
+deactivate main
+activate adapter
+adapter -> adapter :リストの枠組みを作成する
+activate adapter #DarkSalmon
+deactivate adapter
+adapter -> get :リストの各項目の作成を命令
+deactivate adapter
+activate get
+
+
+
+get -> get :リストの各項目を作成
+activate get #DarkSalmon
+deactivate get
+'note left :リストの各項目は植物の特徴とチェックボックスを保持する
+get --> adapter : リストの各項目を返す
+deactivate get
+activate adapter
+
+
+adapter --> main:　リストを返す
+deactivate adapter
+activate main
+main -> main: チェックボックスを持つリストを画面に表示する
+activate main #darksalmon
+deactivate main
+
+
+
+'==　画面の作成終了==
+note left: 図5.(b)の作成終了
+'deactivate main
+
+
+
+
+'== ユーザによる観察した特徴の記録 ==
+
+main -> main:ユーザがチェックした項目を一時保存
+activate main #darksalmon
+
+main -> main:戻るボタンによって撮影画面へ画面遷移
+deactivate main
+main --> cp :撮影画面に戻る
+deactivate main
+
+'...
+'...
+'== 観察結果の送信 ==
+box "サーバ"
+
+'database サーバ側のデータベース as db2
+
+endbox
+activate cp
+cp -> cp:撮影した画像と位置情報に加えて、特徴をサーバへ送信
+activate cp #darksalmon
+deactivate cp
+deactivate cp
+
+
+
+@enduml

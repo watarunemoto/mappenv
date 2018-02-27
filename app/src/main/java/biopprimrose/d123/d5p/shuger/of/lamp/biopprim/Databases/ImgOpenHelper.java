@@ -24,6 +24,7 @@ public class ImgOpenHelper extends SQLiteOpenHelper {
 					ImgContract.Images.COL_PNAME + " text, " +
 					ImgContract.Images.COL_ISDELETED + " text, " +
 					ImgContract.Images.COL_VERSION  + " text, " +
+					ImgContract.Images.COL_ANOTATION  + " text, " +
 					"created datetime default current_timestamp, " +
 					"updated datetime default current_timestamp)";
 
@@ -51,7 +52,7 @@ public class ImgOpenHelper extends SQLiteOpenHelper {
 
 
 		if (oldVersion == 1) {
-			Cursor c = db.query(ImgContract.Images.TABLE_NAME, null, null, null, null, null, null);
+			Cursor c = db.query(ImgContract.Images.TABLE_NAME, null, null, null, null, null, null,null);
 			while (c.moveToNext()) {
 				String score = c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE));
 				String id = c.getString(c.getColumnIndex(ImgContract.Images._ID));

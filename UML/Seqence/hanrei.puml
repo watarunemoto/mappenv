@@ -1,0 +1,57 @@
+@startuml
+
+
+
+title
+凡例
+end title
+hide footbox
+
+
+'box "クラスが動作する場所(MappEnv上で動作するか、サーバ上で動作するか)\n　緑枠はMappEnv上の動作\n 青枠はサーバ上の動作" #LightGreen
+box "クラスの分類を表す枠" #LightGreen
+
+participant クラス名 as a
+participant クラス名 as b
+participant クラス名 as c
+
+
+a -> b :クラスによる別クラスへの命令を表す矢印
+
+
+activate b
+
+b->c
+deactivate b
+
+activate c
+c ->c:自分のクラス内での\n処理を表す矢印
+    activate c#DarkSalmon
+    deactivate c
+c-->b
+deactivate c
+activate b
+b--> a:クラスによる処理結果を表す矢印
+deactivate b
+
+'...
+
+
+'
+'
+'
+'
+'group クラス間での処理
+'group 別のクラスから呼び出された際の処理
+'a -> b
+'
+'b --> a
+'
+'end
+'end
+
+
+end box
+
+
+@enduml

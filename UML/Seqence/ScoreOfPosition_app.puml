@@ -1,0 +1,83 @@
+@startuml
+
+participant MappEnv as m
+
+hide footbox
+box "サーバ側での処理を担当するクラス" #LightBlue
+participant api_v1.py as main
+participant ScoreOfPosition.py as calc
+participant SQLmanager.py as sql
+
+end box
+
+
+activate m
+m-> main:位置情報(経度、緯度)と画像を送信
+
+
+
+
+'group api_v1.py
+deactivate m
+activate main
+main -> calc :クラスの呼び出し
+deactivate main
+activate calc
+note left :引数としてユーザidと経度、緯度(x,y)を与える
+
+
+'group ScoreOfPosition.py
+calc ->calc:経度、緯度をもとに周囲500mの範囲(Rxy)を算出
+note left: 緯度方向の範囲は地球の丸みによる影響を考慮し\n経度(x)と赤道半径を利用して算出
+activate calc#darksalmon
+deactivate calc
+
+calc ->  sql :Rxy内で撮影された地点の経度、緯度(X, Y)を要求
+deactivate calc
+
+
+
+activate sql
+
+sql -> sql :データベースへ接続して\n周囲の撮影地点を取得
+activate sql #darksalmon
+deactivate sql
+
+sql -->calc :　Rxy内で撮影された地点の経度、緯度(X, Y)を返す
+deactivate sql
+activate calc
+
+calc -> calc:fによる点数の計算
+activate calc #darksalmon
+deactivate calc
+calc --> main : 点数を返す
+deactivate calc
+'end
+activate main
+main -> sql:受け取った点数を保存するよう命令
+deactivate main
+activate sql
+
+sql -> sql :データベースへ接続して\n点数を保存
+activate sql #darksalmon
+deactivate sql
+
+sql --> main:保存完了を通知
+deactivate sql
+activate main
+
+main -->m:点数を送信
+deactivate main
+activate m
+'end
+
+
+
+m --> m:　点数の表示
+activate m#darksalmon
+deactivate m
+deactivate m
+
+
+
+@enduml

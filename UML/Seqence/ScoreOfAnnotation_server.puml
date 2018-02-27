@@ -1,0 +1,61 @@
+@startuml
+
+hide footbox
+box "MappEnv側の処理を担当するクラス" #LightGreen
+participant CameraPreview as cp
+activate cp
+cp -> cp :画面の作成
+activate cp#DarkSalmon
+deactivate cp
+
+cp -> cp:撮影画面(図5.(a))の表示
+activate cp#DarkSalmon
+end box
+
+
+
+box "サーバ側の処理を担当するクラス" #Lightblue
+
+participant api_v1.py as main
+participant ScoreOfAnnotation.py as sa
+participant SQLmanager.py as sql
+'database データベース as db2
+
+
+endbox
+deactivate cp
+cp -> main:撮影した画像と位置情報に加え\n特徴を文字列として、特徴の数を数値としてをサーバへ送信
+deactivate cp
+activate main
+
+main-> sa :クラスの呼び出し
+deactivate main
+activate sa
+note left:引数として特徴の数を与える
+
+
+
+
+sa --> main:点数を計算して返す
+deactivate sa
+activate main
+main->sql:サーバへ点数を保存するように命令
+deactivate main
+note left :引数として点数を与える
+activate sql
+sql -> sql:サーバへ点数の保存
+activate sql#DarkSalmon
+deactivate sql
+sql --> main:点数の保存完了を通知
+deactivate sql
+activate main
+
+main -->cp: 点数を送信
+activate cp
+deactivate main
+cp -->cp :点数を表示
+activate cp #DarkSalmon
+
+deactivate cp
+deactivate cp
+@enduml

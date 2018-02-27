@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ac.u5b.td123.biop_primrose.EvalOtherPhotos">
+    tools:context="biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views.EvalOtherPhotos">
+    <!--tools:context="ac.u5b.td123.biop_primrose.EvalOtherPhotos">-->
 
     <TextView
         android:id="@+id/title"

@@ -28,6 +28,7 @@ public final class ImgContract {
 		public static final String COL_VERSION = "nroo";
 		//デリートされたか
 		public static final String COL_ISDELETED = "isdeleted";
+		public static final String COL_ANOTATION = "annotation";
 	}
 
 }

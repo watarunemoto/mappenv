@@ -49,11 +49,16 @@
     <string name="unknown_name">unknown</string>
     <string name="edit_pname">写真に名前をつける場合は入力してください</string>
     <string name="cameramap_button">地図を表示</string>
+    <string name="anotation">植物の特徴を記録する</string>
+    <string name="anotxt">情報がありません</string>
+    <string name="annotationtocamera">カメラ画面に戻る</string>
 
-    <string name="uploaded">画像をアップロードしました。\n結果:</string>
+    <string name="uploaded">画像をアップロードしました。\n獲得した点数:</string>
     <string name="cant_upload">アップロードできませんでした</string>
     <string name="do_you_reserved">保存しておきますか?</string>
     <string name="now_uploading">通信中です</string>
+    <string name="score1">点数1:</string>
+    <string name="score2">点数2:</string>
 
     <!-- otherphotogetter -->
     <string name="photo_loading">画像読み込み中</string>
@@ -145,5 +150,11 @@
     <string name="friend_accept_title">承認</string>
     <string name="friend_accept_message">承認しますか?</string>
 
+    <!--  anotation list -->
+    <string name="expandmessage">展開する</string>
+    <string name="no_data">データがありません</string>
+    <string name="add">add</string>
+    <string name="del">del</string>
+    <string name="toggle_choice_mode">とぐる</string>
 
 </resources>

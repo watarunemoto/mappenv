@@ -15,8 +15,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputFilter;
@@ -61,6 +59,7 @@ public class CameraPreview extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
+    private Toast t;
     public Context context;
 
     /**
@@ -108,8 +107,12 @@ public class CameraPreview extends FragmentActivity implements
     //connectionのフラッグ
     private boolean flag = false;
 
+    private String annotation = "";
+    private String anoret;
+
     RelativeLayout myRelativeLayout;
 
+    static final int RESULT_SUBACTIVITY = 1000;
     /**
      * ************************************************************************************************
      */
@@ -172,31 +175,36 @@ public class CameraPreview extends FragmentActivity implements
         });
 
         myRelativeLayout = (RelativeLayout) findViewById(R.id.my_relative);
-//
-//        Button mapfragmentbutton = new Button(this);
-//        mapfragmentbutton.findViewById(R.id.CameraMapbutton);
+
         final CameraMapFragment CMF = new CameraMapFragment();
         Button mapfragmentbutton = (Button) findViewById(R.id.CameraMapbutton);
         mapfragmentbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                android.app.Fragment CMF = new android.app.Fragment();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                transaction.replace(R.id.container , CMF);
                 transaction.add(R.id.container,CMF);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
-//        PhotoPreviewFragment fragment = new PhotoPreviewFragment();
-//        fragment.setArguments(bundle);
-//
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.add(R.id.container,fragment);
-//        transaction.addToBackStack("camera");
-//
-//        transaction.commit();
 
+
+        Button anobutton = (Button) findViewById(R.id.anobutton);
+        anobutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent2 = new Intent(CameraPreview.this, AnnotationActivity.class);
+//                startActivity(intent2);
+
+
+                intent2.putExtra("Annottion",annotation);
+                Log.v("ano1",annotation);
+
+
+                startActivityForResult(intent2, RESULT_SUBACTIVITY);
+            }
+        });
 
     }
 
@@ -207,7 +215,9 @@ public class CameraPreview extends FragmentActivity implements
         SurfaceHolder holder = mView.getHolder();
         holder.addCallback(surfaceHolderCallback);
         Log.v("post", "postCreate");
+
     }
+
 
 
     //カメラのコールバック
@@ -323,6 +333,7 @@ public class CameraPreview extends FragmentActivity implements
                 //loc = Gpskun();
                 if (loc == null) {
                     Toast.makeText(CameraPreview.this, R.string.cant_get_location, Toast.LENGTH_LONG).show();
+
                 } else {
                     //このアプリ専用のフォルダを使用
                     FileOutputStream myFOS = null;
@@ -406,7 +417,7 @@ public class CameraPreview extends FragmentActivity implements
 
 
     //アップロードするかどうかのダイアログを表示する
-    public String yesornodialog(final String iMGNAME, String locat, final String userID) {
+    public String yesornodialog(final String iMGNAME, String locat, final String userID ) {
         NetworkInfo nwi = cm.getActiveNetworkInfo();
         final String loc_data[] = locat.split(",", 0);
         final EditText editView = new EditText(CameraPreview.this);
@@ -422,44 +433,6 @@ public class CameraPreview extends FragmentActivity implements
             AlertDialog.Builder builder = new AlertDialog.Builder(CameraPreview.this);
             builder.setTitle(R.string.detect_img);
             builder.setNegativeButton(R.string.no_dialog, null);
-//            builder.setView(editView);
-
-            /**
-             * オプションでてキストボックスの表示を許可していれば
-             * テキストボックスを表示
-             */
-            /**
-             if (sp.getBoolean("pref_dialog_object_name",true)) {
-
-
-
-             builder.setMessage(R.string.do_you_upload);
-             builder.setView(editView);
-             builder.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialogInterface, int i) {
-            String pname = "";
-            pname = editView.getText().toString();
-            if (pname.equals("")) {
-            pname = "unknown";
-            }
-            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname);
-            hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , iMGNAME, userID);
-            }
-            });
-             } else {
-             builder.setMessage(R.string.do_uploading);
-             builder.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialogInterface, int i) {
-            String pname = "unknown";
-            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname);
-            hpt.execute(UrlCollections.URL_UPLOAD_PHOTO, iMGNAME, userID);
-            }
-            });
-             }
-
-             builder.show();
-
-             */
 
 
             Bundle bundle = new Bundle();
@@ -467,6 +440,7 @@ public class CameraPreview extends FragmentActivity implements
             bundle.putString("last_latitude",loc_data[0]);
             bundle.putString("last_longitude",loc_data[1]);
             bundle.putString("userid",userID);
+            bundle.putString("annotation",anoret);
             PhotoPreviewFragment fragment = new PhotoPreviewFragment();
             fragment.setArguments(bundle);
 
@@ -488,16 +462,18 @@ public class CameraPreview extends FragmentActivity implements
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             String pname = "";
+                            Log.v("anohpton",""+ anoret);
                             pname = editView.getText().toString();
                             if (pname.equals("")) {
                                 pname = "unknown";
                             }
-                            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname);
+                            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname,anoret);
                             hpt.nouploaddb(iMGNAME);
                             Toast.makeText(CameraPreview.this, R.string.reserved, Toast.LENGTH_SHORT).show();
                         }
                     }).show();
         }
+        Log.v("anoret?:",""+ anoret);
         return iMGNAME;
     }
 
@@ -565,6 +541,21 @@ public class CameraPreview extends FragmentActivity implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent2) {
+        super.onActivityResult(requestCode, resultCode, intent2);
+
+
+        if(resultCode == RESULT_OK && requestCode == RESULT_SUBACTIVITY &&
+                null != intent2) {
+//            String res = intent2.getStringExtra("MESSAGE2");
+
+            anoret  = intent2.getStringExtra("Annotation");
+            Log.v("anomain",""+ anoret);
+        }
+    }
+
     public void setCameraPreviewOrientation(int cameraid) {
 
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
@@ -597,6 +588,8 @@ public class CameraPreview extends FragmentActivity implements
 
         mCamera.setDisplayOrientation(result);
     }
+
+
 
 }
 

@@ -42,6 +42,11 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
     private String pname;
     private String filename;
     private String imgpath;
+    private String annotations;
+//    private int anocount;
+//    Resources res = Resources.getSystem();
+//    String s1 = res.getString(R.string.score1);
+//    String s2 = res.getString(R.string.score2);
 
     String lati;
     String longi;
@@ -50,11 +55,14 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
     SQLiteDatabase db;
 
 
-    public PhotoPostTask( Activity activity, String lati, String longi, String pname) {
+    public PhotoPostTask( Activity activity, String lati, String longi, String pname ,String annotations ) {
+//    public PhotoPostTask( Activity activity, String lati, String longi, String pname, String annotations ,int anocount) {
         this.activity = activity;
         this.lati = lati;
         this.longi = longi;
         this.pname = pname;
+        this.annotations = annotations;
+//        this.anocount = anocount;
     }
 
     @Override
@@ -65,6 +73,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         imgpath = params[1];
         String userid = params[2];
         filename = params[3];
+        annotations = params[4];
 
         //インスタンスの作成
 
@@ -91,6 +100,9 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                 .addFormDataPart(
                         "filename", filename
                 )
+                .addFormDataPart(
+                        "annotation", annotations
+                )
                 .build();
 
         Request request = new Request.Builder()
@@ -108,7 +120,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
 
             Response res = client.newCall(request).execute();
             str = res.body().string();
-            str = str.replace("{","").replace("}","").replace("\\","").replace("\"","");
+//            str = str.replace("{","").replace("}","").replace("\\","").replace("\"","");
             dbch(activity, imgpath);
 
             //dbch(activity,filename,bounus);
@@ -142,10 +154,16 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         // サーバ側phpでechoした内容を表示
 
         String message = activity.getResources().getString(R.string.uploaded);
-        String no1 =  str.split(",")[0].split(":")[0].replace("'","").replace(" ","").replace("{","").replace("}","");
+//        String no1 =  str.split(",")[0].split(":")[0].replace("'","").replace(" ","").replace("{","").replace("}","");
+        str = str.replaceAll("\"","");
+        String no1 = str.split(",")[0];
+        String no2 = str.split(",")[1];
+        String no3 = str.split(",")[2];
+
 
         if (str != null) {
-            Toast.makeText(activity, message + no1, Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数2:" + no3 , Toast.LENGTH_LONG).show();
+//            Toast.makeText(activity, message + no1 + "\n" + s1 + no2 + "\n" + s2 + no3 , Toast.LENGTH_LONG).show();
         } else {
             new AlertDialog.Builder(activity)
                     .setTitle(R.string.cant_upload)
@@ -188,6 +206,8 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         values.put(TempContract.TempImages.COL_PNAME, pname);
         values.put(TempContract.TempImages.COL_ISUPLOADED, "0");
         values.put(TempContract.TempImages.COL_ISDELETED, "0");
+        values.put(TempContract.TempImages.COL_ISDELETED, annotations);
+//        values.put(ImgContract.Images.COL_ANOTATION, annotations);
 
         db.insert(
                 TempContract.TempImages.TABLE_NAME,
@@ -197,7 +217,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
     }
 
     public void dbch(Context c, String imgpath) {
-        //データベースに帰ってきたデータをぶち込む
+        //データベースに帰ってきたデータを格納する
         if (str != null) {
             ImgOpenHelper imgOpenHelper = new ImgOpenHelper(c);
             db = imgOpenHelper.getWritableDatabase();
@@ -220,6 +240,8 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
             values.put(ImgContract.Images.COL_PNAME, pname);
             values.put(ImgContract.Images.COL_VERSION, "new");
             values.put(ImgContract.Images.COL_ISDELETED, "0");
+            values.put(ImgContract.Images.COL_ANOTATION, annotations);
+
 
             db.insert(
                     ImgContract.Images.TABLE_NAME,
