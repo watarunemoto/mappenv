@@ -162,7 +162,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
 
 
         if (str != null) {
-            Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数2:" + no3 , Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数２:" + no3 , Toast.LENGTH_LONG).show();
 //            Toast.makeText(activity, message + no1 + "\n" + s1 + no2 + "\n" + s2 + no3 , Toast.LENGTH_LONG).show();
         } else {
             new AlertDialog.Builder(activity)

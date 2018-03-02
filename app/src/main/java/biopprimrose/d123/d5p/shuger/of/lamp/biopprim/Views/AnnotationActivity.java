@@ -33,7 +33,7 @@ public class AnnotationActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_anotation_main);
+        setContentView(R.layout.fragment_annotation_main);
 
 
         Button button1 = (Button) findViewById(R.id.AnnoToCamera);
