@@ -41,6 +41,7 @@ public class PhotoPreviewFragment extends Fragment {
         final Button save_button = (Button) view.findViewById(R.id.save_button);
         final EditText editpname = (EditText) view.findViewById(R.id.editpname);
 
+
         Bundle bundle = getArguments();
         final String img_path  = bundle.getString("img_path","");
 //      /data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/
@@ -74,6 +75,7 @@ public class PhotoPreviewFragment extends Fragment {
             public void onClick(View view) {
                 upload_button.setClickable(false);
                 getFragmentManager().popBackStack();
+
 
                 String photoname;
                 if (editpname.getText().toString().equals("")){
