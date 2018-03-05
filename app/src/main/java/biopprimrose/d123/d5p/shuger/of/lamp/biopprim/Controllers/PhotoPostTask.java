@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -122,6 +123,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
             str = res.body().string();
 //            str = str.replace("{","").replace("}","").replace("\\","").replace("\"","");
             dbch(activity, imgpath);
+            Log.v("constract",annotations);
 
             //dbch(activity,filename,bounus);
         }catch (Exception e) {
@@ -181,8 +183,9 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         dialog.dismiss();
     }
 
-    //アップロードできないやつを別のデータベースに書き込むやつ
-    public void nouploaddb(String imgpath) {
+    //アップロードできない場合にデータベースへ書き込むやつ
+   public void nouploaddb(String imgpath) {
+//        Log.v("debug",annotations);
 
         String score;
         TempOpenHelper tempOpenHelper = new TempOpenHelper(activity);
@@ -195,6 +198,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                 new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US)
                         .format(new Date());
         String fname = imgpath;
+        String ano = annotations;
 
         score = "不明";
         ContentValues values = new ContentValues();
@@ -206,8 +210,8 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         values.put(TempContract.TempImages.COL_PNAME, pname);
         values.put(TempContract.TempImages.COL_ISUPLOADED, "0");
         values.put(TempContract.TempImages.COL_ISDELETED, "0");
-        values.put(TempContract.TempImages.COL_ISDELETED, annotations);
-//        values.put(ImgContract.Images.COL_ANOTATION, annotations);
+        values.put(TempContract.TempImages.COL_ANNOTATION, ano);
+//        values.put(ImgContract.Images.COL_ANNOTATION, annotations);
 
         db.insert(
                 TempContract.TempImages.TABLE_NAME,
@@ -230,6 +234,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                     new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US)
                             .format(new Date());
             String fname = imgpath;
+            String ano = annotations;
 
             ContentValues values = new ContentValues();
             values.put(ImgContract.Images.COL_LAT, lat);
@@ -240,7 +245,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
             values.put(ImgContract.Images.COL_PNAME, pname);
             values.put(ImgContract.Images.COL_VERSION, "new");
             values.put(ImgContract.Images.COL_ISDELETED, "0");
-            values.put(ImgContract.Images.COL_ANOTATION, annotations);
+            values.put(ImgContract.Images.COL_ANNOTATION, ano);
 
 
             db.insert(

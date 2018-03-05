@@ -14,12 +14,6 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Proxy;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,28 +21,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
-import okhttp3.Authenticator;
-import okhttp3.Credentials;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.Route;
 
 
 /**
@@ -66,6 +50,7 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
     String isTimelimit;
     String updated;
     int count;
+    private String annotations;
 
     String lati;
     String longi;
@@ -121,7 +106,9 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                 longi = c.getString(c.getColumnIndex(ImgContract.Images.COL_LNG));
                 updated = c.getString(c.getColumnIndex(ImgContract.Images.COL_UPDATED));
                 pname = c.getString(c.getColumnIndex(ImgContract.Images.COL_PNAME));
+                annotations = c.getString(c.getColumnIndex(ImgContract.Images.COL_ANNOTATION));
             }
+//            Log.v("watcher",annotations);
 
             //インスタンスの作成
             MultipartEntityBuilder entity = MultipartEntityBuilder.create();
@@ -134,6 +121,7 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
             String fname = dist[dist.length - 1];
             Log.v("filename", fname);
 
+            String ano = annotations;
 
             final MediaType IMAGE = MediaType.parse("image/img");
             RequestBody body = new MultipartBody.Builder()
@@ -149,6 +137,9 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                     )
                     .addFormDataPart("images", fname,
                             RequestBody.create(IMAGE, file)
+                    )
+                    .addFormDataPart(
+                            "annotation", annotations
                     )
                     .build();
 
@@ -268,6 +259,7 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                     new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US)
                             .format(new Date());
             String fname = filename;
+            String ano = annotations;
 
             ContentValues values = new ContentValues();
             values.put(ImgContract.Images.COL_LAT, lat);
@@ -278,6 +270,8 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
             values.put(ImgContract.Images.COL_PNAME, pname);
             values.put(ImgContract.Images.COL_VERSION, "new");
             values.put(ImgContract.Images.COL_ISDELETED, "0");
+            values.put(ImgContract.Images.COL_ANNOTATION, ano);
+            Log.v("dbch_anotation",ano);
 
 
             db.insert(

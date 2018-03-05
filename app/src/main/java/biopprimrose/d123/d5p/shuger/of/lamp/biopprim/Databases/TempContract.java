@@ -27,7 +27,7 @@ public class TempContract {
 		public static final String COL_ISUPLOADED = "isUploaded";
 		//削除したか
 		public static final String COL_ISDELETED = "isdeleted";
-		public static final String COL_ANOTATION = "annotation";
+		public static final String COL_ANNOTATION = "annotations";
 	}
 
 }

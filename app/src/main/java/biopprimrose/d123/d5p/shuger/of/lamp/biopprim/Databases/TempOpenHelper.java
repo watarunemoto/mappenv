@@ -25,6 +25,7 @@ public class TempOpenHelper extends SQLiteOpenHelper {
 					TempContract.TempImages.COL_PNAME + " text, " +
 					TempContract.TempImages.COL_ISUPLOADED + " text, " +
 					TempContract.TempImages.COL_ISDELETED + " text, " +
+					TempContract.TempImages.COL_ANNOTATION + " text, " +
 					"created datetime default current_timestamp, " +
 					"updated datetime default current_timestamp)";
 
