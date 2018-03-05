@@ -469,6 +469,7 @@ public class CameraPreview extends FragmentActivity implements
                             }
                             PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname,anoret);
                             hpt.nouploaddb(iMGNAME);
+                            Log.v("imgpath/" , iMGNAME);
                             Toast.makeText(CameraPreview.this, R.string.reserved, Toast.LENGTH_SHORT).show();
                         }
                     }).show();

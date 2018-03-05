@@ -39,7 +39,8 @@ public class PhotoPreviewFragment extends Fragment {
         ImageView upload_img = (ImageView) view.findViewById(R.id.upload_img);
         final Button upload_button = (Button) view.findViewById(R.id.upload_button);
         final Button save_button = (Button) view.findViewById(R.id.save_button);
-//        final EditText editpname;
+        final EditText editpname = (EditText) view.findViewById(R.id.editpname);
+
 
         Bundle bundle = getArguments();
         final String img_path  = bundle.getString("img_path","");
@@ -50,6 +51,15 @@ public class PhotoPreviewFragment extends Fragment {
         final String annotation = bundle.getString("annotation","");
         Log.v("aotation?:",""+ annotation);
         final String imgname = img_path.replace("/data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/","");
+//        final String photoname;
+
+//        if (editpname.getText().toString().equals("")){
+//            pname = "";
+//        }else{
+//            pname = editpname.getText().toString();
+//        }
+
+
 
 
 
@@ -65,19 +75,17 @@ public class PhotoPreviewFragment extends Fragment {
             public void onClick(View view) {
                 upload_button.setClickable(false);
                 getFragmentManager().popBackStack();
-                EditText editpname;
 
-                String pname = "";
-                editpname = (EditText)getActivity().findViewById(R.id.editpname);
-                pname = editpname.getText().toString();
-                if (pname.equals("")) {
-                    pname = "unknown";
+
+                String photoname;
+                if (editpname.getText().toString().equals("")){
+                    photoname = "unknown";
+                }else{
+                    photoname = editpname.getText().toString();
                 }
-
-
-                Log.v("photopreview",last_latitude+last_longitude+pname);
+                Log.v("photopreview",last_latitude+last_longitude+ photoname);
 //                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname);
-                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname,annotation);
+                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, photoname,annotation);
 //                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID);
                 Log.v("annotation",annotation);
                 hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID, imgname, annotation);
@@ -90,20 +98,16 @@ public class PhotoPreviewFragment extends Fragment {
             public void onClick(View view) {
                 upload_button.setClickable(false);
                 getFragmentManager().popBackStack();
-                EditText editpname;
-
-//                String pname = "unknown";
-                String pname = "";
-                editpname = (EditText)getActivity().findViewById(R.id.editpname);
-                pname = editpname.getText().toString();
-                if (pname.equals("")) {
-                    pname = "unknown";
+                String pname = editpname.getText().toString();
+                String photoname;
+                if (pname.equals("")){
+                    photoname = "unknown";
+                }else{
+                    photoname = pname;
                 }
-
-
                 Log.v("photopreview",last_latitude+last_longitude+pname);
                 Log.v("annotation:",""+ annotation);
-                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname, annotation);
+                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, photoname, annotation);
                 hpt.nouploaddb(img_path);
             }
         });
