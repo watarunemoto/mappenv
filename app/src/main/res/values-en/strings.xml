@@ -148,8 +148,10 @@
     <string name="no_data">No Data</string>
     <string name="del">del</string>
     <string name="expandmessage">Expand</string>
-    <string name="toggle_choice_mode"></string>
+    <string name="toggle_choice_mode">toggle</string>
     <string name="score1">Score1:</string>
     <string name="score2">Score2:</string>
+    <string name="confirm_delete">Are you sure you want to Delete?</string>
+    <string name="add">add</string>
 
 </resources>

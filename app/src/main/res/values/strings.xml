@@ -155,6 +155,7 @@
     <string name="no_data">データがありません</string>
     <string name="add">add</string>
     <string name="del">del</string>
-    <string name="toggle_choice_mode">とぐる</string>
+    <string name="toggle_choice_mode">toggle</string>
+    <string name="confirm_delete">Are you sure you want to Delete?</string>
 
 </resources>

@@ -93,13 +93,20 @@ public class PhotoResultFormActivity extends ActionBarActivity {
 		params.width = disp.getWidth();
 		imageView.setLayoutParams(params);
 		String score = c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE));
+//
+//		String[] result_list = score.split("@");
+//		if (result_list.length != 7) {
+//			text_score.setText(R.string.error);
+//			return;
+//		}
+//		text_score.setText( result_list[1] );
+		score = score.replaceAll("\"","");
+		String no1 = score.split(",")[0];
+		String no2 = score.split(",")[1];
+		String no3 = score.split(",")[2];
 
-		String[] result_list = score.split("@");
-		if (result_list.length != 7) {
-			text_score.setText(R.string.error);
-			return;
-		}
-		text_score.setText( result_list[1] );
+		text_score.setText("この写真の点数:"+ no1 + "\n" +"点数１:" + no2 + "\n" + "点数２:" + no3 );
+//		text_score.setText(score);
 
 
 

@@ -153,6 +153,9 @@
     <string name="expandmessage">展開する</string>
     <string name="score1">点数1:</string>
     <string name="score2">点数2:</string>
+    <string name="confirm_delete">本当に削除してもよろしいですか？</string>
+    <string name="add">add</string>
+    <string name="toggle_choice_mode">切り替え</string>
 
 
 </resources>
