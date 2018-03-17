@@ -157,13 +157,17 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
 
         String message = activity.getResources().getString(R.string.uploaded);
 //        String no1 =  str.split(",")[0].split(":")[0].replace("'","").replace(" ","").replace("{","").replace("}","");
-        str = str.replaceAll("\"","");
-        String no1 = str.split(",")[0];
-        String no2 = str.split(",")[1];
-        String no3 = str.split(",")[2];
+//        str = str.replaceAll("\"","");
+//        String no1 = str.split(",")[0];
+//        String no2 = str.split(",")[1];
+//        String no3 = str.split(",")[2];
 
 
         if (str != null) {
+            str = str.replaceAll("\"","");
+            String no1 = str.split(",")[0];
+            String no2 = str.split(",")[1];
+            String no3 = str.split(",")[2];
             Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数２:" + no3 , Toast.LENGTH_LONG).show();
 //            Toast.makeText(activity, message + no1 + "\n" + s1 + no2 + "\n" + s2 + no3 , Toast.LENGTH_LONG).show();
         } else {

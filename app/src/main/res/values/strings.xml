@@ -143,7 +143,6 @@
 
 
     <!-- something to wrong -->
-    <string name="something_to_wrong">なにかがおかしいようです</string>
 
     <!-- friend activity -->
     <string name="friend_toolbar">フレンドリスト</string>
@@ -157,5 +156,6 @@
     <string name="del">del</string>
     <string name="toggle_choice_mode">toggle</string>
     <string name="confirm_delete">Are you sure you want to Delete?</string>
+    <string name="something_to_wrong">エラーが発生しました...</string>
 
 </resources>

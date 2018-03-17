@@ -139,7 +139,7 @@
 
 
     <!-- something to wrong -->
-    <string name="something_to_wrong">なにかがおかしいようです</string>
+    <string name="something_to_wrong">エラーが発生しました...</string>
 
     <!-- friend activity -->
     <string name="friend_toolbar">フレンドリスト</string>
