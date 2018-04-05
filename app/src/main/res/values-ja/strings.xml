@@ -156,6 +156,8 @@
     <string name="confirm_delete">本当に削除してもよろしいですか？</string>
     <string name="add">add</string>
     <string name="toggle_choice_mode">切り替え</string>
+    <string name="upload_error">サーバ側でエラーが発生しました...</string>
+    <string name="upload_error_return">Somethingwentwrong</string>
 
 
 </resources>

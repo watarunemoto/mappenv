@@ -153,5 +153,7 @@
     <string name="score2">Score2:</string>
     <string name="confirm_delete">Are you sure you want to Delete?</string>
     <string name="add">add</string>
+    <string name="upload_error">Sorry, something went wrong on Server</string>
+    <string name="upload_error_return">Somethingwentwrong</string>
 
 </resources>

@@ -161,30 +161,68 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
 //        String no1 = str.split(",")[0];
 //        String no2 = str.split(",")[1];
 //        String no3 = str.split(",")[2];
-
-
-        if (str != null) {
-            str = str.replaceAll("\"","");
-            String no1 = str.split(",")[0];
-            String no2 = str.split(",")[1];
-            String no3 = str.split(",")[2];
-            Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数２:" + no3 , Toast.LENGTH_LONG).show();
-//            Toast.makeText(activity, message + no1 + "\n" + s1 + no2 + "\n" + s2 + no3 , Toast.LENGTH_LONG).show();
-        } else {
-            new AlertDialog.Builder(activity)
-                    .setTitle(R.string.cant_upload)
-                    .setMessage(R.string.do_you_reserved)
-                    .setNegativeButton(R.string.yes_dialog, null)
-                    .setPositiveButton(R.string.no_dialog, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            nouploaddb(imgpath);
-                        }
-                    }).show();
-
-            Toast.makeText(activity, R.string.reserved, Toast.LENGTH_LONG).show();
+        try {
+            if (str == null) {
+                new AlertDialog.Builder(activity)
+                        .setTitle(R.string.cant_upload)
+                        .setMessage(R.string.do_you_reserved)
+                        .setNegativeButton(R.string.yes_dialog, null)
+                        .setPositiveButton(R.string.no_dialog, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                nouploaddb(imgpath);
+                            }
+                        }).show();
+                Toast.makeText(activity, R.string.reserved, Toast.LENGTH_LONG).show();
+            } else if (str != null) {
+                str = str.replaceAll("\"", "");
+                String no1 = str.split(",")[0];
+                String no2 = str.split(",")[1];
+                String no3 = str.split(",")[2];
+                Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数２:" + no3, Toast.LENGTH_LONG).show();
+            }
+        }
+        catch (java.lang.ArrayIndexOutOfBoundsException e){
+            Toast.makeText(activity, R.string.upload_error, Toast.LENGTH_LONG).show();
         }
         dialog.dismiss();
+
+
+//
+//        if (str == "Internal Server Error" || str == "Somethingwentwrong") {
+//            Toast.makeText(activity, R.string.upload_error, Toast.LENGTH_LONG).show();
+
+//        if (str != null && str != message) {
+//            str = str.replaceAll("\"","");
+//            String no1 = str.split(",")[0];
+//            String no2 = str.split(",")[1];
+//            String no3 = str.split(",")[2];
+//            Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数２:" + no3 , Toast.LENGTH_LONG).show();
+//            Toast.makeText(activity, message + no1 + "\n" + s1 + no2 + "\n" + s2 + no3 , Toast.LENGTH_LONG).show();
+//        } else {
+//        } else if (str == null){
+//            new AlertDialog.Builder(activity)
+//                    .setTitle(R.string.cant_upload)
+//                    .setMessage(R.string.do_you_reserved)
+//                    .setNegativeButton(R.string.yes_dialog, null)
+//                    .setPositiveButton(R.string.no_dialog, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            nouploaddb(imgpath);
+//                        }
+//                    }).show();
+//
+//            Toast.makeText(activity, R.string.reserved, Toast.LENGTH_LONG).show();
+//        }else{
+//            Log.v("log",str);
+//            str = str.replaceAll("\"","");
+//            String no1 = str.split(",")[0];
+//            String no2 = str.split(",")[1];
+//            String no3 = str.split(",")[2];
+//            Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数２:" + no3 , Toast.LENGTH_LONG).show();
+
+//        }
+//        dialog.dismiss();
     }
 
     //アップロードできない場合にデータベースへ書き込むやつ

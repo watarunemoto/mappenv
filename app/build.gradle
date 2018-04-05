@@ -16,6 +16,21 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+//        nagamihinageshi {
+//            minifyEnabled false
+//            applicationIDSuffix ".nh";
+//
+//        }
+    }
+    productFlavors {
+        hinageshi {
+            applicationIdSuffix ".nh"
+            versionNameSuffix "-nh"
+        }
+        full {
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
+        }
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
