@@ -107,6 +107,9 @@
 
     <!-- tag ranking -->
     <string name="rankings">ランキング</string>
+    <string name="ranking_count">撮影枚数 : </string>
+    <string name="ranking_points">獲得点数 :</string>
+
 
     <!-- title activity -->
     <string name="photo_num">Photo:</string>

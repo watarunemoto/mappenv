@@ -3,11 +3,9 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
@@ -49,9 +47,12 @@ public class RankDetailFragment extends Fragment {
         TextView userid_text = (TextView) view.findViewById(R.id.userid_rank_detail);
         userid_text.setText("ID:"+ username);
         TextView point_text = (TextView) view.findViewById(R.id.point_rank_detail);
-        point_text.setText("POINT:"+ point);
+//        point_text.setText("POINT:"+ point);
+        point_text.setText(getResources().getString(R.string.ranking_count)+ photo_num);
         TextView photo_num_text = (TextView) view.findViewById(R.id.numphoto_rank_detail);
-        photo_num_text.setText(photo_num);
+//        photo_num_text.setText(photo_num);
+        photo_num_text.setText(getResources().getString(R.string.ranking_points) + point);
+
         return view;
     }
 }

@@ -24,14 +24,20 @@ android {
     }
     productFlavors {
         hinageshi {
-            applicationIdSuffix ".nh"
-            versionNameSuffix "-nh"
+//            versionNameSuffix '_nh'
+//            applicationIdSuffix '.nh'
+            minSdkVersion 15
         }
         full {
-            applicationIdSuffix ".full"
-            versionNameSuffix "-full"
+//            applicationIdSuffix '.full'
+            minSdkVersion 15
+//            versionNameSuffix '_full'
         }
     }
+//    sourceSets{
+//        hinageshi.java.srcDirs = ['src/main/java']
+//        full.java.srcDirs = ['src/main/java']
+//    }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'

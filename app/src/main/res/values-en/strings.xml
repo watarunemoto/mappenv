@@ -155,5 +155,7 @@
     <string name="add">add</string>
     <string name="upload_error">Sorry, something went wrong on Server</string>
     <string name="upload_error_return">Somethingwentwrong</string>
+    <string name="ranking_count">Photo :</string>
+    <string name="ranking_points">Points :</string>
 
 </resources>

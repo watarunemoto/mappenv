@@ -158,6 +158,8 @@
     <string name="toggle_choice_mode">切り替え</string>
     <string name="upload_error">サーバ側でエラーが発生しました...</string>
     <string name="upload_error_return">Somethingwentwrong</string>
+    <string name="ranking_points">獲得点数 :</string>
+    <string name="ranking_count">"撮影枚数 : "</string>
 
 
 </resources>

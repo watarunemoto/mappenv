@@ -102,6 +102,7 @@ public class PhotoResultFormActivity extends AppCompatActivity {
 //		text_score.setText( result_list[1] );
         score = score.replaceAll("\"","");
         score = score.replaceAll("\n","");
+		score = score.replaceAll("[A-Z]]","[a-z]");
 //        String [] score1 = score.split("");
 //        System.out.println(Arrays.deepToString(score1));
 //        String cc = "Somethingwentwrong";
