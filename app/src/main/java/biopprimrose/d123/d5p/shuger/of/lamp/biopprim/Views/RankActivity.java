@@ -86,7 +86,8 @@ public class RankActivity extends AppCompatActivity {
 				bundle.putString("userid", rowdata);
                 bundle.putString("point", point);
                 bundle.putString("num", num);
-
+//				bundle.putString("num", point);
+//                bundle.putString("point", num);
 
                 // フラグメントに渡す値をセット
 				rdf.setArguments(bundle);

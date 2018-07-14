@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -28,7 +28,7 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 
 
-public class PhotoResultFormActivity extends ActionBarActivity {
+public class PhotoResultFormActivity extends AppCompatActivity {
 	//リストビューのを押した時の表示画面を請け負うActivity
 
 	private long imgId;
@@ -93,13 +93,41 @@ public class PhotoResultFormActivity extends ActionBarActivity {
 		params.width = disp.getWidth();
 		imageView.setLayoutParams(params);
 		String score = c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE));
+//
+//		String[] result_list = score.split("@");
+//		if (result_list.length != 7) {
+//			text_score.setText(R.string.error);
+//			return;
+//		}
+//		text_score.setText( result_list[1] );
+        score = score.replaceAll("\"","");
+        score = score.replaceAll("\n","");
+		score = score.replaceAll("[A-Z]]","[a-z]");
+//        String [] score1 = score.split("");
+//        System.out.println(Arrays.deepToString(score1));
+//        String cc = "Somethingwentwrong";
+        String cc = getResources().getString(R.string.upload_error_return);
+//        String aa = String.valueOf(score.equals(cc));
+		if (!(score.equals("error")) && !(score.equals(cc))) {
+//			score = score.replaceAll("\"","");
+			String no1 = score.split(",")[0];
+			String no2 = score.split(",")[1];
+			String no3 = score.split(",")[2];
+			text_score.setText("この写真の点数:"+ no1 + "\n" +"点数１:" + no2 + "\n" + "点数２:" + no3 );
+//            Toast.makeText(activity, message + no1 + "\n" + s1 + no2 + "\n" + s2 + no3 , Toast.LENGTH_LONG).show();
+		} else {
+            text_score.setText(R.string.upload_error);
+//            text_score.setText(R.string.);
 
-		String[] result_list = score.split("@");
-		if (result_list.length != 7) {
-			text_score.setText(R.string.error);
-			return;
 		}
-		text_score.setText( result_list[1] );
+
+//		score = score.replaceAll("\"","");
+//		String no1 = score.split(",")[0];
+//		String no2 = score.split(",")[1];
+//		String no3 = score.split(",")[2];
+//
+//		text_score.setText("この写真の点数:"+ no1 + "\n" +"点数１:" + no2 + "\n" + "点数２:" + no3 );
+//		text_score.setText(score);
 
 
 

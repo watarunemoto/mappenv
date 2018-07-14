@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views.PhotoResultFormActivity;
 
 /**
  * Created by amemiyaY on 2016/07/14.
@@ -122,7 +121,7 @@ public class PhotoResultFragment extends Fragment {
 
     private void deleteImg(final String imgId) {
         new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.do_you_delete)
+                .setTitle(R.string.confirm_delete)
                 .setMessage(R.string.do_delete)
                 .setNegativeButton(R.string.no_dialog, null)
                 .setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {

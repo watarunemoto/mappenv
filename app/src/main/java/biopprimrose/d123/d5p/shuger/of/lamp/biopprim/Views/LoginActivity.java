@@ -10,12 +10,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,6 +59,7 @@ public class LoginActivity extends Activity {
         /**
          * Edittextの入力制限
          * 16文字以内、英数字のみ、1行に表示
+         * 40m文字にします tsuchiya
          */
 
         InputFilter inputFilter =
@@ -78,7 +76,7 @@ public class LoginActivity extends Activity {
                     ) {
                         if (source.toString().matches("[a-zA-Z0-9]"))
                         {
-                            if (dend < 16) {
+                            if (dend < 40) {
                                 return source;
                             } else {
                                 return "";

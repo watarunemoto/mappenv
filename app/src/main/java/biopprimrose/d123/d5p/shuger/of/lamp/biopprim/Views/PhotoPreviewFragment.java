@@ -90,6 +90,7 @@ public class PhotoPreviewFragment extends Fragment {
                 Log.v("annotation",annotation);
                 hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID, imgname, annotation);
                 Log.v("imgname",imgname);
+                Log.v("photoname",photoname);
             }
         });
 

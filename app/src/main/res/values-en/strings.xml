@@ -24,7 +24,7 @@
     <string name="pref_dialog_object_name">Please input name</string>
     <string name="pref_dialog_object_name_summ">input dialog on or off</string>
     <string name="title_toolbar">MappEnv</string>
-    <string name="title_list_text">Taken photo at around here</string>
+    <string name="title_list_text">Photos taken around here</string>
     <string name="rank_toolbar">Ranking</string>
     <string name="rank_detail">Stats</string>
     <string name="wrong_text">Please input ascii</string>
@@ -47,7 +47,7 @@
     <string name="turn_on_gps">Turn on gps?</string>
     <string name="unknown_name">unknown</string>
     <string name="edit_pname">Enter photo name if you want</string>
-    <string name="cameramap_button">Display a Map</string>
+    <string name="cameramap_button">Map</string>
 
     <string name="uploaded">Result:</string>
     <string name="cant_upload">"Can't upload"</string>
@@ -59,7 +59,7 @@
     <string name="photo_loading">Loading</string>
 
     <!-- login_activity -->
-    <string name="set_id">Set id</string>
+    <string name="set_id">Set Your UserId</string>
     <string name="input_id">Please input your id</string>
     <string name="ok_dialog">OK</string>
     <string name="your_id_ok">This id is ok</string>
@@ -135,7 +135,7 @@
 
 
     <!-- something to wrong -->
-    <string name="something_to_wrong">Something to wrong</string>
+    <string name="something_to_wrong">Sorry, something went wrong ...</string>
     <string name="is_existed">Request existed</string>
 
     <!-- friend activity -->
@@ -143,13 +143,19 @@
     <string name="friend_accept_title">Accept?</string>
     <string name="friend_accept_message">Do you accept friend</string>
     <string name="anotxt">NO DATA</string>
-    <string name="anotation">Add more data</string>
+    <string name="anotation">Loading now...</string>
     <string name="annotationtocamera">Return to Camera</string>
     <string name="no_data">No Data</string>
     <string name="del">del</string>
     <string name="expandmessage">Expand</string>
-    <string name="toggle_choice_mode"></string>
+    <string name="toggle_choice_mode">toggle</string>
     <string name="score1">Score1:</string>
     <string name="score2">Score2:</string>
+    <string name="confirm_delete">Are you sure you want to Delete?</string>
+    <string name="add">add</string>
+    <string name="upload_error">Sorry, something went wrong on Server</string>
+    <string name="upload_error_return">Somethingwentwrong</string>
+    <string name="ranking_count">Photo :</string>
+    <string name="ranking_points">Points :</string>
 
 </resources>

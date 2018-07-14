@@ -59,6 +59,9 @@
     <string name="now_uploading">通信中です</string>
     <string name="score1">点数1:</string>
     <string name="score2">点数2:</string>
+    <string name="upload_error">サーバとの通信でエラーが発生しました</string>
+    <string name="upload_error_return">Somethingwentwrong</string>
+
 
     <!-- otherphotogetter -->
     <string name="photo_loading">画像読み込み中</string>
@@ -95,15 +98,18 @@
 
     <!-- rank custom adapter -->
     <string name="pos_rank">pos_rank</string>
-    <string name="dialog_rangking_getter">つうしんちゅう</string>
+    <string name="dialog_rangking_getter">通信中</string>
 
 
     <!-- tablist -->
-    <string name="photo_list">ふぉとりすと</string>
+    <string name="photo_list">写真一覧</string>
     <string name="no_upload_list">未アップロード</string>
 
     <!-- tag ranking -->
     <string name="rankings">ランキング</string>
+    <string name="ranking_count">撮影枚数 : </string>
+    <string name="ranking_points">獲得点数 :</string>
+
 
     <!-- title activity -->
     <string name="photo_num">Photo:</string>
@@ -143,18 +149,20 @@
 
 
     <!-- something to wrong -->
-    <string name="something_to_wrong">なにかがおかしいようです</string>
 
     <!-- friend activity -->
     <string name="friend_toolbar">フレンドリスト</string>
     <string name="friend_accept_title">承認</string>
     <string name="friend_accept_message">承認しますか?</string>
+    <string name="something_to_wrong">エラーが発生しました...</string>
 
     <!--  anotation list -->
     <string name="expandmessage">展開する</string>
     <string name="no_data">データがありません</string>
     <string name="add">add</string>
     <string name="del">del</string>
-    <string name="toggle_choice_mode">とぐる</string>
+    <string name="toggle_choice_mode">toggle</string>
+    <string name="confirm_delete">Are you sure you want to Delete?</string>
+
 
 </resources>
