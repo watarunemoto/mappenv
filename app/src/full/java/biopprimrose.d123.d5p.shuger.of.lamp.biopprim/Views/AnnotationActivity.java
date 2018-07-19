@@ -20,6 +20,7 @@ public class AnnotationActivity extends AppCompatActivity {
     /** Called when the activity is first created. */
 
 
+//    static String annotation;
     static String annotation;
 
 
@@ -37,6 +38,7 @@ public class AnnotationActivity extends AppCompatActivity {
 
 
         Button button1 = (Button) findViewById(R.id.AnnoToCamera);
+        annotation = "";
 
         button1.setOnClickListener(new View.OnClickListener(){
             @Override

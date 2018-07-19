@@ -107,8 +107,8 @@ public class CameraPreview extends FragmentActivity implements
     //connectionのフラッグ
     private boolean flag = false;
 
-    private String annotation = "";
-    private String anoret;
+    static String annotation = "";
+    private String anoret = "";
 
     RelativeLayout myRelativeLayout;
 
@@ -131,7 +131,7 @@ public class CameraPreview extends FragmentActivity implements
         locationRequest = LocationRequest
                 .create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(1000)
+                .setInterval(3000)
                 .setFastestInterval(500);
 
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -467,7 +467,10 @@ public class CameraPreview extends FragmentActivity implements
                             if (pname.equals("")) {
                                 pname = "unknown";
                             }
-                            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname,anoret);
+                            if (anoret.equals(null)){
+                                anoret = "";
+                            }
+                            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname, anoret);
                             hpt.nouploaddb(iMGNAME);
                             Log.v("imgpath/" , iMGNAME);
                             Toast.makeText(CameraPreview.this, R.string.reserved, Toast.LENGTH_SHORT).show();
@@ -509,13 +512,33 @@ public class CameraPreview extends FragmentActivity implements
             googleApiClient.connect();
             flag = true;
         }
+        Log.v("gps",gpsStatus);
         super.onStart();
+    }
+
+
+    @Override
+    protected void onResume() {
+        if (gpsStatus.indexOf("gps", 0) >= 0 && !flag) {
+//        if (gpsStatus.indexOf("gps", 0) >= 0) {
+            googleApiClient.connect();
+            flag = true;
+        }
+        super.onResume();
     }
 
     @Override
     protected void onStop() {
         googleApiClient.disconnect();
+        flag = false;
         super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        googleApiClient.disconnect();
+        flag = false;
+        super.onPause();
     }
 
     @Override
@@ -554,7 +577,15 @@ public class CameraPreview extends FragmentActivity implements
 
             anoret  = intent2.getStringExtra("Annotation");
             Log.v("anomain",""+ anoret);
+            if (anoret.equals(null)){
+                anoret = "";
+            }
         }
+        if (gpsStatus.indexOf("gps", 0) >= 0 ) {
+            googleApiClient.connect();
+            flag = true;
+        }
+
     }
 
     public void setCameraPreviewOrientation(int cameraid) {

@@ -30,7 +30,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.android.gms.maps.model.LatLng;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,13 +47,13 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.GetMyLocation;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.LoadDataTask;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.MyLocation;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.PhotoMultiTransfer;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankDonwloader;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.OnRecycleListener;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankDonwloader;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
 

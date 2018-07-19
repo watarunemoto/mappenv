@@ -108,7 +108,7 @@
     <string name="nav_upload" >全部アップロード</string>
     <string name="nav_point">ポイント </string>
     <string name="nav_photonum">写真 : </string>
-    <string name="title_nav_menu">extra menu</string>
+    <string name="title_nav_menu">Extra menu</string>
     <string name="nav_reset">reset_upload</string>
 
     <!-- photomulti -->
