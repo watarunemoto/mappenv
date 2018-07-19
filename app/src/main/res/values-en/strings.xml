@@ -18,7 +18,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_text1">BioPhoto</string>
     <string name="nav_item_camera">Camera</string>
-    <string name="nav_item_list">list</string>
+    <string name="nav_item_list">List</string>
     <string name="nav_item_map">Map</string>
     <string name="nav_item_rank">Ranking</string>
     <string name="pref_dialog_object_name">Please input name</string>
@@ -106,10 +106,10 @@
     <string name="photo_num">Photo:</string>
 
     <!-- navgation -->
-    <string name="nav_upload" >all upload</string>
-    <string name="nav_point">point </string>
+    <string name="nav_upload" >All upload</string>
+    <string name="nav_point">Point</string>
     <string name="nav_photonum">Photos : </string>
-    <string name="title_nav_menu">extra menu</string>
+    <string name="title_nav_menu">Extra menu</string>
     <string name="nav_reset">reset_upload</string>
 
     <!-- photomulti -->

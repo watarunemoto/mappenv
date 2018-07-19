@@ -121,8 +121,12 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
             String fname = dist[dist.length - 1];
             Log.v("filename", fname);
 
-            String ano = annotations;
+            String ano = "なし";
+            if (annotations != null){
+                ano = annotations;
+            }
 
+            Log.v("pmt-ano",ano + annotations);
             final MediaType IMAGE = MediaType.parse("image/img");
             RequestBody body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -139,7 +143,8 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                             RequestBody.create(IMAGE, file)
                     )
                     .addFormDataPart(
-                            "annotation", annotations
+//                            "annotation", annotations
+                            "annotation", ano
                     )
                     .build();
 

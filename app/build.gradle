@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('/Users/tsuchiya/androidbak/debug.keystore')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion 22
-    buildToolsVersion '25.0.2'
-
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "biopprimrose.d123.d5p.shuger.of.lamp"
         minSdkVersion 15
@@ -15,23 +22,31 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            jniDebuggable false
+            signingConfig signingConfigs.config
         }
 //        nagamihinageshi {
 //            minifyEnabled false
 //            applicationIDSuffix ".nh";
 //
 //        }
+        debug {
+            signingConfig signingConfigs.config
+        }
     }
+    flavorDimensions "default"
     productFlavors {
         hinageshi {
 //            versionNameSuffix '_nh'
 //            applicationIdSuffix '.nh'
             minSdkVersion 15
+            signingConfig signingConfigs.config
         }
         full {
 //            applicationIdSuffix '.full'
             minSdkVersion 15
 //            versionNameSuffix '_full'
+            signingConfig signingConfigs.config
         }
     }
 //    sourceSets{
@@ -45,24 +60,46 @@ android {
     }
 }
 
+
+
+
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile('org.apache.httpcomponents:httpcore:4.3.3') {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation('org.apache.httpcomponents:httpcore:4.3.3') {
         exclude module: 'httpclient'
     }
-    compile('org.apache.httpcomponents:httpmime:4.3.6') {
+    implementation('org.apache.httpcomponents:httpmime:4.3.6') {
         exclude module: 'httpclient'
     }
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.google.android.gms:play-services:6.5.87'
-    compile 'com.android.support:design:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.android.support:support-v4:22.2.1'
-    compile 'com.jpardogo.materialtabstrip:library:1.0.6'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    testCompile 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:22.2.1'
+    implementation 'com.google.android.gms:play-services:6.5.87'
+    implementation 'com.android.support:design:22.2.1'
+    implementation 'com.android.support:recyclerview-v7:22.2.1'
+    implementation 'com.android.support:support-v4:22.2.1'
+    implementation 'com.jpardogo.materialtabstrip:library:1.0.6'
+    implementation 'com.squareup.okhttp3:okhttp:3.4.1'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    testImplementation 'junit:junit:4.12'
 }
+
+//dependencies {
+//    compile fileTree(include: ['*.jar'], dir: 'libs')
+//    compile('org.apache.httpcomponents:httpcore:4.3.3') {
+//        exclude module: 'httpclient'
+//    }
+//    compile('org.apache.httpcomponents:httpmime:4.3.6') {
+//        exclude module: 'httpclient'
+//    }
+//    compile 'com.android.support:appcompat-v7:22.2.1'
+//    compile 'com.google.android.gms:play-services:6.5.87'
+//    compile 'com.android.support:design:22.2.1'
+//    compile 'com.android.support:recyclerview-v7:22.2.1'
+//    compile 'com.android.support:support-v4:22.2.1'
+//    compile 'com.jpardogo.materialtabstrip:library:1.0.6'
+//    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+//    compile 'org.greenrobot:eventbus:3.0.0'
+//    testCompile 'junit:junit:4.12'
+//}
 
 
 

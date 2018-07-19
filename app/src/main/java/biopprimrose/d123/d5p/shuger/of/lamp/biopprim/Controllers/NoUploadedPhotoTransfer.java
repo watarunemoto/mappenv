@@ -47,6 +47,7 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
     private String longi;
     private String updated;
     private String pname;
+    private String annotation;
     String id;
 
     GridView myListview;
@@ -68,6 +69,7 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
         //呼び出された時の引数
         String url = params[0];
         id = params[1];
+        annotation = "";
 
         TempOpenHelper tempOpenHelper = new TempOpenHelper(context);
         SQLiteDatabase db = tempOpenHelper.getReadableDatabase();
@@ -90,6 +92,7 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
             longi = c.getString(c.getColumnIndex(TempContract.TempImages.COL_LNG));
             updated = c.getString(c.getColumnIndex(TempContract.TempImages.COL_UPDATED));
             pname = c.getString(c.getColumnIndex(TempContract.TempImages.COL_PNAME));
+            annotation = c.getString(c.getColumnIndex(TempContract.TempImages.COL_ANNOTATION));
         }
 
         c.close();
@@ -207,6 +210,7 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
         values.put(ImgContract.Images.COLUMN_FILE_NAME, fname);
         values.put(ImgContract.Images.COL_PNAME, pname);
         values.put(ImgContract.Images.COL_VERSION, "new");
+        values.put(ImgContract.Images.COL_ANNOTATION, "annotions");
         values.put(ImgContract.Images.COL_ISDELETED, "0");
 
         long id = db.insert(
