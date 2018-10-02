@@ -149,7 +149,8 @@ public class TitleActivity
         rank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TitleActivity.this, RankActivity.class);
+//                Intent intent = new Intent(TitleActivity.this, RankActivity.class);
+                Intent intent = new Intent(TitleActivity.this, NewRankActivity.class);
                 startActivity(intent);
             }
         });
