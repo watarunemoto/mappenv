@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,6 @@ public class RankCategory extends Fragment {
             textview.setText(mTaskResult);
         }
 
-
         return view;
     }
 
@@ -83,12 +83,20 @@ public class RankCategory extends Fragment {
 
         @Override
         public void onLoadFinished(Loader<String> loader, String data) {
-            getActivity().getSupportLoaderManager().destroyLoader(loader.getId());
-            // 結果は data に出てくる
-            mTaskResult = data;
+            try {
+                getActivity().getSupportLoaderManager().destroyLoader(loader.getId());
+                // 結果は data に出てくる
+                mTaskResult = data;
+//            try{
+                TextView textview = (TextView) getView().findViewById(R.id.categorybutton);
+                textview.setText(mTaskResult);
+//            }catch(NullPointerException e){
+//                return;
+//            }
 
-            TextView textview = (TextView) getView().findViewById(R.id.categorybutton);
-            textview.setText(mTaskResult);
+            }catch (NullPointerException e){
+                Log.d("ぬるぽ", data);
+            }
         }
 
         @Override

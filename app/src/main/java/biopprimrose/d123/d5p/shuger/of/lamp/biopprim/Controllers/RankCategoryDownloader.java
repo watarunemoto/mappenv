@@ -53,6 +53,12 @@ public class RankCategoryDownloader extends NewRankDownloader {
 
 
 //        return "task complete: " + mExtraParam + sb.toString();
-        return sb.toString();
+        try {
+            return sb.toString();
+        }catch(NullPointerException e) {
+            Log.d("ぬるぽ","ぬるぽ");
+            return null;
+        }
+
     }
 }
