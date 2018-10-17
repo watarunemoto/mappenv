@@ -30,6 +30,7 @@ public class UrlCollections  {
 
 
     public static final String URL_GET_CATEGORY = SERVER_NAME + "download/rankingcategory";
+    public static final String URL_GET_CATEGORYRANKING = SERVER_NAME + "download/newranking";
 
     public static final String URL_UPLOAD_PHOTO = SERVER_NAME +  "upload/photo";
     public static final String URL_RANKINGS = SERVER_NAME + "download/ranking";

@@ -9,13 +9,13 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankCategoryDownloader;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankCategoryGetDownloader;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
 public class NewRankActivity extends AppCompatActivity implements NewRankFragment.RankItemclicklistener{
     private static final int LOADER_ID = 1;
-    private static final String SAVE_INSTANCE_TASK_RESULT = "info.loader.RankCategoryDownloader.SAVE_INSTANCE_TASK_RESULT";
+    private static final String SAVE_INSTANCE_TASK_RESULT = "info.loader.RankCategoryGetDownloader.SAVE_INSTANCE_TASK_RESULT";
     private static final String ARG_EXTRA_PARAM = "ARG_EXTRA_PARAM";
     private String mTaskResult;
 
@@ -26,8 +26,8 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
 
 
         // 渡すデータを準備する
-        String[] kurage = { "密度", "アノテーション", "連続撮影", "ほげ", "hoge", "hogehoge" };
-        Bundle bundle = new Bundle();
+//        String[] kurage = { "密度", "アノテーション", "連続撮影", "ほげ", "hoge", "hogehoge" };
+//        Bundle bundle = new Bundle();
 //        bundle.putStringArray("kurage", kurage);
 //        bundle.putStringArray("kurage" , kurage);
 
@@ -35,19 +35,27 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
         if (savedInstanceState != null) {
             mTaskResult = savedInstanceState.getString(SAVE_INSTANCE_TASK_RESULT);
         }
+        if (mTaskResult != null) {
+//            Log.d("onloadfinishRank", mTaskResult);
+//            bundle.putStringArray("kurage", mTaskResult.split(",", 0));
+//            NewRankFragment fragment = new NewRankFragment();
+//            fragment.setArguments(bundle);
+//            FragmentManager manager = getSupportFragmentManager();
+//            // フラグメントをアクティビティに追加する FragmentTransaction を利用する
+//            FragmentTransaction transaction = manager.beginTransaction();
+//            transaction.add(R.id.container_new_rank, fragment, "fragment");
+//            transaction.addToBackStack(null);
+//            transaction.commit();
+//            Log.d("finish transaction",mTaskResult);
+
+        }
         if (mTaskResult == null) {
             Bundle args = new Bundle();
             args.putString(ARG_EXTRA_PARAM, UrlCollections.URL_GET_CATEGORY);
             Log.d("bundle",args.getString(ARG_EXTRA_PARAM));
             getSupportLoaderManager().initLoader(LOADER_ID, args, mCallback);
         }
-        if (savedInstanceState != null) {
-            mTaskResult = savedInstanceState.getString(SAVE_INSTANCE_TASK_RESULT);
-        }
-        if (mTaskResult != null) {
 
-
-        }
 
         // フラグメントを生成
 
@@ -64,7 +72,11 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
         @Override
         public Loader<String> onCreateLoader(int id, Bundle args) {
             String extraParam = args.getString(ARG_EXTRA_PARAM);
-            return new RankCategoryDownloader(NewRankActivity.this, extraParam);
+//            ProgressDialog prog;
+//            prog = new ProgressDialog(NewRankActivity.this);
+//            prog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//            prog.show();
+            return new RankCategoryGetDownloader(NewRankActivity.this, extraParam);
         }
 
         @Override
@@ -86,6 +98,8 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
 //        transaction.addToBackStack(null);
             transaction.commitAllowingStateLoss();
             Log.d("finish transaction",mTaskResult);
+
+
         }
 
 

@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankCategoryDownloader;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankCategoryPostDownloader;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
@@ -22,7 +22,7 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
  */
 public class RankCategory extends Fragment {
     private static final int LOADER_ID = 1;
-    private static final String SAVE_INSTANCE_TASK_RESULT = "info.loader.RankCategoryDownloader.SAVE_INSTANCE_TASK_RESULT";
+    private static final String SAVE_INSTANCE_TASK_RESULT = "info.loader.RankCategoryGetDownloader.SAVE_INSTANCE_TASK_RESULT";
     private static final String ARG_EXTRA_PARAM = "ARG_EXTRA_PARAM";
 
     private String mTaskResult;
@@ -39,10 +39,11 @@ public class RankCategory extends Fragment {
 //        return inflater.inflate(R.layout.fragment_rank_category, container, false);
         View view = inflater.inflate(R.layout.fragment_rank_category, container, false);
 
+        String kurage;
 
         TextView textview = (TextView) view.findViewById(R.id.categorybutton);
         if (getArguments() != null && getArguments().containsKey("selected")) {
-            String kurage = getArguments().getString("selected");
+            kurage = getArguments().getString("selected");
             textview.setText(kurage);
         }
 
@@ -53,16 +54,17 @@ public class RankCategory extends Fragment {
         if (savedInstanceState != null) {
             mTaskResult = savedInstanceState.getString(SAVE_INSTANCE_TASK_RESULT);
         }
-        if (mTaskResult == null) {
-            Bundle args = new Bundle();
-            args.putString(ARG_EXTRA_PARAM, UrlCollections.URL_GET_CATEGORY);
-            getActivity().getSupportLoaderManager().initLoader(LOADER_ID, args, mCallback);
-        }
-        if (savedInstanceState != null) {
-            mTaskResult = savedInstanceState.getString(SAVE_INSTANCE_TASK_RESULT);
-        }
+
         if (mTaskResult != null) {
             textview.setText(mTaskResult);
+        }
+        if (mTaskResult == null) {
+            Bundle args = new Bundle();
+//            args.putString(ARG_EXTRA_PARAM, UrlCollections.URL_GET_CATEGORYRANKING);
+//            args.putString(ARG_EXTRA_PARAM, getArguments().getString("selected"));
+            args.putString("URI",UrlCollections.URL_GET_CATEGORYRANKING);
+            args.putString("QueryString",getArguments().getString("selected"));
+            getActivity().getSupportLoaderManager().initLoader(LOADER_ID, args, mCallback);
         }
 
         return view;
@@ -77,8 +79,8 @@ public class RankCategory extends Fragment {
     private final LoaderManager.LoaderCallbacks<String> mCallback = new LoaderManager.LoaderCallbacks<String>() {
         @Override
         public Loader<String> onCreateLoader(int id, Bundle args) {
-            String extraParam = args.getString(ARG_EXTRA_PARAM);
-            return new RankCategoryDownloader(getActivity(), extraParam);
+//            String extraParam = args.getString(ARG_EXTRA_PARAM);
+            return new RankCategoryPostDownloader(getActivity(), args);
         }
 
         @Override
