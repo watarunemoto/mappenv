@@ -7,12 +7,9 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.android.gms.drive.query.internal.MatchAllFilter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -27,6 +24,8 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.OtherUsersList;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.OtherUsersListAdapter;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.RecycleAdapter;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
+import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
+import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -31,11 +31,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.VisibleRegion;
 
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,14 +106,17 @@ public class MapsActivity extends FragmentActivity
         } else {
             // Reincarnated activity. The obtained map is the same map instance in the previous
             // activity life cycle. There is no need to reinitialize it.
-            mMap = mapfragment.getMap();
+//            mMap = mapfragment.getMap();
+            mapfragment.getMapAsync(MapsActivity.this);
         }
 
         if (mMap == null) {
             mapfragment = ((SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map));
-            mMap =  mapfragment.getMap();
+//            mMap =  mapfragment.getMap();
+            mapfragment.getMapAsync(MapsActivity.this);
         }
+
 
 
         activity = this;
@@ -322,8 +323,10 @@ public class MapsActivity extends FragmentActivity
         if (mMap == null) {
             mapfragment = ((SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map));
-            mMap = mapfragment.getMap();
+//            mMap = mapfragment.getMap();
+            mapfragment.getMapAsync(MapsActivity.this);
         }
+
         draw_line = new Draw_line(mMap);
 
     }

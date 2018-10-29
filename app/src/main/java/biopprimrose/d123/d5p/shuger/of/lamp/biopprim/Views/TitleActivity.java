@@ -105,7 +105,8 @@ public class TitleActivity
                         R.string.navigation_drawer_close
         );
 
-        drawer.setDrawerListener(toggle);
+//        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -197,7 +198,11 @@ public class TitleActivity
          */
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TitleActivity.this);
         String ids = getResources().getString(R.string.id_dialog);
-        ((TextView) findViewById(R.id.nav_header_text)).setText(ids + sp.getString("MyID", "null"));
+        Log.d("Titleid",sp.getString("MyID","unknonw"));
+//        ((TextView) findViewById(R.id.nav_header_text)).setText(ids + sp.getString("MyID", "unknown"));
+//        TextView drawertitle = findViewById(R.id.nav_header_text);
+//        drawertitle.setText(ids + sp.getString("MyID","unknown"));
+
 
         Date date = new Date();
         String nowtime;

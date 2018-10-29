@@ -28,37 +28,6 @@ public class RankCategoryGetDownloader extends AsyncTaskAbstract {
 
         }
 
-//        HttpURLConnection connection = null;
-//        String urlStr = mURI[0];
-//        Log.d(urlStr,"Urlstr");
-//
-//
-//        StringBuilder sb = new StringBuilder();
-//        try {
-//            URL url = new URL(urlStr);
-//            connection = (HttpURLConnection) url.openConnection();
-//            InputStream is = connection.getInputStream();
-//
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-//            String line = "";
-//            while ((line = reader.readLine()) != null)
-//                sb.append(line);
-//            is.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally{
-//            connection.disconnect();
-//        }
-//        Log.d(sb.toString(),"Stringbuilder");
-//
-//
-////        return "task complete: " + mURI + sb.toString();
-//        try {
-//            return sb.toString();
-//        }catch(NullPointerException e) {
-//            Log.d("ぬるぽ","ぬるぽ");
-//            return null;
-//        }
 
         IndividualRankDownloader downloader = new IndividualRankDownloader();
         return downloader.GetInformation(mURI);
