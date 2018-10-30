@@ -40,7 +40,7 @@
     <string name="do_you_upload">写真をアップロードしますか?</string>
     <string name="yes_dialog">はい</string>
     <string name="do_uploading">写真をアップロードします</string>
-    <string name="cant_get_network">ネットワークに接続できません</string>
+    <string name="cant_get_network">ネットワークに接続できません\nこの機能はネットワーク接続時のみ利用できます</string>
     <string name="reserve_photo">保存しておきますか?</string>
     <string name="no_dialog">いいえ</string>
     <string name="reserved">保存しました</string>
@@ -163,6 +163,7 @@
     <string name="del">del</string>
     <string name="toggle_choice_mode">toggle</string>
     <string name="confirm_delete">撮影結果を削除してもよろしいですか？</string>
+    <string name="get_information">情報を取得中...</string>
 
 
 </resources>

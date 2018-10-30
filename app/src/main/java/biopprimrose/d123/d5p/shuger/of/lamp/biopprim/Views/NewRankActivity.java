@@ -1,6 +1,7 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -16,6 +18,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankCategoryPostDownloader;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.Util;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
@@ -24,6 +27,7 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
     private static final String SAVE_INSTANCE_TASK_RESULT = "info.loader.RankCategoryGetDownloader.SAVE_INSTANCE_TASK_RESULT";
     private static final String ARG_URI = "URI";
     private String mTaskResult;
+    private ProgressDialog prog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,15 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
             Bundle args = new Bundle();
             args.putString(ARG_URI, UrlCollections.URL_GET_CATEGORY);
             Log.d("bundle",args.getString(ARG_URI));
-            getSupportLoaderManager().initLoader(LOADER_ID, args, mCallback);
+            if ( Util.netWorkCheck(this.getApplicationContext() )){
+                // 非同期通信などの処理をかく
+
+                getSupportLoaderManager().initLoader(LOADER_ID, args, mCallback);
+            } else {
+                Toast.makeText(this , R.string.cant_get_network, Toast.LENGTH_LONG).show();
+                // 繋がらなかったよ…
+            }
+
 
         }
 
@@ -56,10 +68,11 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
         @Override
         public Loader<String> onCreateLoader(int id, Bundle args) {
 //            String extraParam = args.getString(ARG_URI);
-//            ProgressDialog prog;
-//            prog = new ProgressDialog(NewRankActivity.this);
-//            prog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//            prog.show();
+            prog = new ProgressDialog(NewRankActivity.this);
+            prog.setMessage(getString(R.string.get_information));
+            prog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            prog.setCancelable(false);
+            prog.show();
 //            return new RankCategoryGetDownloader(NewRankActivity.this, extraParam);
             return new RankCategoryPostDownloader(NewRankActivity.this, args);
 
@@ -67,6 +80,7 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
 
         @Override
         public void onLoadFinished(Loader<String> loader, String data) {
+            prog.dismiss();
             getSupportLoaderManager().destroyLoader(loader.getId());
             // 結果は data に出てくる
             Gson gson = new Gson();

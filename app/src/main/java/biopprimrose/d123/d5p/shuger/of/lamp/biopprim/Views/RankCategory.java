@@ -2,6 +2,7 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -46,6 +47,7 @@ public class RankCategory extends Fragment {
     private View mView;
     private RecyclerFragmentListener mFragmentListener = null;
     private RankRecycleViewAdapter madapter;
+    private ProgressDialog prog;
 
     public interface RecyclerFragmentListener {
         void onRecyclerEvent();
@@ -70,7 +72,7 @@ public class RankCategory extends Fragment {
         TextView textview = (TextView) view.findViewById(R.id.categorybutton);
         if (getArguments() != null && getArguments().containsKey("selected")) {
             kurage = getArguments().getString("selected");
-            textview.setText("情報を取得中です...");
+//            textview.setText("情報を取得中です...");
         }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
@@ -131,12 +133,18 @@ public class RankCategory extends Fragment {
         @Override
         public Loader<String> onCreateLoader(int id, Bundle args) {
 //            String extraParam = args.getString(ARG_EXTRA_PARAM);
+            prog = new ProgressDialog(getActivity());
+            prog.setMessage(getString(R.string.get_information));
+            prog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            prog.setCancelable(false);
+            prog.show();
             return new RankCategoryPostDownloader(getActivity(), args);
         }
 
         @Override
         public void onLoadFinished(Loader<String> loader, String data) {
             try {
+                prog.dismiss();
                 getActivity().getSupportLoaderManager().destroyLoader(loader.getId());
                 mTaskResult = data;
                 Gson gson = new Gson();
@@ -153,13 +161,13 @@ public class RankCategory extends Fragment {
 
 
 
-                try{
-                    TextView textview = (TextView) getView().findViewById(R.id.categorybutton);
-//                    textview.setText(mTaskResultList.toString());
-                    textview.setText("");
-                }catch(NullPointerException e){
-                    return;
-                }
+//                try{
+//                    TextView textview = (TextView) getView().findViewById(R.id.categorybutton);
+////                    textview.setText(mTaskResultList.toString());
+//                    textview.setText("");
+//                }catch(NullPointerException e){
+//                    return;
+//                }
 
 
 
