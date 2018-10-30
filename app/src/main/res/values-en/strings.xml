@@ -39,7 +39,7 @@
     <string name="do_you_upload">Do you upload this photo?</string>
     <string name="yes_dialog">Yes!</string>
     <string name="do_uploading">Do uploading</string>
-    <string name="cant_get_network">"Can't get network"</string>
+    <string name="cant_get_network">Can\'t connect network\nThis function needs connection</string>
     <string name="reserve_photo">Do reserve photo?</string>
     <string name="no_dialog">No!</string>
     <string name="reserved">Reserved</string>
@@ -157,5 +157,6 @@
     <string name="upload_error_return">Somethingwentwrong</string>
     <string name="ranking_count">Photo :</string>
     <string name="ranking_points">Points :</string>
+    <string name="get_information">Getting Information...</string>
 
 </resources>

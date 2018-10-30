@@ -8,8 +8,8 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_rank">RankActivity</string>
     <string name="title_activity_photo_result">PhotoResultActivity</string>
-    <string name="title_activity_photo_result_form">ふぉとビューアー</string>
-    <string name="dialog_message">よみこみちゅう</string>
+    <string name="title_activity_photo_result_form">フォトビューア</string>
+    <string name="dialog_message">読み込み中です...</string>
     <string name="dialog_title">マップデータ</string>
     <string name="title_activity_no_upload">NoUploadActivity</string>
     <string name="title_grid_menu">操作メニュー</string>
@@ -18,9 +18,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_text1">BioPhoto</string>
     <string name="nav_item_camera">カメラ</string>
-    <string name="nav_item_list">りすと</string>
-    <string name="nav_item_map">まっぷ</string>
-    <string name="nav_item_rank">らんきんぐ</string>
+    <string name="nav_item_list">リスト</string>
+    <string name="nav_item_map">マップ</string>
+    <string name="nav_item_rank">ランキング</string>
     <string name="pref_dialog_object_name">写真の名前入力</string>
     <string name="pref_dialog_object_name_summ">撮影時に写真の名前の入力欄を表示するか</string>
     <string name="title_toolbar">MappEnv</string>
@@ -34,26 +34,34 @@
 
 
     <!-- camera-->
-    <string name="cant_get_location">位置情報が取得できません</string>
-    <string name="if_not_input_unknown">名前を入力しないとunknownになります</string>
+    <string name="cant_get_location">位置情報が取得できません しばらくお待ち下さい</string>
+    <string name="if_not_input_unknown">unknown</string>
     <string name="detect_img">写真の判定を行います</string>
-    <string name="do_you_upload">写真をアップロードしますか</string>
+    <string name="do_you_upload">写真をアップロードしますか?</string>
     <string name="yes_dialog">はい</string>
     <string name="do_uploading">写真をアップロードします</string>
-    <string name="cant_get_network">ネットワークが取得できません</string>
-    <string name="reserve_photo">保存しておきますか</string>
+    <string name="cant_get_network">ネットワークに接続できません\nこの機能はネットワーク接続時のみ利用できます</string>
+    <string name="reserve_photo">保存しておきますか?</string>
     <string name="no_dialog">いいえ</string>
     <string name="reserved">保存しました</string>
-    <string name="not_on_gps">位置情報がオンになってません</string>
+    <string name="not_on_gps">GPS機能が停止しています</string>
     <string name="turn_on_gps">位置情報をオンにしますか？</string>
     <string name="unknown_name">unknown</string>
-    <string name="edit_pname">写真に名前をつける場合はここに入力してください</string>
+    <string name="edit_pname">画像に名前をつける場合は入力してください</string>
     <string name="cameramap_button">地図を表示</string>
-    
+    <string name="anotation">植物の特徴を記録する</string>
+    <string name="anotxt">情報がありません</string>
+    <string name="annotationtocamera">カメラ画面に戻る</string>
+
     <string name="uploaded">画像をアップロードしました。\n獲得した点数:</string>
     <string name="cant_upload">アップロードできませんでした</string>
     <string name="do_you_reserved">保存しておきますか?</string>
     <string name="now_uploading">通信中です</string>
+    <string name="score1">点数1:</string>
+    <string name="score2">点数2:</string>
+    <string name="upload_error">サーバとの通信でエラーが発生しました</string>
+    <string name="upload_error_return">Somethingwentwrong</string>
+
 
     <!-- otherphotogetter -->
     <string name="photo_loading">画像読み込み中</string>
@@ -77,47 +85,50 @@
     <!-- noupload activity -->
 
     <string name="do_you_delete">画像を削除しますか</string>
-    <string name="do_delete">いいですか</string>
+    <string name="do_delete">削除してもよろしいですか？</string>
     <string name="deleted">削除しました</string>
     <string name="file_edit">ファイル操作</string>
 
     <!-- other photo eval -->
-    <string name="push_good">Goodしました</string>
-    <string name="push_bad">Badしました</string>
+    <string name="push_good">Good評価を送信しました</string>
+    <string name="push_bad">Bad評価を送信しました</string>
 
     <!-- photoresultform-->
     <string name="error">error</string>
 
     <!-- rank custom adapter -->
     <string name="pos_rank">pos_rank</string>
-    <string name="dialog_rangking_getter">つうしんちゅう</string>
+    <string name="dialog_rangking_getter">通信中</string>
 
 
     <!-- tablist -->
-    <string name="photo_list">ふぉとりすと</string>
+    <string name="photo_list">フォトリスト</string>
     <string name="no_upload_list">未アップロード</string>
 
     <!-- tag ranking -->
     <string name="rankings">ランキング</string>
+    <string name="ranking_count">撮影枚数 : </string>
+    <string name="ranking_points">獲得点数 :</string>
+
 
     <!-- title activity -->
     <string name="photo_num">Photo:</string>
 
 
     <!-- navgation -->
-    <string name="nav_upload" >全部アップロード</string>
+    <string name="nav_upload">全部アップロード</string>
     <string name="nav_point">ポイント </string>
     <string name="nav_photonum">写真 : </string>
-    <string name="title_nav_menu">Extra menu</string>
+    <string name="title_nav_menu">その他の操作</string>
     <string name="nav_reset">reset_upload</string>
 
     <!-- photomulti -->
     <string name="toast_upload_num">枚をアップロードしました</string>
     <string name="toast_cant_upload">枚はアップロードできませんでした</string>
-    <string name="toast_network_not_work">ネットワークかサーバーの調子が悪いかもしれません</string>
+    <string name="toast_network_not_work">サーバが</string>
 
     <!-- other_users_eval -->
-    <string name="evaluate_other_photos">他人の写真を評価しよう!</string>
+    <string name="evaluate_other_photos">他プレイヤーの撮影結果を評価しよう！</string>
 
     <!-- recyclerview-->
     <string name="title_recyclerview_text">読み込み中</string>
@@ -137,29 +148,22 @@
     <string name="request">Request</string>
 
 
-
     <!-- something to wrong -->
-    <string name="something_to_wrong">エラーが発生しました...</string>
 
     <!-- friend activity -->
     <string name="friend_toolbar">フレンドリスト</string>
     <string name="friend_accept_title">承認</string>
     <string name="friend_accept_message">承認しますか?</string>
-    <string name="anotation">植物の特徴を記録する</string>
-    <string name="anotxt">情報がありません</string>
-    <string name="annotationtocamera">カメラ画面に戻る</string>
-    <string name="no_data">データがありません</string>
-    <string name="del">del</string>
+    <string name="something_to_wrong">エラーが発生しました</string>
+
+    <!--  anotation list -->
     <string name="expandmessage">展開する</string>
-    <string name="score1">点数1:</string>
-    <string name="score2">点数2:</string>
-    <string name="confirm_delete">本当に削除してもよろしいですか？</string>
+    <string name="no_data">データがありません</string>
     <string name="add">add</string>
-    <string name="toggle_choice_mode">切り替え</string>
-    <string name="upload_error">サーバ側でエラーが発生しました...</string>
-    <string name="upload_error_return">Somethingwentwrong</string>
-    <string name="ranking_points">獲得点数 :</string>
-    <string name="ranking_count">"撮影枚数 : "</string>
+    <string name="del">del</string>
+    <string name="toggle_choice_mode">toggle</string>
+    <string name="confirm_delete">撮影結果を削除してもよろしいですか？</string>
+    <string name="get_information">情報を取得中...</string>
 
 
 </resources>
