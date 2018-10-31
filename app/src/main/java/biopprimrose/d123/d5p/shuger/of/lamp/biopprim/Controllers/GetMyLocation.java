@@ -1,22 +1,20 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.ViewGroup;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
@@ -24,8 +22,6 @@ import com.google.android.gms.maps.model.LatLng;
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
-
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 
 /**
  * Created by amemiyaY on 2016/11/14.
@@ -111,6 +107,11 @@ public class GetMyLocation implements
     public void onConnected(Bundle bundle) {
         gpsStatus = Settings.Secure
                 .getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            //Permissionのリクエスト
+            return;
+        }
         Location creentlocation = fusedLocationProviderApi.getLastLocation(googleApiClient);
         fusedLocationProviderApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         if (creentlocation != null) {
