@@ -73,8 +73,6 @@ android {
 //}
 
 
-
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 //    implementation('org.apache.httpcomponents:httpmime:4.3.6') {
@@ -83,7 +81,7 @@ dependencies {
 //    implementation ('org.apache.httpcomponents:httpmime:4.3'){
 //        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
 //    }
-    implementation group: 'cz.msebera.android' , name: 'httpclient', version: '4.4.1.1'
+    implementation group: 'cz.msebera.android', name: 'httpclient', version: '4.4.1.1'
 
 //    implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     //    implementation 'com.android.support:appcompat-v7:22.2.1'
@@ -105,6 +103,3 @@ dependencies {
     implementation 'com.google.android.gms:play-services-drive:16.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 }
-
-
-

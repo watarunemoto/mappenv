@@ -107,6 +107,7 @@ public class MapsActivity extends FragmentActivity
             // Reincarnated activity. The obtained map is the same map instance in the previous
             // activity life cycle. There is no need to reinitialize it.
 //            mMap = mapfragment.getMap();
+//            mMap = mapfragment.getMapAsync(this.);
             mapfragment.getMapAsync(MapsActivity.this);
         }
 
