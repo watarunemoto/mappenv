@@ -8,10 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
-import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -27,6 +26,8 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
+import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
+import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -41,7 +42,7 @@ import okhttp3.Response;
 public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>> {
 
     private String str;
-    private Context context;
+    Context context;
     private List<String> res_ar;
     ProgressDialog dialog;
     private String pname;
@@ -51,6 +52,9 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
     String updated;
     int count;
     private String annotations;
+    private String isDeleted;
+    ProgressBar progressBar;
+
 
     String lati;
     String longi;
@@ -59,12 +63,13 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
     SQLiteDatabase db;
 
 
-    public PhotoMultiTransfer(
-            Context context,
-            List<Integer> idlist
-    ) {
-        this.context = context;
+    public PhotoMultiTransfer(Context context, List<Integer> idlist, ProgressBar progressBar) {
+//        this.context = context;
+        super();
         this.idlist = idlist;
+        this.context = context;
+        this.progressBar = progressBar;
+
     }
 
     @Override
@@ -83,11 +88,11 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
 
         Cursor c = null;
         for (int id : idlist) {
-
-            count += 1;
-            Log.v("upload", String.valueOf(count) + "枚目");
-
-            dialog.setProgress(count);
+//
+//            count += 1;
+//            Log.v("upload", String.valueOf(count) + "枚目");
+//
+//            dialog.setProgress(count);
 
             c = db.query(
                     TempContract.TempImages.TABLE_NAME,
@@ -107,73 +112,83 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                 updated = c.getString(c.getColumnIndex(ImgContract.Images.COL_UPDATED));
                 pname = c.getString(c.getColumnIndex(ImgContract.Images.COL_PNAME));
                 annotations = c.getString(c.getColumnIndex(ImgContract.Images.COL_ANNOTATION));
+                isDeleted = c.getString(c.getColumnIndex(ImgContract.Images.COL_ISDELETED));
+
             }
 //            Log.v("watcher",annotations);
 
-            //インスタンスの作成
-            MultipartEntityBuilder entity = MultipartEntityBuilder.create();
 
-            entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            if (isDeleted.equals("0")) {
+                count += 1;
+                Log.v("upload", String.valueOf(count) + "枚目");
 
-            //ファイルパスをファイル型として取得？
-            File file = new File(filename);
-            String[] dist = filename.split("/");
-            String fname = dist[dist.length - 1];
-            Log.v("filename", fname);
+//                dialog.setProgress(count);
 
-            String ano = "なし";
-            if (annotations != null){
-                ano = annotations;
-            }
 
-            Log.v("pmt-ano",ano + annotations);
-            final MediaType IMAGE = MediaType.parse("image/img");
-            RequestBody body = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart(
-                            "filename", fname
-                    )
-                    .addFormDataPart(
-                            "photoname", pname
-                    )
-                    .addFormDataPart(
-                            "userid", userid
-                    )
-                    .addFormDataPart("images", fname,
-                            RequestBody.create(IMAGE, file)
-                    )
-                    .addFormDataPart(
+                //インスタンスの作成
+                MultipartEntityBuilder entity = MultipartEntityBuilder.create();
+
+                entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+                //ファイルパスをファイル型として取得？
+                File file = new File(filename);
+                String[] dist = filename.split("/");
+                String fname = dist[dist.length - 1];
+                Log.v("filename", fname);
+
+                String ano = "なし";
+                if (annotations != null) {
+                    ano = annotations;
+                }
+
+                Log.v("pmt-ano", ano + annotations);
+                final MediaType IMAGE = MediaType.parse("image/img");
+                RequestBody body = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart(
+                                "filename", fname
+                        )
+                        .addFormDataPart(
+                                "photoname", pname
+                        )
+                        .addFormDataPart(
+                                "userid", userid
+                        )
+                        .addFormDataPart("images", fname,
+                                RequestBody.create(IMAGE, file)
+                        )
+                        .addFormDataPart(
 //                            "annotation", annotations
-                            "annotation", ano
-                    )
-                    .build();
+                                "annotation", ano
+                        )
+                        .build();
 
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(body)
+                        .build();
 
-            OkHttpClient client = new OkHttpClient().newBuilder()
-                    .readTimeout(15*1000, TimeUnit.MILLISECONDS)
-                    .writeTimeout(20*1000, TimeUnit.MILLISECONDS)
-                    .connectTimeout(20*1000, TimeUnit.MILLISECONDS)
-                    .build();
-
-
-
-            try {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .readTimeout(15 * 1000, TimeUnit.MILLISECONDS)
+                        .writeTimeout(20 * 1000, TimeUnit.MILLISECONDS)
+                        .connectTimeout(20 * 1000, TimeUnit.MILLISECONDS)
+                        .build();
 
 
-                Response res = client.newCall(request).execute();
-                str = res.body().string();
+                try {
 
-                dbch(context, filename, bounus, str);
-                dbupdate(context, String.valueOf(id));
-            } catch (Exception e) {
-                e.printStackTrace();
+
+                    Response res = client.newCall(request).execute();
+                    str = res.body().string();
+
+                    dbch(context, filename, bounus, str);
+                    dbupdate(context, String.valueOf(id));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                res_ar.add(str);
             }
-
-            res_ar.add(str);
         }
 
         if (c != null) {
@@ -189,17 +204,25 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
     protected void onPreExecute() {
         res_ar = new ArrayList<>();
 
-        dialog = new ProgressDialog(context);
-        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        dialog.setTitle("アップロード中");
-        dialog.setMax(idlist.size());
-        dialog.show();
+//        dialog = new ProgressDialog(context);
+//        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        dialog.setTitle("アップロード中");
+////        dialog.setMax(idlist.size());
+////        dialog.setMax(count);
+//        dialog.show();
+
+//        progressBar = new ProgressBar(context);
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,100);
+//        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        this.progressBar.setVisibility(View.VISIBLE);  //To show ProgressBar
+
     }
 
     @Override
     protected void onCancelled() {
-        dialog.dismiss();
+//        dialog.dismiss();
     }
+
 
     public void onCancel(DialogInterface dialog) {
         cancel(true);
@@ -234,11 +257,13 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
         } else {
             Toast.makeText(
                     context,
-                    "ネットワークの調子が悪いかもしれません。",
+//                    "ネットワークの調子が悪いかもしれません。",
+                    R.string.upload_queue_null,
                     Toast.LENGTH_LONG
             ).show();
         }
-        dialog.dismiss();
+//        dialog.dismiss();
+        progressBar.setVisibility(View.GONE);     // To Hide ProgressBar
 
 
         /**

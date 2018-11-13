@@ -158,5 +158,6 @@
     <string name="ranking_count">Photo :</string>
     <string name="ranking_points">Points :</string>
     <string name="get_information">Getting Information...</string>
+    <string name="upload_queue_null">Uploadble file is not exist</string>
 
 </resources>

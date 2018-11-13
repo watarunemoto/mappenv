@@ -1,20 +1,26 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -49,7 +55,7 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
  */
 
 
-public class CameraPreview extends FragmentActivity implements MyLocationManager.OnLocationResultListener{
+public class CameraPreview extends AppCompatActivity implements MyLocationManager.OnLocationResultListener{
 
     private Toast t;
     public Context context;
@@ -59,6 +65,10 @@ public class CameraPreview extends FragmentActivity implements MyLocationManager
      */
 
     private Camera mCamera;
+    private static final int REQUEST_CODE_PICKER = 1;
+    private static final int REQUEST_CODE_PERMISSION = 2;
+    private final int REQUEST_PERMISSION = 1000;
+
 
     /**
      * カメラのプレビューを表示する {@link SurfaceView}
@@ -138,7 +148,13 @@ public class CameraPreview extends FragmentActivity implements MyLocationManager
 
 
 
-
+        if(Build.VERSION.SDK_INT >= 23){
+            checkPermission();
+        }
+        else{
+            SurfaceHolder holder = mView.getHolder();
+            holder.addCallback(surfaceHolderCallback);
+        }
 
         myRelativeLayout = (RelativeLayout) findViewById(R.id.my_relative);
 
@@ -174,17 +190,101 @@ public class CameraPreview extends FragmentActivity implements MyLocationManager
 
     }
 
-    //onPostCreate...onCreateの実行が終わった時に実行される
+    public void checkPermission() {
+        // 既に許可している
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED){
+
+
+            SurfaceHolder holder = mView.getHolder();
+            holder.addCallback(surfaceHolderCallback);
+        }
+        // 拒否していた場合
+        else{
+            requestCameraPermission();
+        }
+    }
+    private void requestCameraPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(CameraPreview.this,
+                    new String[]{Manifest.permission.CAMERA},
+                    REQUEST_PERMISSION);
+
+        } else {
+            Toast toast = Toast.makeText(this,
+                    "許可されないとアプリが実行できません", Toast.LENGTH_SHORT);
+            toast.show();
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA,},
+                    REQUEST_PERMISSION);
+
+        }
+    }
+
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SurfaceHolder holder = mView.getHolder();
-        holder.addCallback(surfaceHolderCallback);
-        Log.v("post", "postCreate");
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION) {
+            // 使用が許可された
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                SurfaceHolder holder = mView.getHolder();
+//                holder.addCallback(surfaceHolderCallback);
+                Toast toast = Toast.makeText(this,
+                        "アプリの再起動が必要です", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                // それでも拒否された時の対応
+                Toast toast = Toast.makeText(this,
+                        "これ以上なにもできません", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+    }
+
+    //onPostCreate...onCreateの実行が終わった時に実行される
+        @Override
+        protected void onPostCreate(Bundle savedInstanceState) {
+            super.onPostCreate(savedInstanceState);
+//            SurfaceHolder holder = mView.getHolder();
+
+//            holder.addCallback(surfaceHolderCallback);
+
+//            if(Build.VERSION.SDK_INT >= 23){
+//                checkPermission();
+//            }
+//            else{
+//            SurfaceHolder holder = mView.getHolder();
+//            holder.addCallback(surfaceHolderCallback);
+//            }
+
+
+            Log.v("post", "postCreate");
 
     }
 
 
+
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        switch (requestCode) {
+//            case 0: { //ActivityCompat#requestPermissions()の第2引数で指定した値
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    //許可された場合の処理
+//                }else{
+//                    //拒否された場合の処理
+//                    ActivityCompat.requestPermissions(this,
+//                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+//                            REQUEST_CODE_PERMISSION);
+//                break;
+//            }
+//        }
+//    }
 
     //カメラのコールバック
     private SurfaceHolder.Callback surfaceHolderCallback = new SurfaceHolder.Callback() {
@@ -195,6 +295,8 @@ public class CameraPreview extends FragmentActivity implements MyLocationManager
             /**
              * カメラ実行
              */
+
+
 
             int cameraid = 0;
             mCamera = Camera.open(cameraid);
@@ -249,6 +351,8 @@ public class CameraPreview extends FragmentActivity implements MyLocationManager
                 e.printStackTrace();
             }
         }
+
+
 
         //surfaceChanged...変更された時に実行
         @Override
@@ -510,6 +614,8 @@ public class CameraPreview extends FragmentActivity implements MyLocationManager
                 anoret = "";
             }
         }
+
+
 
     }
 

@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +77,7 @@ public class TitleActivity
     private RecycleAdapter recycleAdapter;
     private TextView title_dummy_textview;
     private LatLng latLng;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -124,6 +126,8 @@ public class TitleActivity
         ImageButton list = (ImageButton) findViewById(R.id.list_button);
         ImageButton map = (ImageButton) findViewById(R.id.map_button);
         ImageButton rank = (ImageButton) findViewById(R.id.rank_button);
+        progressBar = findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
 
 
         camera.setOnClickListener(new View.OnClickListener() {
@@ -371,10 +375,13 @@ public class TitleActivity
                                     String username = sp.getString("MyID", "");
 
                                     Log.v("idlist184", String.valueOf(idlist));
-
+//                                    ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+//                                    progressBar.setVisibility(View.GONE);
+                                    progressBar.setVisibility(View.GONE);
                                     PhotoMultiTransfer pmt = new PhotoMultiTransfer(
                                             TitleActivity.this,
-                                            idlist
+                                            idlist,
+                                            progressBar
                                     );
                                     pmt.execute(
                                             username
@@ -388,6 +395,7 @@ public class TitleActivity
                     "ネットワークに接続していません",
                     Toast.LENGTH_SHORT
             ).show();
+            progressBar.setVisibility(View.GONE);
         }
 
     }

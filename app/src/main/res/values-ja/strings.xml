@@ -164,6 +164,7 @@
     <string name="toggle_choice_mode">toggle</string>
     <string name="confirm_delete">撮影結果を削除してもよろしいですか？</string>
     <string name="get_information">情報を取得中...</string>
+    <string name="upload_queue_null">アップロードできるファイルがありません</string>
 
 
 </resources>
