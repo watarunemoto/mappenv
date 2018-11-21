@@ -155,7 +155,7 @@ public class TitleActivity
             @Override
             public void onClick(View view) {
 //                Intent intent = new Intent(TitleActivity.this, RankActivity.class);
-                Intent intent = new Intent(TitleActivity.this, NewRankActivity.class);
+                Intent intent = new Intent(TitleActivity.this, RankActivity.class);
                 startActivity(intent);
             }
         });
@@ -286,7 +286,7 @@ public class TitleActivity
             startActivity(intent);
         } else if (id == R.id.nav_rank) {
 //            Intent intent = new Intent(TitleActivity.this, TabRanking.class);
-            Intent intent = new Intent(TitleActivity.this, NewRankActivity.class);
+            Intent intent = new Intent(TitleActivity.this, RankActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         } else if (id == R.id.nav_upload) {

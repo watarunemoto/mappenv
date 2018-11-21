@@ -1,108 +1,130 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.List;
 
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.RankCategoryPostDownloader;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.Util;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters.RankCustomAdapter;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
+
+public class RankActivity extends AppCompatActivity implements RankFragment.RankItemclicklistener{
+    private static final int LOADER_ID = 1;
+    private static final String SAVE_INSTANCE_TASK_RESULT = "info.loader.RankCategoryGetDownloader.SAVE_INSTANCE_TASK_RESULT";
+    private static final String ARG_URI = "URI";
+    private String mTaskResult;
+    private ProgressDialog prog;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_rank);
+
+        if (savedInstanceState != null) {
+            mTaskResult = savedInstanceState.getString(SAVE_INSTANCE_TASK_RESULT);
+        }
+        if (mTaskResult != null) {
+        }
+        if (mTaskResult == null) {
+            Bundle args = new Bundle();
+            args.putString(ARG_URI, UrlCollections.URL_GET_CATEGORY);
+            Log.d("bundle",args.getString(ARG_URI));
+            if ( Util.netWorkCheck(this.getApplicationContext() )){
+                // 非同期通信などの処理をかく
+
+                getSupportLoaderManager().initLoader(LOADER_ID, args, mCallback);
+            } else {
+                Toast.makeText(this , R.string.camera_err_network, Toast.LENGTH_LONG).show();
+                // 繋がらなかったよ…
+            }
 
 
-public class RankActivity extends AppCompatActivity {
-	ListView listView;
-	Activity activity;
-	TextView date_rank;
+        }
 
-	//ネットワークの状態を取得する
-	ConnectivityManager cm;
-	SharedPreferences sp;
-
-	public static final String EXTRA_RAID = "RankActivity";
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.app_bar_rank);
-		activity = this;
-
-		listView = (ListView) findViewById(R.id.myListView);
-		date_rank = (TextView) findViewById(R.id.date_rank_get);
-	//	date_rank.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/HuiFontP29.ttf"));
-
-		//ネットワークの状態の取得関連
-		cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		sp = PreferenceManager.getDefaultSharedPreferences(RankActivity.this);
-
-		String lists =  sp.getString("rank_list",null);
-		String[] data = lists.split(",");
-		final List<String> alist = new ArrayList<String>();
-		for (int i = 0; i < Math.min(data.length - 1,30); i++) {
-			alist.add(data[i]);
-			Log.v("list_data",data[i]);
-		}
-
-		RankCustomAdapter customAdapter = new RankCustomAdapter(activity, alist);
-		listView.setAdapter(customAdapter);
-		date_rank.setText(sp.getString("ctime",null));
+    }
 
 
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(SAVE_INSTANCE_TASK_RESULT, mTaskResult);
+    }
 
-                String[] row_array = alist.get(i).split(":");
-				String rowdata = row_array[1];
-                String point = row_array[3];
-                String num = row_array[2];
+    private final LoaderManager.LoaderCallbacks<String> mCallback = new LoaderManager.LoaderCallbacks<String>() {
+        @Override
+        public Loader<String> onCreateLoader(int id, Bundle args) {
+//            String extraParam = args.getString(ARG_URI);
+            prog = new ProgressDialog(RankActivity.this);
+            prog.setMessage(getString(R.string.label_getinfonotification));
+            prog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            prog.setCancelable(false);
+            prog.show();
+//            return new RankCategoryGetDownloader(RankActivity.this, extraParam);
+            return new RankCategoryPostDownloader(RankActivity.this, args);
+
+        }
+
+        @Override
+        public void onLoadFinished(Loader<String> loader, String data) {
+            prog.dismiss();
+            getSupportLoaderManager().destroyLoader(loader.getId());
+            // 結果は data に出てくる
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<String>>(){}.getType();
+            List<String> posts = gson.fromJson(data, type);
+            mTaskResult = posts.toString().replaceAll("\\[|\\]","");
+//            mTaskResult = gson.fromJson(mTaskResult,ArrayList.class).;
+
+            Bundle bundle = new Bundle();
+            Log.d("onloadfinishRank",mTaskResult);
+            bundle.putStringArray("kurage" , mTaskResult.split(","));
+            RankFragment fragment = new RankFragment();
+            fragment.setArguments(bundle);
+            FragmentManager manager = getSupportFragmentManager();
+            // フラグメントをアクティビティに追加する FragmentTransaction を利用する
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.add(R.id.container_new_rank, fragment, "fragment");
+//        transaction.addToBackStack(null);
+            transaction.commitAllowingStateLoss();
+            Log.d("finish transaction",mTaskResult);
 
 
-				Log.v("users_id",rowdata);
-                /**
-				Intent intent = new Intent(getApplicationContext(),RankUsersDetailActivity.class);
-				intent.putExtra(EXTRA_RAID,rowdata);
-				startActivity(intent);
-                 */
 
-				FragmentManager fm = getSupportFragmentManager();
-				RankDetailFragment rdf = new RankDetailFragment();
-
-				FragmentTransaction transaction = fm.beginTransaction();
-
-				Bundle bundle = new Bundle();
-				bundle.putString("userid", rowdata);
-                bundle.putString("point", point);
-                bundle.putString("num", num);
-//				bundle.putString("num", point);
-//                bundle.putString("point", num);
-
-                // フラグメントに渡す値をセット
-				rdf.setArguments(bundle);
-
-				Log.v("putbundole", rowdata);
-				transaction.replace(R.id.contena_rank, rdf);
-                transaction.addToBackStack("aa");
-				transaction.commit();
-
-			}
-		});
+        }
 
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_rank);
-		((TextView) findViewById(R.id.rank_toolbar_text)).setText(R.string.rank_toolbar);
-		setSupportActionBar(toolbar);
-	}
+        @Override
+        public void onLoaderReset(Loader<String> loader) {
+            // do nothing
+        }
+    };
+
+    @Override
+    public void onRankItemClicked(String selected) {
+        Bundle bundle = new Bundle ();
+        bundle.putString("selected",selected);
+        RankCategory fragment = new RankCategory();
+        fragment.setArguments(bundle);
+        FragmentManager manager2 = getSupportFragmentManager();
+        FragmentTransaction transaction = manager2.beginTransaction();
+        transaction.replace(R.id.container_new_rank, fragment, "fragment");
+        transaction.addToBackStack(null);
+        transaction.commitAllowingStateLoss();
+//        transaction.commit();
+    }
+
 }

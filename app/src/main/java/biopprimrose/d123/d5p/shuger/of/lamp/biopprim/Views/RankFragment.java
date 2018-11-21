@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 
-public class NewRankFragment extends ListFragment {
+public class RankFragment extends ListFragment {
 
 
     public interface RankItemclicklistener {
