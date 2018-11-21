@@ -69,10 +69,10 @@ public class NoUploadActivity extends Activity {
 	 */
 	public void upPhoto(final String pos) {
 		new AlertDialog.Builder(NoUploadActivity.this)
-				.setTitle(R.string.detect_img)
-				.setMessage(R.string.do_you_upload)
+				.setTitle(R.string.camera_title_detectimg)
+				.setMessage(R.string.label_upload)
 				.setNegativeButton(R.string.no_dialog, null)
-				.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						ConnectivityManager cm =
@@ -98,10 +98,10 @@ public class NoUploadActivity extends Activity {
 	 */
 	public void removePhoto(final String pos) {
 		new AlertDialog.Builder(this)
-				.setTitle(R.string.do_you_delete)
-				.setMessage(R.string.do_delete)
+				.setTitle(R.string.label_deleteimages)
+				.setMessage(R.string.label_deleteconfirmation)
 				.setNegativeButton(R.string.no_dialog, null)
-				.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						TempOpenHelper iph = new TempOpenHelper(NoUploadActivity.this);
@@ -117,7 +117,7 @@ public class NoUploadActivity extends Activity {
 						);
 						SimpleCursorAdapter adapter =  setAdapter();
 						myListView.setAdapter(adapter);
-						Toast.makeText(NoUploadActivity.this, R.string.deleted + pos, Toast.LENGTH_SHORT).show();
+						Toast.makeText(NoUploadActivity.this, R.string.label_deletenotification + pos, Toast.LENGTH_SHORT).show();
 						iph.close();
 						db.close();
 					}
@@ -134,8 +134,8 @@ public class NoUploadActivity extends Activity {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
 		menu.setHeaderTitle(R.string.file_edit);
-		menu.add(0, CONTEXT_MENU1_ID, 0, R.string.do_you_delete);
-		menu.add(0, CONTEXT_MENU2_ID, 0, R.string.do_you_upload);
+		menu.add(0, CONTEXT_MENU1_ID, 0, R.string.label_deleteimages);
+		menu.add(0, CONTEXT_MENU2_ID, 0, R.string.label_upload);
 	}
 
 	@Override

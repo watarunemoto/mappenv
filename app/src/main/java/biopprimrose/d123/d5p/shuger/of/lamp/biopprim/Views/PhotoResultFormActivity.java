@@ -149,10 +149,10 @@ public class PhotoResultFormActivity extends AppCompatActivity {
 
 	private void deleteImg() {
 		new AlertDialog.Builder(this)
-				.setTitle(R.string.do_you_delete)
-				.setMessage(R.string.do_delete)
+				.setTitle(R.string.label_deleteimages)
+				.setMessage(R.string.label_deleteconfirmation)
 				.setNegativeButton(R.string.no_dialog, null)
-				.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						ImgOpenHelper iph = new ImgOpenHelper(PhotoResultFormActivity.this);

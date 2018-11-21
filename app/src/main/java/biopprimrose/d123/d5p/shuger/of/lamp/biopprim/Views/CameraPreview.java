@@ -214,7 +214,7 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
 
         } else {
             Toast toast = Toast.makeText(this,
-                    "許可されないとアプリが実行できません", Toast.LENGTH_SHORT);
+                    R.string.label_permissionconfirmation, Toast.LENGTH_SHORT);
             toast.show();
 
             ActivityCompat.requestPermissions(this,
@@ -234,12 +234,12 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
 //                SurfaceHolder holder = mView.getHolder();
 //                holder.addCallback(surfaceHolderCallback);
                 Toast toast = Toast.makeText(this,
-                        "アプリの再起動が必要です", Toast.LENGTH_SHORT);
+                        R.string.label_rebootconfirmation, Toast.LENGTH_SHORT);
                 toast.show();
             } else {
                 // それでも拒否された時の対応
                 Toast toast = Toast.makeText(this,
-                        "これ以上なにもできません", Toast.LENGTH_SHORT);
+                        R.string.label_unavailablenotification, Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
@@ -269,22 +269,6 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
 
 
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case 0: { //ActivityCompat#requestPermissions()の第2引数で指定した値
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    //許可された場合の処理
-//                }else{
-//                    //拒否された場合の処理
-//                    ActivityCompat.requestPermissions(this,
-//                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-//                            REQUEST_CODE_PERMISSION);
-//                break;
-//            }
-//        }
-//    }
 
     //カメラのコールバック
     private SurfaceHolder.Callback surfaceHolderCallback = new SurfaceHolder.Callback() {
@@ -501,7 +485,7 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
         if (nwi != null) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(CameraPreview.this);
-            builder.setTitle(R.string.detect_img);
+            builder.setTitle(R.string.camera_title_detectimg);
             builder.setNegativeButton(R.string.no_dialog, null);
 
 
@@ -525,10 +509,10 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
             //Toast.makeText(this, "ネットワークが利用できません", Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(CameraPreview.this)
                     .setTitle(R.string.camera_err_network)
-                    .setMessage(R.string.reserve_photo)
+                    .setMessage(R.string.label_reserveconfirmation)
                     .setView(editView)
                     .setNegativeButton(R.string.no_dialog, null)
-                    .setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             String pname = "";
@@ -543,7 +527,7 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
                             PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname, anoret);
                             hpt.nouploaddb(iMGNAME);
                             Log.v("imgpath/" , iMGNAME);
-                            Toast.makeText(CameraPreview.this, R.string.reserved, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CameraPreview.this, R.string.label_reservenotification, Toast.LENGTH_SHORT).show();
                         }
                     }).show();
         }

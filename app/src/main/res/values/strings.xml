@@ -9,7 +9,7 @@
     <string name="title_activity_rank">RankActivity</string>
     <string name="title_activity_photo_result">PhotoResultActivity</string>
     <string name="title_activity_photo_result_form">フォトビューア</string>
-    <string name="dialog_message">読み込み中です...</string>
+    <string name="label_loadingnotification">読み込み中です...</string>
     <string name="dialog_title">マップデータ</string>
     <string name="title_activity_no_upload">NoUploadActivity</string>
     <string name="title_grid_menu">操作メニュー</string>
@@ -36,21 +36,21 @@
     <!-- camera-->
     <string name="camera_err_getlocation">位置情報が取得できません\nしばらくお待ち下さい</string>
     <string name="hint_photoname">unknown</string>
-    <string name="detect_img">写真の判定を行います</string>
-    <string name="do_you_upload">写真をアップロードしますか?</string>
-    <string name="yes_dialog">はい</string>
-    <string name="do_uploading">写真をアップロードします</string>
+    <string name="camera_title_detectimg">写真の判定を行います</string>
+    <string name="label_upload">写真をアップロードしますか?</string>
+    <string name="label_yes">はい</string>
+    <string name="label_uploading">写真をアップロードします</string>
     <string name="camera_err_network">ネットワークに接続できません。\nこの機能はネットワーク接続時のみ利用できます。</string>
-    <string name="reserve_photo">保存しておきますか?</string>
+    <string name="label_reserveconfirmation">保存しておきますか?</string>
     <string name="no_dialog">いいえ</string>
-    <string name="reserved">保存しました</string>
+    <string name="label_reservenotification">保存しました</string>
     <string name="not_on_gps">GPS機能が停止しています</string>
     <string name="turn_on_gps">位置情報をオンにしますか？</string>
     <string name="unknown_name">unknown</string>
     <string name="edit_pname">画像に名前をつける場合は入力してください</string>
     <string name="cameramap_button">地図を表示</string>
     <string name="photopreview_btn_label_transitionannotation">植物の特徴を記録する</string>
-    <string name="anotxt">情報がありません</string>
+    <string name="annotation_label_empty">情報がありません</string>
     <string name="annotation_btn_label_back">カメラ画面に戻る</string>
 
     <string name="uploaded">画像をアップロードしました。\n獲得した点数:</string>
@@ -68,10 +68,10 @@
 
     <!-- login_activity -->
     <string name="set_id"> IDを設定します</string>
-    <string name="input_id">IDを入力してください</string>
+    <string name="label_inputidrequest">IDを入力してください</string>
     <string name="ok_dialog">OK</string>
     <string name="your_id_ok">IDは変更できません\n以下のIDでいいですか？</string>
-    <string name="id_dialog">ID:</string>
+    <string name="label_id">ID:</string>
     <string name="your_id_is">あなたのIDは</string>
 
     <!-- map activity -->
@@ -84,9 +84,9 @@
 
     <!-- noupload activity -->
 
-    <string name="do_you_delete">画像を削除しますか</string>
-    <string name="do_delete">削除してもよろしいですか？</string>
-    <string name="deleted">削除しました</string>
+    <string name="label_deleteimages">画像の削除</string>
+    <string name="label_deleteconfirmation">削除してもよろしいですか？</string>
+    <string name="label_deletenotification">削除しました</string>
     <string name="file_edit">ファイル操作</string>
 
     <!-- other photo eval -->
@@ -98,12 +98,12 @@
 
     <!-- rank custom adapter -->
     <string name="pos_rank">pos_rank</string>
-    <string name="dialog_rangking_getter">通信中</string>
+    <string name="Ranking_label_gettingcategory">通信中</string>
 
 
     <!-- tablist -->
-    <string name="photo_list">フォトリスト</string>
-    <string name="no_upload_list">未アップロード</string>
+    <string name="photoresult_label_photolist">フォトリスト</string>
+    <string name="label_nouploadlist">未アップロード</string>
 
     <!-- tag ranking -->
     <string name="rankings">ランキング</string>
@@ -123,7 +123,7 @@
     <string name="nav_reset">reset_upload</string>
 
     <!-- photomulti -->
-    <string name="toast_upload_num">枚をアップロードしました</string>
+    <string name="allupload_label_numberofuploadedphoto">枚をアップロードしました</string>
     <string name="toast_cant_upload">枚はアップロードできませんでした</string>
     <string name="toast_network_not_work">サーバが</string>
 
@@ -145,7 +145,7 @@
     <!-- friend request form fragment -->
     <string name="friend_request_sent_text">友達申請を送りました</string>
     <string name="is_existed">申請が存在します</string>
-    <string name="request">Request</string>
+    <string name="label_request">Request</string>
 
 
     <!-- something to wrong -->
@@ -154,21 +154,24 @@
     <string name="friend_toolbar">フレンドリスト</string>
     <string name="friend_accept_title">承認</string>
     <string name="friend_accept_message">承認しますか?</string>
-    <string name="something_to_wrong">エラーが発生しました</string>
+    <string name="label_err_somethingwrong">エラーが発生しました</string>
 
     <!--  anotation list -->
-    <string name="annotation_expandmessage">展開する</string>
+    <string name="annotation_label_expandmessage">展開する</string>
     <string name="no_data">データがありません</string>
-    <string name="add">add</string>
-    <string name="del">del</string>
+    <string name="label_add">add</string>
+    <string name="label_del">del</string>
     <string name="toggle_choice_mode">toggle</string>
     <string name="confirm_delete">撮影結果を削除してもよろしいですか？</string>
-    <string name="get_information">情報を取得中...</string>
+    <string name="label_getinfonotification">情報を取得中...</string>
     <string name="upload_queue_null">アップロードできるファイルがありません</string>
     <string name="noupload_err_network">通信中にエラーが発生しました。\n処理を中断します。</string>
     <string name="noupload_err_database">データベースへの書き込みでエラーが発生しました。\n処理を中断します。</string>
     <string name="noupload_success">アップロードに成功しました。</string>
     <string name="label_photoname">名前なし</string>
+    <string name="label_rebootconfirmation">アプリの再起動が必要です</string>
+    <string name="label_unavailablenotification">機能を利用できません</string>
+    <string name="label_permissionconfirmation">この機能の利用には権限が必要です</string>
 
 
 </resources>

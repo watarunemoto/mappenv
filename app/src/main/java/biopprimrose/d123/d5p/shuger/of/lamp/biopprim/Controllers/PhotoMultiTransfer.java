@@ -233,7 +233,7 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
         // サーバ側phpでechoした内容を表
         Log.v("res", String.valueOf(res_ar));
 
-        String message_1 = context.getResources().getString(R.string.toast_upload_num);
+        String message_1 = context.getResources().getString(R.string.allupload_label_numberofuploadedphoto);
         String message_2 = context.getResources().getString(R.string.toast_cant_upload);
         String message_3 = context.getResources().getString(R.string.toast_network_not_work);
 

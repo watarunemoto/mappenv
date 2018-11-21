@@ -134,7 +134,7 @@ public class RankCategory extends Fragment {
         public Loader<String> onCreateLoader(int id, Bundle args) {
 //            String extraParam = args.getString(ARG_EXTRA_PARAM);
             prog = new ProgressDialog(getActivity());
-            prog.setMessage(getString(R.string.get_information));
+            prog.setMessage(getString(R.string.label_getinfonotification));
             prog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             prog.setCancelable(false);
             prog.show();

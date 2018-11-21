@@ -69,7 +69,7 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
         public Loader<String> onCreateLoader(int id, Bundle args) {
 //            String extraParam = args.getString(ARG_URI);
             prog = new ProgressDialog(NewRankActivity.this);
-            prog.setMessage(getString(R.string.get_information));
+            prog.setMessage(getString(R.string.label_getinfonotification));
             prog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             prog.setCancelable(false);
             prog.show();

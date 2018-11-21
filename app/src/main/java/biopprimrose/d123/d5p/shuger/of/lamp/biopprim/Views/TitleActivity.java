@@ -201,7 +201,7 @@ public class TitleActivity
          * navgation drawerのヘッダーにユーザー名を挿入
          */
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TitleActivity.this);
-        String ids = getResources().getString(R.string.id_dialog);
+        String ids = getResources().getString(R.string.label_id);
         Log.d("Titleid",sp.getString("MyID","unknonw"));
 //        ((TextView) findViewById(R.id.nav_header_text)).setText(ids + sp.getString("MyID", "unknown"));
 //        TextView drawertitle = findViewById(R.id.nav_header_text);

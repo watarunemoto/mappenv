@@ -9,7 +9,7 @@
     <string name="title_activity_rank">RankActivity</string>
     <string name="title_activity_photo_result">PhotoResultActivity</string>
     <string name="title_activity_photo_result_form">PhotoViewer</string>
-    <string name="dialog_message">Loading...</string>
+    <string name="label_loadingnotification">Loading...</string>
     <string name="dialog_title">Map data</string>
     <string name="title_activity_no_upload">NoUploadActivity</string>
     <string name="title_grid_menu">menu</string>
@@ -35,14 +35,14 @@
     <!-- camera-->
     <string name="camera_err_getlocation">"Can't get my location"</string>
     <string name="hint_photoname">if you not input, unknown</string>
-    <string name="detect_img">Detect photo</string>
-    <string name="do_you_upload">Do you upload this photo?</string>
-    <string name="yes_dialog">Yes!</string>
-    <string name="do_uploading">Do uploading</string>
+    <string name="camera_title_detectimg">Detect photo</string>
+    <string name="label_upload">Do you upload this photo?</string>
+    <string name="label_yes">Yes!</string>
+    <string name="label_uploading">Do uploading</string>
     <string name="camera_err_network">Can\'t connect network.\\n This function needs connection.</string>
-    <string name="reserve_photo">Do reserve photo?</string>
+    <string name="label_reserveconfirmation">Do reserve photo?</string>
     <string name="no_dialog">No!</string>
-    <string name="reserved">Reserved</string>
+    <string name="label_reservenotification">Reserved</string>
     <string name="not_on_gps">Not on gps</string>
     <string name="turn_on_gps">Turn on gps?</string>
     <string name="unknown_name">unknown</string>
@@ -60,10 +60,10 @@
 
     <!-- login_activity -->
     <string name="set_id">Set Your UserId</string>
-    <string name="input_id">Please input your id</string>
+    <string name="label_inputidrequest">Please input your id</string>
     <string name="ok_dialog">OK</string>
     <string name="your_id_ok">This id is ok</string>
-    <string name="id_dialog">ID:</string>
+    <string name="label_id">ID:</string>
     <string name="your_id_is">Your id is</string>
 
     <!-- map activity -->
@@ -78,9 +78,9 @@
 
     <!-- noupload activity -->
 
-    <string name="do_you_delete">Delete photo</string>
-    <string name="do_delete">OK?</string>
-    <string name="deleted">Deleted</string>
+    <string name="label_deleteimages">Delete photo</string>
+    <string name="label_deleteconfirmation">Are you sure you want to delete?</string>
+    <string name="label_deletenotification">Deleted</string>
     <string name="file_edit">File edit</string>
 
     <!-- other photo eval -->
@@ -95,12 +95,12 @@
 
 
     <!-- tablist -->
-    <string name="photo_list">Photo list</string>
-    <string name="no_upload_list">Not uploaded</string>
+    <string name="photoresult_label_photolist">Photo list</string>
+    <string name="label_nouploadlist">Not uploaded</string>
 
     <!-- tag ranking -->
     <string name="rankings">Ranking</string>
-    <string name="dialog_rangking_getter">Downloading</string>
+    <string name="Ranking_label_gettingcategory">Downloading</string>
 
     <!-- title activity -->
     <string name="photo_num">Photo:</string>
@@ -113,7 +113,7 @@
     <string name="nav_reset">reset_upload</string>
 
     <!-- photomulti -->
-    <string name="toast_upload_num">photos</string>
+    <string name="allupload_label_numberofuploadedphoto">photos</string>
     <string name="toast_cant_upload">photos could not be uploaded</string>
     <string name="toast_network_not_work">Condition of the server or network be bad</string>
 
@@ -128,40 +128,43 @@
     <string name="friend">Friend</string>
     <string name="notfriend">Not\nFriend</string>
     <string name="requested">Requested</string>
-    <string name="request">Request</string>
+    <string name="label_request">Request</string>
     <!-- friend request fragment -->
     <string name="no_user_message">no user</string>
     <string name="friend_request_sent_text">sended</string>
 
 
     <!-- something to wrong -->
-    <string name="something_to_wrong">Sorry, something went wrong ...</string>
+    <string name="label_err_somethingwrong">Sorry, something went wrong ...</string>
     <string name="is_existed">Request existed</string>
 
     <!-- friend activity -->
     <string name="friend_toolbar">Friends list</string>
     <string name="friend_accept_title">Accept?</string>
     <string name="friend_accept_message">Do you accept friend</string>
-    <string name="anotxt">NO DATA</string>
+    <string name="annotation_label_empty">NO DATA</string>
     <string name="photopreview_btn_label_transitionannotation">Set Annotation</string>
     <string name="annotation_btn_label_back">Return to Camera</string>
     <string name="no_data">No Data</string>
-    <string name="del">del</string>
-    <string name="annotation_expandmessage">Expand</string>
+    <string name="label_del">del</string>
+    <string name="annotation_label_expandmessage">Expand</string>
     <string name="toggle_choice_mode">toggle</string>
     <string name="score1">Score1:</string>
     <string name="score2">Score2:</string>
     <string name="confirm_delete">Are you sure you want to Delete?</string>
-    <string name="add">add</string>
+    <string name="label_add">add</string>
     <string name="upload_error">Sorry, something went wrong on Server</string>
     <string name="upload_error_return">Somethingwentwrong</string>
     <string name="ranking_count">Photo :</string>
     <string name="ranking_points">Points :</string>
-    <string name="get_information">Getting Information...</string>
+    <string name="label_getinfonotification">Getting Information...</string>
     <string name="upload_queue_null">Uploadble file is not exist</string>
     <string name="noupload_err_network">Network Error Has Occurred. \\nTerminating Process.</string>
     <string name="noupload_err_database">"DataBase Error Has Occurred. \\nTerminating Process. "</string>
     <string name="noupload_success">Upload succeeded.</string>
     <string name="label_photoname">unknown</string>
+    <string name="label_rebootconfirmation">Need reopen app</string>
+    <string name="label_unavailablenotification">this function is not available</string>
+    <string name="label_permissionconfirmation">This function needs permission</string>
 
 </resources>
