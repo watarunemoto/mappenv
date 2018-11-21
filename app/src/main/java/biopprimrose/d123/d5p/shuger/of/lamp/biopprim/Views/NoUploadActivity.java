@@ -3,10 +3,13 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -19,9 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.NoUploadedPhotoTransfer;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
 
@@ -72,9 +75,20 @@ public class NoUploadActivity extends Activity {
 				.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
-						NoUploadedPhotoTransfer nupt = new NoUploadedPhotoTransfer(NoUploadActivity.this, myListView, imgOpenHelper);
-						//NoUploadedPhotoTransfer nupt = new NoUploadedPhotoTransfer(NoUploadActivity.this);
-						nupt.execute(UrlCollections.URL_UPLOAD_PHOTO, pos);
+						ConnectivityManager cm =
+								(ConnectivityManager) NoUploadActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+						NetworkInfo info = cm.getActiveNetworkInfo();
+                        if (info != null) {
+                            NoUploadedPhotoTransfer nupt = new NoUploadedPhotoTransfer(NoUploadActivity.this, myListView, imgOpenHelper);
+                            //NoUploadedPhotoTransfer nupt = new NoUploadedPhotoTransfer(NoUploadActivity.this);
+                            nupt.execute(UrlCollections.URL_UPLOAD_PHOTO, pos);
+                        } else{
+                            String hoge = getString(R.string.camera_err_network);
+                            ;
+                            Toast.makeText(NoUploadActivity.this, hoge, Toast.LENGTH_SHORT).show();
+                        }
+
 					}
 				}).show();
 	}

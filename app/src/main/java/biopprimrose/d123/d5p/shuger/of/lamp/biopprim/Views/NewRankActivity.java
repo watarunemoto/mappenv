@@ -48,7 +48,7 @@ public class NewRankActivity extends AppCompatActivity implements NewRankFragmen
 
                 getSupportLoaderManager().initLoader(LOADER_ID, args, mCallback);
             } else {
-                Toast.makeText(this , R.string.cant_get_network, Toast.LENGTH_LONG).show();
+                Toast.makeText(this , R.string.camera_err_network, Toast.LENGTH_LONG).show();
                 // 繋がらなかったよ…
             }
 

@@ -33,13 +33,13 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     
     <!-- camera-->
-    <string name="cant_get_location">"Can't get my location"</string>
-    <string name="if_not_input_unknown">if you not input, unknown</string>
+    <string name="camera_err_getlocation">"Can't get my location"</string>
+    <string name="hint_photoname">if you not input, unknown</string>
     <string name="detect_img">Detect photo</string>
     <string name="do_you_upload">Do you upload this photo?</string>
     <string name="yes_dialog">Yes!</string>
     <string name="do_uploading">Do uploading</string>
-    <string name="cant_get_network">Can\'t connect network\nThis function needs connection</string>
+    <string name="camera_err_network">Can\'t connect network.\\n This function needs connection.</string>
     <string name="reserve_photo">Do reserve photo?</string>
     <string name="no_dialog">No!</string>
     <string name="reserved">Reserved</string>
@@ -143,11 +143,11 @@
     <string name="friend_accept_title">Accept?</string>
     <string name="friend_accept_message">Do you accept friend</string>
     <string name="anotxt">NO DATA</string>
-    <string name="anotation">Set Annotation</string>
-    <string name="annotationtocamera">Return to Camera</string>
+    <string name="photopreview_btn_label_transitionannotation">Set Annotation</string>
+    <string name="annotation_btn_label_back">Return to Camera</string>
     <string name="no_data">No Data</string>
     <string name="del">del</string>
-    <string name="expandmessage">Expand</string>
+    <string name="annotation_expandmessage">Expand</string>
     <string name="toggle_choice_mode">toggle</string>
     <string name="score1">Score1:</string>
     <string name="score2">Score2:</string>
@@ -159,5 +159,9 @@
     <string name="ranking_points">Points :</string>
     <string name="get_information">Getting Information...</string>
     <string name="upload_queue_null">Uploadble file is not exist</string>
+    <string name="noupload_err_network">Network Error Has Occurred. \\nTerminating Process.</string>
+    <string name="noupload_err_database">"DataBase Error Has Occurred. \\nTerminating Process. "</string>
+    <string name="noupload_success">Upload succeeded.</string>
+    <string name="label_photoname">unknown</string>
 
 </resources>

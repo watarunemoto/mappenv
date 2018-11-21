@@ -193,10 +193,10 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
         if (responseCode == 200 && str != null){
             long ide = dbch(context, filename, updated);
             if (ide < 0) {
-                Toast.makeText(context, "データベースの書き込みに失敗しました", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.noupload_err_database, Toast.LENGTH_LONG).show();
             } else {
 
-                Toast.makeText(context, "アップロードに成功しました\n:", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.noupload_success, Toast.LENGTH_LONG).show();
                 TempOpenHelper toh = new TempOpenHelper(context);
                 ContentValues values = new ContentValues();
                 values.put(TempContract.TempImages.COL_ISUPLOADED, "1");
@@ -218,7 +218,7 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
             SimpleCursorAdapter adapter = setMyListview(context);
             myListview.setAdapter(adapter);
         } else {
-            Toast.makeText(context, "ネットワークを利用できないかエラーが起きています。", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.noupload_err_network, Toast.LENGTH_LONG).show();
         }
     }
 

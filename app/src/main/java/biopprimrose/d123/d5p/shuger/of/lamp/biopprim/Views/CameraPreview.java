@@ -402,7 +402,7 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
                 }
                 //loc = Gpskun();
                 if (loc == null) {
-                    Toast.makeText(CameraPreview.this, R.string.cant_get_location, Toast.LENGTH_LONG).show();
+                    Toast.makeText(CameraPreview.this, R.string.camera_err_getlocation, Toast.LENGTH_LONG).show();
 
                 } else {
                     //このアプリ専用のフォルダを使用
@@ -491,7 +491,7 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
         NetworkInfo nwi = cm.getActiveNetworkInfo();
         final String loc_data[] = locat.split(",", 0);
         final EditText editView = new EditText(CameraPreview.this);
-        editView.setHint(R.string.if_not_input_unknown);
+        editView.setHint(R.string.hint_photoname);
         InputFilter[] inputFilters = new InputFilter[1];
         inputFilters[0] = new InputFilter.LengthFilter(50);
         editView.setFilters(inputFilters);
@@ -524,7 +524,7 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
         } else {
             //Toast.makeText(this, "ネットワークが利用できません", Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(CameraPreview.this)
-                    .setTitle(R.string.cant_get_network)
+                    .setTitle(R.string.camera_err_network)
                     .setMessage(R.string.reserve_photo)
                     .setView(editView)
                     .setNegativeButton(R.string.no_dialog, null)
@@ -535,7 +535,7 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
                             Log.v("anohpton",""+ anoret);
                             pname = editView.getText().toString();
                             if (pname.equals("")) {
-                                pname = "unknown";
+                                pname = getString(R.string.label_photoname);
                             }
                             if (anoret.equals(null)){
                                 anoret = "";

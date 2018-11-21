@@ -34,13 +34,13 @@
 
 
     <!-- camera-->
-    <string name="cant_get_location">位置情報が取得できません しばらくお待ち下さい</string>
-    <string name="if_not_input_unknown">unknown</string>
+    <string name="camera_err_getlocation">位置情報が取得できません しばらくお待ち下さい</string>
+    <string name="hint_photoname">unknown</string>
     <string name="detect_img">写真の判定を行います</string>
     <string name="do_you_upload">写真をアップロードしますか?</string>
     <string name="yes_dialog">はい</string>
     <string name="do_uploading">写真をアップロードします</string>
-    <string name="cant_get_network">ネットワークに接続できません\nこの機能はネットワーク接続時のみ利用できます</string>
+    <string name="camera_err_network">ネットワークに接続できません。\nこの機能はネットワーク接続時のみ利用できます。</string>
     <string name="reserve_photo">保存しておきますか?</string>
     <string name="no_dialog">いいえ</string>
     <string name="reserved">保存しました</string>
@@ -49,9 +49,9 @@
     <string name="unknown_name">unknown</string>
     <string name="edit_pname">画像に名前をつける場合は入力してください</string>
     <string name="cameramap_button">地図を表示</string>
-    <string name="anotation">植物の特徴を記録する</string>
+    <string name="photopreview_btn_label_transitionannotation">植物の特徴を記録する</string>
     <string name="anotxt">情報がありません</string>
-    <string name="annotationtocamera">カメラ画面に戻る</string>
+    <string name="annotation_btn_label_back">カメラ画面に戻る</string>
 
     <string name="uploaded">画像をアップロードしました。\n獲得した点数:</string>
     <string name="cant_upload">アップロードできませんでした</string>
@@ -157,7 +157,7 @@
     <string name="something_to_wrong">エラーが発生しました</string>
 
     <!--  anotation list -->
-    <string name="expandmessage">展開する</string>
+    <string name="annotation_expandmessage">展開する</string>
     <string name="no_data">データがありません</string>
     <string name="add">add</string>
     <string name="del">del</string>
@@ -165,6 +165,10 @@
     <string name="confirm_delete">撮影結果を削除してもよろしいですか？</string>
     <string name="get_information">情報を取得中...</string>
     <string name="upload_queue_null">アップロードできるファイルがありません</string>
+    <string name="noupload_err_network">通信中にエラーが発生しました。\\n処理を中断します。</string>
+    <string name="noupload_err_database">データベースへの書き込みでエラーが発生しました。\\n処理を中断します。</string>
+    <string name="noupload_success">アップロードに成功しました。</string>
+    <string name="label_photoname">unknown</string>
 
 
 </resources>
