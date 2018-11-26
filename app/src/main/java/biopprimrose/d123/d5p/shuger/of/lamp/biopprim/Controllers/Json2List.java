@@ -2,9 +2,7 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by amemiyaY on 2016/11/28.
@@ -37,4 +35,50 @@ public class Json2List {
         }
         return output;
     }
+
+
+//    public List<HashMap<String,Object>> parseStringStringHashMap(String json) {
+//        ArrayList<HashMap<String,Object>> hashmap = new ArrayList<>()>;
+//        ArrayList hogehoge = new ArrayList();
+//
+//
+//        if (json != null) {
+//            Gson gson = new Gson();
+//            List<Foo> obj = gson.fromJson(jsonText,new TypeToken<Foo<Bar>>())
+//             hogehoge = gson.fromJson(json,ArrayList.class);
+//            }
+//
+//            for (Object hoge : hogehoge) {
+//            hashmap.add(hoge.);
+//            }
+//        }
+//
+//        return output;
+//    }
+
+    class Foo<T> {
+    T value;
+    }
+
+//    class UserInfo {
+//        private int Score;
+//        private String userid;
+//
+//        public UserInfo(int Score, String userid) {
+//            this.Score = Score;
+//            this.userid = userid;
+//        }
+//
+//    }
+//
+//    class gsonlist {
+//        private Map hoge;
+//        private List<UserInfo> output ;
+//
+//        public gsonlist(UserInfo userInfo){
+//            this.hoge = hoge;
+//            this.output = new ArrayList<userInfo>();
+//    }
+//    }
+
 }

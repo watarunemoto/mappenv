@@ -21,5 +21,6 @@
     <dimen name="map_load_button">10dp</dimen>
     <dimen name="map_other_users_photo_list_margin">10dp</dimen>
     <dimen name="data_load_button">10dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>

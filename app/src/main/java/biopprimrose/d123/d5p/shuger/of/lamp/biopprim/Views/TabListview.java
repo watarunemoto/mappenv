@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.widget.TabHost;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views.NoUploadActivity;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views.PhotoResultActivity;
 
 
 /**
@@ -30,8 +28,8 @@ public class TabListview extends TabActivity  {
 
          // Set the Tab name and Activity
          // that will be opened when particular Tab will be selected
-         String photo_list = getResources().getString(R.string.photo_list);
-         String no_upload_list = getResources().getString(R.string.no_upload_list);
+         String photo_list = getResources().getString(R.string.photoresult_label_photolist);
+         String no_upload_list = getResources().getString(R.string.label_nouploadlist);
 
          tab1.setIndicator(photo_list);
          tab1.setContent(new Intent(this, PhotoResultActivity.class));

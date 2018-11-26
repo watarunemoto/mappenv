@@ -9,14 +9,18 @@ android {
             storePassword 'android'
         }
     }
-    compileSdkVersion 22
-    buildToolsVersion '28.0.2'
+
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "biopprimrose.d123.d5p.shuger.of.lamp"
-        minSdkVersion 15
-        targetSdkVersion 22
+        minSdkVersion 14
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        useLibrary 'org.apache.http.legacy'
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -25,11 +29,6 @@ android {
             jniDebuggable false
             signingConfig signingConfigs.config
         }
-//        nagamihinageshi {
-//            minifyEnabled false
-//            applicationIDSuffix ".nh";
-//
-//        }
         debug {
             signingConfig signingConfigs.config
         }
@@ -37,51 +36,22 @@ android {
     flavorDimensions "default"
     productFlavors {
         hinageshi {
-//            versionNameSuffix '_nh'
-//            applicationIdSuffix '.nh'
             minSdkVersion 15
             signingConfig signingConfigs.config
         }
         full {
-//            applicationIdSuffix '.full'
             minSdkVersion 15
-//            versionNameSuffix '_full'
             signingConfig signingConfigs.config
         }
     }
-//    sourceSets{
-//        hinageshi.java.srcDirs = ['src/main/java']
-//        full.java.srcDirs = ['src/main/java']
-//    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
     }
-}
 
 
-
-
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation('org.apache.httpcomponents:httpcore:4.3.3') {
-        exclude module: 'httpclient'
-    }
-    implementation('org.apache.httpcomponents:httpmime:4.3.6') {
-        exclude module: 'httpclient'
-    }
-    implementation 'com.android.support:appcompat-v7:22.2.1'
-    implementation 'com.google.android.gms:play-services:6.5.87'
-    implementation 'com.android.support:design:22.2.1'
-    implementation 'com.android.support:recyclerview-v7:22.2.1'
-    implementation 'com.android.support:support-v4:22.2.1'
-    implementation 'com.jpardogo.materialtabstrip:library:1.0.6'
-    implementation 'com.squareup.okhttp3:okhttp:3.4.1'
-    implementation 'org.greenrobot:eventbus:3.0.0'
-    implementation 'org.jsoup:jsoup:1.11.3'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation 'junit:junit:4.12'
 }
 
 //dependencies {
@@ -103,3 +73,36 @@ dependencies {
 //    testCompile 'junit:junit:4.12'
 //}
 
+
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    implementation('org.apache.httpcomponents:httpmime:4.3.6') {
+//        exclude module: 'httpclient'
+//    }
+//    implementation ('org.apache.httpcomponents:httpmime:4.3'){
+//        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+//    }
+    implementation group: 'cz.msebera.android', name: 'httpclient', version: '4.4.1.1'
+
+//    implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    //    implementation 'com.android.support:appcompat-v7:22.2.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    //    implementation 'com.google.android.gms:play-services:6.5.87'
+//    implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.jpardogo.materialtabstrip:library:1.0.6'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:mediarouter-v7:28.0.0'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-drive:16.0.0'
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+}
