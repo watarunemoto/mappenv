@@ -115,7 +115,8 @@
             android:enabled="false"
             android:exported="false" />
 
-        <activity android:name=".Views.AnnotationActivity"></activity>
+        <activity android:name=".Views.AnnotationActivity" />
+        <activity android:name=".Controllers.JmaDataDisp"></activity>
     </application>
 
 </manifest>

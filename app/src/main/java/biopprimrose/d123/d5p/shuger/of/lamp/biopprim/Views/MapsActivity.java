@@ -240,6 +240,7 @@ public class MapsActivity extends FragmentActivity
                 public void onMapLoaded() {
                     startPos();
                     flag = 1;
+
                 }
             });
 
@@ -464,4 +465,7 @@ public class MapsActivity extends FragmentActivity
     public void onMapReady(GoogleMap googleMap) {
 
     }
-}
+
+    }
+
+

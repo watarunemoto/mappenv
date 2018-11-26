@@ -1,9 +1,14 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +18,50 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlay;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Tile;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.TileProvider;
+import com.google.android.gms.maps.model.UrlTileProvider;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.Locale;
+import java.util.Map;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
+
+import static biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views.CameraMapFragment.TransparencyUrlTileProvider.OSM_MAP_URL_FORMAT;
 
 
 /**
 // * A simple {@link Fragment} subclass.
-// * Use the {@link CameraMapFragment#newInstance} factory method to
+// * Use the {@link CameraMapFragment#/newInstance} factory method to
 // * create an instance of this fragment.
  */
 public class CameraMapFragment extends Fragment {
 
-    MapView mMapView;
+    static MapView mMapView;
     private GoogleMap googleMap;
 
     @Override
@@ -45,10 +79,12 @@ public class CameraMapFragment extends Fragment {
             e.printStackTrace();
         }
 
+
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
+                setUpMap();
 
                 // For showing a move to my location button
                 googleMap.setMyLocationEnabled(true);
@@ -60,33 +96,226 @@ public class CameraMapFragment extends Fragment {
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(now).zoom(18).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+/*
+                //connect OpenWeatherMap
+                String urlStr = "https://tile.openweathermap.org/map/{clouds_new}/{18}/{35.985190}/{139.374145}.png?appid={bf8fa0e5d53ae71cdde5ad8851372be4}";
+                Weatherlayer weatherlayer = new Weatherlayer();
+                weatherlayer.execute(urlStr);
+                */
             }
         });
-
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
+
+
+
+    private void setUpMap() {
+        googleMap.addTileOverlay(
+                new TileOverlayOptions()
+                        .tileProvider(
+                                new TransparencyUrlTileProvider(256,256,100)));
+        Log.e("hoge","aiueoooooo4");
+    }
+    public class TransparencyUrlTileProvider implements TileProvider {
+
+        static final String OSM_MAP_URL_FORMAT = "http://tile.openstreetmap.org/%d/%d/%d.png";
+
+        private int _transparency; // 透過率(0〜255)
+        private UrlTileProvider _osmTileProv; // 内包する TileProvider
+
+        public TransparencyUrlTileProvider(int width, int height, int transparency) {
+            _transparency = transparency;
+
+            _osmTileProv = new UrlTileProvider(width, height) {
+                @Override
+                public URL getTileUrl(int x, int y, int zoom) {
+                    String s = String.format(Locale.US, OSM_MAP_URL_FORMAT);
+                    URL url = null;
+                    try {
+                        url = new URL(s);
+                    } catch (MalformedURLException e) {
+                        throw new AssertionError(e);
+                    }Log.e("hoge","aiueoooooo3");
+                    return url;
+                }
+            };
+        }
+
+        //todo
+        @Override
+        public Tile getTile(int x, int y, int zoom) {
+            Tile tile = _osmTileProv.getTile(x, y, zoom);
+
+            // Tile の透過処理を行う
+            Bitmap bmp = BitmapFactory.decodeByteArray( tile.data ,0, tile.data.length);
+            Bitmap transparentBmp = makeTransparentBmp(bmp, _transparency);
+
+            // Tile を作り直す
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            transparentBmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            Tile tranparentTile = new Tile(tile.width, tile.height, bos.toByteArray());
+            Log.e("hoge","aiueoooooo1");
+
+            return tranparentTile;
+
+        }
+
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMapView.onPause();
+
+    private static Bitmap makeTransparentBmp(final Bitmap bmp, int transparency) {
+        int width = bmp.getWidth();
+        int height = bmp.getHeight();
+        int[] pixels = new int[width * height];
+
+        Bitmap bitmap = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888 );
+        bmp.getPixels(pixels, 0, width, 0, 0, width, height);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int pixel = pixels[x + y * width];
+                pixels[x + y * width] = Color.argb(transparency,
+                        Color.red(pixel), Color.green(pixel), Color.blue(pixel));
+            }
+        }
+        bitmap.eraseColor(Color.argb(0, 0, 0, 0));
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        Log.e("hoge","aiueoooooo2");
+
+        return bitmap;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mMapView.onDestroy();
-    }
 
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mMapView.onLowMemory();
+
+    /*
+    TileProvider tileProvider = new UrlTileProvider(256, 256) {
+        @Override
+        public URL getTileUrl(int x, int y, int zoom) {
+
+            // Define the URL pattern for the tile images
+            String s = String.format("https://tile.openweathermap.org/map/{clouds_new}/{18}/{35.985190}/{139.374145}.png?appid={bf8fa0e5d53ae71cdde5ad8851372be4}");
+
+            if (!checkTileExists(x, y, zoom)) {
+                return null;
+            }
+
+            try {
+                return new URL(s);
+            } catch (MalformedURLException e) {
+                throw new AssertionError(e);
+            }
+        }
+
+        /*
+         * Check that the tile server supports the requested x, y and zoom.
+         * Complete this stub according to the tile range you support.
+         * If you support a limited range of tiles at different zoom levels, then you
+         * need to define the supported x, y range at each zoom level.
+         */
+/*
+        private boolean checkTileExists(int x, int y, int zoom) {
+            int minZoom = 0;
+            int maxZoom = 18;
+
+            if ((zoom < minZoom || zoom > maxZoom)) {
+                return false;
+            }
+
+            return true;
+        }
+    };
+
+    TileOverlay tileOverlay = googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
+*/
+
+
+/*
+    //get tiledata from OpenWeatherMap
+    static class Weatherlayer extends AsyncTask<String, String, Bitmap> {
+        //Bitmap result ;
+
+        @Override
+        public Bitmap doInBackground(String... params) {
+            String urlStr = "https://tile.openweathermap.org/map/{cloud_new}/{18}/{35.985190}/{139.374145}.png?appid={bf8fa0e5d53ae71cdde5ad8851372be4}";
+            Bitmap result=null;
+            HttpURLConnection con = null;
+            InputStream is = null;
+            try {
+                URL url = new URL(urlStr);
+                con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.connect();
+                is = con.getInputStream();
+                result = BitmapFactory.decodeStream(new BufferedInputStream(is));
+            } catch (MalformedURLException ex) {
+            } catch (IOException ex) {
+            } finally {
+                if (con != null) {
+                    con.disconnect();
+                }
+                if (is != null) {
+                    try {
+                        is.close();
+                    }
+                    catch (IOException ex) {
+                    }
+                }
+            }
+            return result;
+
+        }
+
+        @Override
+        public void onPostExecute(Bitmap result) {
+            Bitmap tileBitmap = result;
+
+            ChartTileProvider tile = new ChartTileProvider();
+            tile.getTile(360, 2780,18);
+            //Log.d("hogd","yayyyyyyy");
+
+
+        }
+
+
+        public class ChartTileProvider implements TileProvider{
+            @Override
+            public Tile getTile(int x, int y, int zoom){
+                Bitmap tileBitmap = result;
+                try {
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    tileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    return new Tile(tileBitmap.getWidth(), tileBitmap.getHeight(), stream.toByteArray());
+                    }finally {
+                }
+            }
+        }
+
     }
+*/
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            mMapView.onResume();
+
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            mMapView.onPause();
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            mMapView.onDestroy();
+        }
+
+        @Override
+        public void onLowMemory() {
+            super.onLowMemory();
+            mMapView.onLowMemory();
+        }
 }
