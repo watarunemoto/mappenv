@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/anobutton"
-        android:text="@string/anotation"
+        android:text="@string/photopreview_btn_label_transitionannotation"
         android:layout_gravity="right|top"
 
 

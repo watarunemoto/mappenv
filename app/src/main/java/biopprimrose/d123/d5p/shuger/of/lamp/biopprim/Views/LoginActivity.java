@@ -138,12 +138,12 @@ public class LoginActivity extends Activity {
         input_id_dialog = new AlertDialog.Builder(this);
         final AlertDialog.Builder recheck_dialog = new AlertDialog.Builder(this);
 
-        final String your_id = getResources().getString(R.string.id_dialog);
+        final String your_id = getResources().getString(R.string.label_id);
         
         if (PREFERENCE_INIT == getState()) {
             input_id_dialog
                     .setTitle(R.string.set_id)
-                    .setMessage(R.string.input_id)
+                    .setMessage(R.string.label_inputidrequest)
                     .setView(editView)
                     .setPositiveButton(R.string.ok_dialog,
                             new DialogInterface.OnClickListener() {

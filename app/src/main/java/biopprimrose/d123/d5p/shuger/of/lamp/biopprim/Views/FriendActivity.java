@@ -151,7 +151,7 @@ public class FriendActivity extends AppCompatActivity implements OnRecycleListen
             builder.setTitle(title_text)
                     .setMessage(message_text)
                     .setNegativeButton(R.string.no_dialog, null)
-                    .setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //ontext context, String userid1, String userid2, String jobid, int position
@@ -202,7 +202,7 @@ public class FriendActivity extends AppCompatActivity implements OnRecycleListen
                     builder.setTitle(title_text)
                             .setMessage(message_text)
                             .setNegativeButton(R.string.no_dialog, null)
-                            .setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+                            .setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     //ontext context, String userid1, String userid2, String jobid, int pos

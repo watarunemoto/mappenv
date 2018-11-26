@@ -166,14 +166,14 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                 new AlertDialog.Builder(activity)
                         .setTitle(R.string.cant_upload)
                         .setMessage(R.string.do_you_reserved)
-                        .setNegativeButton(R.string.yes_dialog, null)
+                        .setNegativeButton(R.string.label_yes, null)
                         .setPositiveButton(R.string.no_dialog, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 nouploaddb(imgpath);
                             }
                         }).show();
-                Toast.makeText(activity, R.string.reserved, Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, R.string.label_reservenotification, Toast.LENGTH_LONG).show();
             } else if (str != null) {
                 str = str.replaceAll("\"", "");
                 String no1 = str.split(",")[0];

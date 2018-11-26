@@ -4,11 +4,10 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
-import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
-
 import java.util.concurrent.TimeUnit;
 
+import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
+import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -60,6 +59,7 @@ public class IdPostTask extends AsyncTask<String , String ,String>{
 		String res_st = null;
 		try {
 			Response res = client.newCall(request).execute();
+			Log.d("idposttask",res.body().string());
 			res_st = res.body().string().replace('"',' ').replace(" ","");
 
 		} catch (Exception e) {

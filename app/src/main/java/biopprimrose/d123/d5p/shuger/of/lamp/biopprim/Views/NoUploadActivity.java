@@ -3,10 +3,13 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -19,9 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.NoUploadedPhotoTransfer;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
 
@@ -66,15 +69,26 @@ public class NoUploadActivity extends Activity {
 	 */
 	public void upPhoto(final String pos) {
 		new AlertDialog.Builder(NoUploadActivity.this)
-				.setTitle(R.string.detect_img)
-				.setMessage(R.string.do_you_upload)
+				.setTitle(R.string.camera_title_detectimg)
+				.setMessage(R.string.label_upload)
 				.setNegativeButton(R.string.no_dialog, null)
-				.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
-						NoUploadedPhotoTransfer nupt = new NoUploadedPhotoTransfer(NoUploadActivity.this, myListView, imgOpenHelper);
-						//NoUploadedPhotoTransfer nupt = new NoUploadedPhotoTransfer(NoUploadActivity.this);
-						nupt.execute(UrlCollections.URL_UPLOAD_PHOTO, pos);
+						ConnectivityManager cm =
+								(ConnectivityManager) NoUploadActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+						NetworkInfo info = cm.getActiveNetworkInfo();
+                        if (info != null) {
+                            NoUploadedPhotoTransfer nupt = new NoUploadedPhotoTransfer(NoUploadActivity.this, myListView, imgOpenHelper);
+                            //NoUploadedPhotoTransfer nupt = new NoUploadedPhotoTransfer(NoUploadActivity.this);
+                            nupt.execute(UrlCollections.URL_UPLOAD_PHOTO, pos);
+                        } else{
+                            String hoge = getString(R.string.camera_err_network);
+                            ;
+                            Toast.makeText(NoUploadActivity.this, hoge, Toast.LENGTH_SHORT).show();
+                        }
+
 					}
 				}).show();
 	}
@@ -84,10 +98,10 @@ public class NoUploadActivity extends Activity {
 	 */
 	public void removePhoto(final String pos) {
 		new AlertDialog.Builder(this)
-				.setTitle(R.string.do_you_delete)
-				.setMessage(R.string.do_delete)
+				.setTitle(R.string.label_deleteimages)
+				.setMessage(R.string.label_deleteconfirmation)
 				.setNegativeButton(R.string.no_dialog, null)
-				.setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						TempOpenHelper iph = new TempOpenHelper(NoUploadActivity.this);
@@ -103,7 +117,7 @@ public class NoUploadActivity extends Activity {
 						);
 						SimpleCursorAdapter adapter =  setAdapter();
 						myListView.setAdapter(adapter);
-						Toast.makeText(NoUploadActivity.this, R.string.deleted + pos, Toast.LENGTH_SHORT).show();
+						Toast.makeText(NoUploadActivity.this, R.string.label_deletenotification + pos, Toast.LENGTH_SHORT).show();
 						iph.close();
 						db.close();
 					}
@@ -120,8 +134,8 @@ public class NoUploadActivity extends Activity {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
 		menu.setHeaderTitle(R.string.file_edit);
-		menu.add(0, CONTEXT_MENU1_ID, 0, R.string.do_you_delete);
-		menu.add(0, CONTEXT_MENU2_ID, 0, R.string.do_you_upload);
+		menu.add(0, CONTEXT_MENU1_ID, 0, R.string.label_deleteimages);
+		menu.add(0, CONTEXT_MENU2_ID, 0, R.string.label_upload);
 	}
 
 	@Override

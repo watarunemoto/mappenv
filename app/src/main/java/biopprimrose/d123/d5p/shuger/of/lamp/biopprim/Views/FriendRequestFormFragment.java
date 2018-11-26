@@ -131,7 +131,7 @@ public class FriendRequestFormFragment extends Fragment {
             String text = getActivity().getResources().getString(R.string.is_existed);
             Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
         }else{
-            String text = getActivity().getResources().getString(R.string.something_to_wrong);
+            String text = getActivity().getResources().getString(R.string.label_err_somethingwrong);
             Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
         }
         getChildFragmentManager().beginTransaction().hide(this).commit();
