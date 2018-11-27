@@ -17,9 +17,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 
@@ -105,26 +102,22 @@ public class GetMyLocation implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        gpsStatus = Settings.Secure
-                .getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            //Permissionのリクエスト
-            return;
-        }
-        Location creentlocation = fusedLocationProviderApi.getLastLocation(googleApiClient);
-        fusedLocationProviderApi.requestLocationUpdates(googleApiClient, locationRequest, this);
-        if (creentlocation != null) {
-            location = creentlocation;
-            //桁数の指定
-            DecimalFormat df = new DecimalFormat("0.000000");
-            //locationから緯度経度の取得
-            MyLocation myLocation = new MyLocation();
-            myLocation.setMylocation(new LatLng(location.getLatitude(),location.getLongitude()));
-            EventBus.getDefault().post(myLocation);
-            googleApiClient.disconnect();
-            Log.v("getmylocation","got location");
-        }
+
+//        gpsStatus = Settings.Secure
+//                .getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+//        Location creentlocation = fusedLocationProviderApi.getLastLocation(googleApiClient);
+//        fusedLocationProviderApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+//        if (creentlocation != null) {
+//            location = creentlocation;
+//            //桁数の指定
+//            DecimalFormat df = new DecimalFormat("0.000000");
+//            //locationから緯度経度の取得
+//            MyLocation myLocation = new MyLocation();
+//            myLocation.setMylocation(new LatLng(location.getLatitude(),location.getLongitude()));
+//            EventBus.getDefault().post(myLocation);
+//            googleApiClient.disconnect();
+//            Log.v("getmylocation","got location");
+//        }
     }
 
     @Override

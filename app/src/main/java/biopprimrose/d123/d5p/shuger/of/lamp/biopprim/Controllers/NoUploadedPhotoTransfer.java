@@ -15,21 +15,21 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.HttpClient;
-import cz.msebera.android.httpclient.client.methods.HttpPost;
-import cz.msebera.android.httpclient.entity.ContentType;
 import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
 import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
-import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
-import cz.msebera.android.httpclient.util.EntityUtils;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 /**
@@ -47,7 +47,10 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
     private String updated;
     private String pname;
     private String annotation;
+    private String imgname;
     String id;
+
+    private Integer responseCode;
 
     GridView myListview;
     TempOpenHelper imgOpenHelper;
@@ -98,48 +101,74 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
         db.close();
 
         //インスタンスの作成
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost hpost = new HttpPost(url);
         MultipartEntityBuilder entity = MultipartEntityBuilder.create();
 
         entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
         //ファイルパスをファイル型として取得？
+//        imgname = context.getFilesDir().getPath() + filename;
+        imgname = filename.replace("/data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/","");
+        Log.d("dir", context.getFilesDir().getPath());
+        Log.d("imgname",imgname);
         File file = new File(filename);
-
+        final MediaType IMAGE = MediaType.parse("image/jpg");
         //entityにデータをセット
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String userid = sp.getString("MyID", "null");
 
 
-        ContentType textContentType = ContentType.create("text/plain", "UTF-8");
-        entity.addTextBody("usrIDaafdfwe", userid, textContentType);
-        entity.addTextBody("ppersonalname", pname, textContentType);
-        entity.addBinaryBody("catb", file, ContentType.create("image/jpg"), filename);
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(
+                        "images", "images",
+                        RequestBody.create(IMAGE,file)
+                )
+                .addFormDataPart(
+                        "photoname",pname
+                )
+                .addFormDataPart(
+                        "userid", userid
+                )
+                .addFormDataPart(
+                        "imgpath" , filename
+                )
+                .addFormDataPart(
+                        "filename", imgname
+                )
+                .addFormDataPart(
+                        "annotation", annotation
+                )
+                .build();
 
-        /**entityにセットする
-         * この操作にはapache-mime5j-core,httpcore,httpmimeの３つのラブラリが必要
-         */
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
 
-        hpost.setEntity(entity.build());
-
-        str = null;
-
-        //レスポンスを取得
-        HttpResponse response = null;
-        try {
-            response = httpClient.execute(hpost);
-            try {
-                str = EntityUtils.toString(response.getEntity(), "UTF-8");
-            } catch (IOException e) {
-                e.printStackTrace();
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .readTimeout(15*1000, TimeUnit.MILLISECONDS)
+                .writeTimeout(20*1000, TimeUnit.MILLISECONDS)
+                .connectTimeout(20*1000, TimeUnit.MILLISECONDS)
+                .build();
+        try
+        {
+            Response res = client.newCall(request).execute();
+            responseCode = res.code();
+            Log.d("responsecode",Integer.toString(responseCode));
+            if (!res.isSuccessful()) {
+                Log.d("500",res.body().toString());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
 
+            if (res.body() !=null) {
+                str = res.body().string();
+            }
+
+//            str = res.body().string();
+        }catch (Exception e) {
+            e.printStackTrace();
+//            str = null;
+        }
         return str;
     }
 
@@ -160,13 +189,14 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
     protected void onPostExecute(String result) {
         Log.v("sdfas", str);
         String[] res = str.split("@");
-        if (str != null && res.length == 7) {
+//        if (str != null && res.length == 7) {
+        if (responseCode == 200 && str != null){
             long ide = dbch(context, filename, updated);
             if (ide < 0) {
-                Toast.makeText(context, "データベースの書き込みに失敗しました", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.noupload_err_database, Toast.LENGTH_LONG).show();
             } else {
 
-                Toast.makeText(context, "アップロードに成功しました\n:", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.noupload_success, Toast.LENGTH_LONG).show();
                 TempOpenHelper toh = new TempOpenHelper(context);
                 ContentValues values = new ContentValues();
                 values.put(TempContract.TempImages.COL_ISUPLOADED, "1");
@@ -188,7 +218,7 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
             SimpleCursorAdapter adapter = setMyListview(context);
             myListview.setAdapter(adapter);
         } else {
-            Toast.makeText(context, "ネットワークを利用できないかエラーが起きています。", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.noupload_err_network, Toast.LENGTH_LONG).show();
         }
     }
 
