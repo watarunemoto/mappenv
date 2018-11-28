@@ -63,7 +63,7 @@ public class PhotoResultFragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         menu.setHeaderTitle(R.string.file_edit);
-        menu.add(0, CONTEXT_MENU1_ID, 0, R.string.do_you_delete);
+        menu.add(0, CONTEXT_MENU1_ID, 0, R.string.label_deleteimages);
     }
 
     @Override
@@ -122,9 +122,9 @@ public class PhotoResultFragment extends Fragment {
     private void deleteImg(final String imgId) {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete)
-                .setMessage(R.string.do_delete)
+                .setMessage(R.string.label_deleteconfirmation)
                 .setNegativeButton(R.string.no_dialog, null)
-                .setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ImgOpenHelper iph = new ImgOpenHelper(getActivity());

@@ -5,11 +5,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera.autofocus"
+        />
 
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
@@ -60,11 +63,6 @@
             android:name=".Views.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".Views.RankActivity"
-            android:label="@string/title_activity_rank"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Views.PhotoResultActivity"
             android:label="@string/title_activity_photo_result"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -100,13 +98,9 @@
             android:name=".Views.OtherPhotoViewForm"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Views.TabRanking"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Views.Setting_Activity"
             android:parentActivityName=".Views.TitleActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Views.RankUsersDetailActivity" />
         <activity android:name=".Views.FriendActivity" />
 
         <provider
@@ -115,7 +109,8 @@
             android:enabled="false"
             android:exported="false" />
 
-        <activity android:name=".Views.AnnotationActivity"></activity>
+        <activity android:name=".Views.AnnotationActivity" />
+        <activity android:name=".Views.RankActivity"></activity>
     </application>
 
 </manifest>

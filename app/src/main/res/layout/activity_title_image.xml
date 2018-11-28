@@ -65,6 +65,14 @@
                 android:layout_weight="1"
                 android:background="@drawable/layout_title_frame"
                 android:orientation="vertical">
+                <ProgressBar
+
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="#00000000"
+                    />
 
                 <TextView
                     android:layout_width="match_parent"

@@ -1,22 +1,26 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.location.Location;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -32,11 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderApi;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationResult;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.MyLocationManager;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.PhotoPostTask;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 
@@ -54,10 +55,7 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
  */
 
 
-public class CameraPreview extends FragmentActivity implements
-        com.google.android.gms.location.LocationListener,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class CameraPreview extends AppCompatActivity implements MyLocationManager.OnLocationResultListener{
 
     private Toast t;
     public Context context;
@@ -67,6 +65,10 @@ public class CameraPreview extends FragmentActivity implements
      */
 
     private Camera mCamera;
+    private static final int REQUEST_CODE_PICKER = 1;
+    private static final int REQUEST_CODE_PERMISSION = 2;
+    private final int REQUEST_PERMISSION = 1000;
+
 
     /**
      * カメラのプレビューを表示する {@link SurfaceView}
@@ -84,7 +86,7 @@ public class CameraPreview extends FragmentActivity implements
     ConnectivityManager cm;
 
     //gpsの状態
-    String gpsStatus;
+//    String gpsStatus;
 
     Activity activity;
 
@@ -93,19 +95,12 @@ public class CameraPreview extends FragmentActivity implements
     //
     private boolean auto_focus = false;
 
-    //fuselocation
-    private GoogleApiClient googleApiClient;
-    private boolean mResolvingError = false;
+    private MyLocationManager locationManager;
 
-    private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
-    private LocationRequest locationRequest;
-    private Location location;
 
     private String lati;
     private String longi;
 
-    //connectionのフラッグ
-    private boolean flag = false;
 
     static String annotation = "";
     private String anoret = "";
@@ -128,28 +123,9 @@ public class CameraPreview extends FragmentActivity implements
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        locationRequest = LocationRequest
-                .create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(3000)
-                .setFastestInterval(500);
-
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-
-        final boolean gpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsEnabled) {
-            // GPSを設定するように促す
-            enableLocationSettings();
-        }
         //ネットワークの状態の取得関連
         cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         //GPSの状態の取得
-        gpsStatus = Settings.Secure
-                .getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
         //シャッターのボタン
         //GPSがONであれば
@@ -157,13 +133,9 @@ public class CameraPreview extends FragmentActivity implements
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gpsStatus = Settings.Secure
-                        .getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-                Log.v("gpsstatus", gpsStatus);
-                if (!(gpsStatus.indexOf("gps", 0) < 0) && !flag) {
-                    googleApiClient.connect();
-                    flag = true;
-                }
+//                gpsStatus = Settings.Secure
+//                        .getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+//                Log.v("gpsstatus", gpsStatus);
 
                 if (!take_cut) {
                     if (mCamera != null) {
@@ -173,6 +145,16 @@ public class CameraPreview extends FragmentActivity implements
                 }
             }
         });
+
+
+
+        if(Build.VERSION.SDK_INT >= 23){
+            checkPermission();
+        }
+        else{
+            SurfaceHolder holder = mView.getHolder();
+            holder.addCallback(surfaceHolderCallback);
+        }
 
         myRelativeLayout = (RelativeLayout) findViewById(R.id.my_relative);
 
@@ -208,15 +190,83 @@ public class CameraPreview extends FragmentActivity implements
 
     }
 
-    //onPostCreate...onCreateの実行が終わった時に実行される
+    public void checkPermission() {
+        // 既に許可している
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED){
+
+
+            SurfaceHolder holder = mView.getHolder();
+            holder.addCallback(surfaceHolderCallback);
+        }
+        // 拒否していた場合
+        else{
+            requestCameraPermission();
+        }
+    }
+    private void requestCameraPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(CameraPreview.this,
+                    new String[]{Manifest.permission.CAMERA},
+                    REQUEST_PERMISSION);
+
+        } else {
+            Toast toast = Toast.makeText(this,
+                    R.string.label_permissionconfirmation, Toast.LENGTH_SHORT);
+            toast.show();
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA,},
+                    REQUEST_PERMISSION);
+
+        }
+    }
+
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SurfaceHolder holder = mView.getHolder();
-        holder.addCallback(surfaceHolderCallback);
-        Log.v("post", "postCreate");
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION) {
+            // 使用が許可された
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                SurfaceHolder holder = mView.getHolder();
+//                holder.addCallback(surfaceHolderCallback);
+                Toast toast = Toast.makeText(this,
+                        R.string.label_rebootconfirmation, Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                // それでも拒否された時の対応
+                Toast toast = Toast.makeText(this,
+                        R.string.label_unavailablenotification, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+    }
+
+    //onPostCreate...onCreateの実行が終わった時に実行される
+        @Override
+        protected void onPostCreate(Bundle savedInstanceState) {
+            super.onPostCreate(savedInstanceState);
+//            SurfaceHolder holder = mView.getHolder();
+
+//            holder.addCallback(surfaceHolderCallback);
+
+//            if(Build.VERSION.SDK_INT >= 23){
+//                checkPermission();
+//            }
+//            else{
+//            SurfaceHolder holder = mView.getHolder();
+//            holder.addCallback(surfaceHolderCallback);
+//            }
+
+
+            Log.v("post", "postCreate");
 
     }
+
+
 
 
 
@@ -229,6 +279,8 @@ public class CameraPreview extends FragmentActivity implements
             /**
              * カメラ実行
              */
+
+
 
             int cameraid = 0;
             mCamera = Camera.open(cameraid);
@@ -284,6 +336,8 @@ public class CameraPreview extends FragmentActivity implements
             }
         }
 
+
+
         //surfaceChanged...変更された時に実行
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -332,7 +386,7 @@ public class CameraPreview extends FragmentActivity implements
                 }
                 //loc = Gpskun();
                 if (loc == null) {
-                    Toast.makeText(CameraPreview.this, R.string.cant_get_location, Toast.LENGTH_LONG).show();
+                    Toast.makeText(CameraPreview.this, R.string.camera_err_getlocation, Toast.LENGTH_LONG).show();
 
                 } else {
                     //このアプリ専用のフォルダを使用
@@ -421,7 +475,7 @@ public class CameraPreview extends FragmentActivity implements
         NetworkInfo nwi = cm.getActiveNetworkInfo();
         final String loc_data[] = locat.split(",", 0);
         final EditText editView = new EditText(CameraPreview.this);
-        editView.setHint(R.string.if_not_input_unknown);
+        editView.setHint(R.string.hint_photoname);
         InputFilter[] inputFilters = new InputFilter[1];
         inputFilters[0] = new InputFilter.LengthFilter(50);
         editView.setFilters(inputFilters);
@@ -431,7 +485,7 @@ public class CameraPreview extends FragmentActivity implements
         if (nwi != null) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(CameraPreview.this);
-            builder.setTitle(R.string.detect_img);
+            builder.setTitle(R.string.camera_title_detectimg);
             builder.setNegativeButton(R.string.no_dialog, null);
 
 
@@ -454,18 +508,18 @@ public class CameraPreview extends FragmentActivity implements
         } else {
             //Toast.makeText(this, "ネットワークが利用できません", Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(CameraPreview.this)
-                    .setTitle(R.string.cant_get_network)
-                    .setMessage(R.string.reserve_photo)
+                    .setTitle(R.string.camera_err_network)
+                    .setMessage(R.string.label_reserveconfirmation)
                     .setView(editView)
                     .setNegativeButton(R.string.no_dialog, null)
-                    .setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             String pname = "";
                             Log.v("anohpton",""+ anoret);
                             pname = editView.getText().toString();
                             if (pname.equals("")) {
-                                pname = "unknown";
+                                pname = getString(R.string.label_photoname);
                             }
                             if (anoret.equals(null)){
                                 anoret = "";
@@ -473,7 +527,7 @@ public class CameraPreview extends FragmentActivity implements
                             PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname, anoret);
                             hpt.nouploaddb(iMGNAME);
                             Log.v("imgpath/" , iMGNAME);
-                            Toast.makeText(CameraPreview.this, R.string.reserved, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CameraPreview.this, R.string.label_reservenotification, Toast.LENGTH_SHORT).show();
                         }
                     }).show();
         }
@@ -481,89 +535,52 @@ public class CameraPreview extends FragmentActivity implements
         return iMGNAME;
     }
 
-    //GPsを使うメソッド
-    private void enableLocationSettings() {
-        new AlertDialog.Builder(CameraPreview.this)
-                .setTitle(R.string.not_on_gps)
-                .setMessage(R.string.turn_on_gps)
-                .setNegativeButton(R.string.no_dialog, null)
-                .setPositiveButton(R.string.yes_dialog, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(settingsIntent);
-                    }
-                }).show();
-    }
-
-
-
-    @Override
-    public void onLocationChanged(Location location) {
-        DecimalFormat df = new DecimalFormat("0.000000");
-        //locationから緯度経度の取得
-        lati = df.format(location.getLatitude());
-        longi = df.format(location.getLongitude());
-    }
 
     @Override
     protected void onStart() {
-        if (gpsStatus.indexOf("gps", 0) >= 0 && !flag) {
-            googleApiClient.connect();
-            flag = true;
-        }
-        Log.v("gps",gpsStatus);
         super.onStart();
     }
 
 
     @Override
     protected void onResume() {
-        if (gpsStatus.indexOf("gps", 0) >= 0 && !flag) {
-//        if (gpsStatus.indexOf("gps", 0) >= 0) {
-            googleApiClient.connect();
-            flag = true;
-        }
         super.onResume();
+        locationManager = new MyLocationManager(this, this);
+        locationManager.startLocationUpdates();
     }
 
     @Override
     protected void onStop() {
-        googleApiClient.disconnect();
-        flag = false;
         super.onStop();
-    }
 
-    @Override
-    protected void onPause() {
-        googleApiClient.disconnect();
-        flag = false;
-        super.onPause();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        gpsStatus = Settings.Secure
-                .getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        Location creentlocation = fusedLocationProviderApi.getLastLocation(googleApiClient);
-        fusedLocationProviderApi.requestLocationUpdates(googleApiClient, locationRequest, CameraPreview.this);
-        if (creentlocation != null) {
-            location = creentlocation;
-            //桁数の指定
-            DecimalFormat df = new DecimalFormat("0.000000");
-            //locationから緯度経度の取得
-            lati = df.format(location.getLatitude());
-            longi = df.format(location.getLongitude());
+        if (locationManager != null) {
+            locationManager.stopLocationUpdates();
         }
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    protected void onPause() {
+        super.onPause();
+        if (locationManager != null) {
+            locationManager.stopLocationUpdates();
+        }
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onLocationResult(LocationResult locationResult) {
+        if (locationResult == null) {
+            Log.e("GPSError","# No location data.");
+            return;
+        }
+
+        // 緯度・経度を取得
+        double latitude = locationResult.getLastLocation().getLatitude();
+        double longitude = locationResult.getLastLocation().getLongitude();
+        DecimalFormat df = new DecimalFormat("0.000000");
+        lati = df.format(latitude);
+        longi = df.format(longitude);
     }
+
 
 
     @Override
@@ -581,10 +598,8 @@ public class CameraPreview extends FragmentActivity implements
                 anoret = "";
             }
         }
-        if (gpsStatus.indexOf("gps", 0) >= 0 ) {
-            googleApiClient.connect();
-            flag = true;
-        }
+
+
 
     }
 
