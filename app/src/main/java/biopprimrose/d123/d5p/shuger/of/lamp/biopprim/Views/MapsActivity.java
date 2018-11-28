@@ -455,20 +455,24 @@ public class MapsActivity extends AppCompatActivity
                         return true;
                     } else {
 
-                        if (packdata[1].equals(username)) {
+                        try {
+                            if (packdata[1].equals(username)) {
 
-                            PhotoResultFormFragment fragment = new PhotoResultFormFragment();
-                            Bundle args = new Bundle();
-                            args.putStringArray("packdata", packdata);
-                            fragment.setArguments(args);
+                                PhotoResultFormFragment fragment = new PhotoResultFormFragment();
+                                Bundle args = new Bundle();
+                                args.putStringArray("packdata", packdata);
+                                fragment.setArguments(args);
 
-                            FragmentManager manager = getSupportFragmentManager();
-                            FragmentTransaction transaction = manager.beginTransaction();
+                                FragmentManager manager = getSupportFragmentManager();
+                                FragmentTransaction transaction = manager.beginTransaction();
 
-                            transaction.add(R.id.map_form_fragment, fragment, "fragment_form");
-                            transaction.addToBackStack("photoformfragment");
-                            transaction.commit();
+                                transaction.add(R.id.map_form_fragment, fragment, "fragment_form");
+                                transaction.addToBackStack("photoformfragment");
+                                transaction.commit();
 
+                            }
+                        }
+                        catch(ArrayIndexOutOfBoundsException e){
                         }
 
                         return true;

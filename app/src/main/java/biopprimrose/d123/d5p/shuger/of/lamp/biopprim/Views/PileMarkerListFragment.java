@@ -52,6 +52,7 @@ public class PileMarkerListFragment extends Fragment {
         otherUsersLists =  new ArrayList<>();
 
         int count = 0;
+        try{
         for (String data : packdata) {
             OtherUsersList otherUsersList = new OtherUsersList();
 
@@ -64,6 +65,9 @@ public class PileMarkerListFragment extends Fragment {
             otherUsersLists.add(otherUsersList);
             count++;
         }
+        }catch (ArrayIndexOutOfBoundsException e){
+        }
+
         OtherUsersListAdapter otherUsersListAdapter = new OtherUsersListAdapter(getActivity());
         otherUsersListAdapter.setOtherUsersLists(otherUsersLists);
         gridView.setAdapter(otherUsersListAdapter);
