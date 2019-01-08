@@ -7,7 +7,8 @@ public class UrlCollections  {
 
     public UrlCollections(){}
 
-    private static final String SERVER_NAME = "http://133.14.168.203:5900/api/v1/";
+    //private static final String SERVER_NAME = "http://133.14.168.203:5900/api/v1/";
+    private static final String SERVER_NAME = "http://10.0.1.19:5900/api/v1/";
     /**
     public static final String URL_UPLOAD_PHOTO = "http://133.14.168.203/inviawefiLigand.php";
     public static final String URL_RANKINGS = "http://133.14.168.203/gacDojisafvesveywo.php";
