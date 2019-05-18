@@ -405,6 +405,7 @@ public class MapsActivity extends AppCompatActivity
                 public void onMapLoaded() {
                     startPos();
                     flag = 1;
+
                 }
             });
 
@@ -485,4 +486,7 @@ public class MapsActivity extends AppCompatActivity
 
 //        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
     }
-}
+
+    }
+
+
