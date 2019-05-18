@@ -11,8 +11,8 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 
 /**
  * Created by amimeyaY on 2015/11/05.
@@ -39,11 +39,11 @@ public class RankCustomAdapter extends ArrayAdapter<String> {
 		}
 
 
-
 		String item = getItem(position);
 		String[] data = item.split(":");
         String ranking_points = context.getString(R.string.ranking_points);
         String ranking_counts = context.getString(R.string.ranking_count);
+        Log.v("テスト",item);
 
 		Log.v("get_num",data+"");
 		DecimalFormat df = new DecimalFormat("0.000000");

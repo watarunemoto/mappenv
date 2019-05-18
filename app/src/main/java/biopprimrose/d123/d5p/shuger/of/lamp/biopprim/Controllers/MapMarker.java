@@ -153,24 +153,7 @@ public class MapMarker extends AsyncTask<String, Integer, String> {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
-/*
-//todo バックグラウンド内で気象庁サイトのデータ表示ページまでアクセス。
-        try{
-            String strurl= "http://www.data.jma.go.jp/obd/stats/etrn/view/annually_a.php?prec_no=43&block_no=1232&year=&month=&day=&view=";
-            Document document = Jsoup.connect(strurl).get();
-            Elements table =document.getElementsByTag("table");
-            String strtable = table.toString();
-            return strtable;
-        }catch (MalformedURLException ex){
-        }
-        catch (IOException e){
-        }
-        finally {
-        }*/
         return null;
-        //todo スクレイピング操作
-
     }
 
     /*

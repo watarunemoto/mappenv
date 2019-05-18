@@ -9,7 +9,9 @@ android {
             storePassword 'android'
         }
     }
-
+    dependencies {
+        implementation 'com.google.maps.android:android-maps-utils:0.5+'
+    }
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {

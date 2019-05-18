@@ -101,7 +101,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:scaleType="fitXY"
-                            android:src="@drawable/icon_camera_256" />
+                            android:src="@drawable/icon_camera_2" />
 
                         <ImageButton
                             android:id="@+id/list_button"
@@ -109,7 +109,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:scaleType="fitXY"
-                            android:src="@drawable/icon_list_256" />
+                            android:src="@drawable/icon_album" />
 
                     </LinearLayout>
 
@@ -126,7 +126,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:scaleType="fitXY"
-                            android:src="@drawable/icon_map_256" />
+                            android:src="@drawable/icon_map_2" />
 
                         <ImageButton
                             android:id="@+id/rank_button"
@@ -134,7 +134,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:scaleType="fitXY"
-                            android:src="@drawable/icon_rank_256" />
+                            android:src="@drawable/icon_rank_2" />
 
                     </LinearLayout>
                 </LinearLayout>
