@@ -1,101 +1,38 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.GroundOverlay;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Tile;
-import com.google.android.gms.maps.model.TileOverlay;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.maps.model.TileProvider;
-import com.google.android.gms.maps.model.UrlTileProvider;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.AsyncTaskAbstract;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.Util;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
-
-import static biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections.URL_GET_LATLNG;
 
 
 /**
 // * A simple {@link Fragment} subclass.
-// * Use the {@link CameraMapFragment#/newInstance} factory method to
+// * Use the {@link CameraMapFragment#newInstance} factory method to
 // * create an instance of this fragment.
  */
 public class CameraMapFragment extends Fragment {
 
-    static MapView mMapView;
-    static GoogleMap googleMap;
-    static String mQueryKey;
-    static String mQueryValue;
+    MapView mMapView;
+    private GoogleMap googleMap;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-
-
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)  {
-
-        final View rootView = inflater.inflate(R.layout.fragment_camera_map, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_camera_map, container, false);
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -108,333 +45,48 @@ public class CameraMapFragment extends Fragment {
             e.printStackTrace();
         }
 
-
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
 
-
                 // For showing a move to my location button
-                //googleMap.setMyLocationEnabled(true);
+                googleMap.setMyLocationEnabled(true);
 
                 // For dropping a marker at a point on the Map
                 LatLng now = new LatLng(35.985190, 139.374145);
-                googleMap.addMarker(new MarkerOptions().position(now).title("Marker Title").snippet("Marker Description"));
+//                googleMap.addMarker(new MarkerOptions().position(now).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(now).zoom(18).build();
-                //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                /*
-                //OpenWeatherMapから降雨量データを取得、表示させる。
-                TileProvider tileProvider = new UrlTileProvider(256, 256) {
-                    @Override
-                    public URL getTileUrl(int x, int y, int zoom) {
-
-                        /* Define the URL pattern for the tile images */
-                 /*       String s = String.format("https://tile.openweathermap.org/map/precipitation_new/%d/%d/%d.png?appid=bf8fa0e5d53ae71cdde5ad8851372be4", zoom, x, y);
-
-                        if (!checkTileExists(x, y, zoom)) {
-                            return null;
-                        }
-
-                        try {
-                            return new URL(s);
-                        } catch (MalformedURLException e) {
-                            throw new AssertionError(e);
-                        }
-                    }
-
-                    /*
-                     * Check that the tile server supports the requested x, y and zoom.
-                     * Complete this stub according to the tile range you support.
-                     * If you support a limited range of tiles at different zoom levels, then you
-                     * need to define the supported x, y range at each zoom level.
-                     */
-                   /* private boolean checkTileExists(int x, int y, int zoom) {
-                        int minZoom = 0;
-                        int maxZoom = 18;
-
-                        if ((zoom < minZoom || zoom > maxZoom)) {
-                            return false;
-                        }
-                        return true;
-                    }
-                };
-
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));*/
-
-
-                GetData HeatMap = new GetData();
-                HeatMap.execute();
-
-                //ヒートマップを表示させる。
-               //googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(HeatMap.execute()));
-
-
-
-
             }
         });
+
         return rootView;
     }
 
-/*
-    public HeatmapTileProvider addHeatMap () {
-        List<LatLng> lllist = null;
-        //緯度経度のデータを取得する
-        getdata receiver = new getdata();
-        receiver.execute();
-
-        //Bundle args = new Bundle();
-        //args.putString("URI", UrlCollections.URL_GET_CATEGORY);
-        //getLoaderManager().initLoader(1,args,this);
-
-        //得られたデータからHeatMapProviderを作成
-        HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder().data().build();
-        return mProvider;
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
     }
-*/
-
-static class GetData extends AsyncTask<Integer,Integer, String> {
-
 
     @Override
-    protected String doInBackground(Integer... value) {
-
-        Log.d("SampleLoader", "loadInBackground");
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ignored) {
-
-        }
-
-        int responseCode = 0;
-        ArrayList<LatLng> responseData = null;
-        HttpURLConnection connection = null;
-        URL url;
-        String urlStr = URL_GET_LATLNG.toString();
-        Log.d(urlStr, "Urlstr");
-        String jsontext="";
-
-        HashMap<String, String> queryParams = new HashMap<>();
-        queryParams.put(mQueryKey, mQueryValue);
-//        StringBuilder sb = new StringBuilder();
-        Log.d(queryParams.toString(), "PostQueryParams");
-        try {
-            if (mQueryKey != null | mQueryValue != null) {
-                Uri.Builder builder = new Uri.Builder();
-                Set keys = queryParams.keySet();
-//            URL url = new URL(urlStr);
-                for (Object key : keys) {
-                    builder.appendQueryParameter(key.toString(), queryParams.get(key));
-                }
-                url = new URL(urlStr + builder.toString());
-            } else {
-                url = new URL(urlStr);
-            }
-
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout(100000);
-            connection.setReadTimeout(100000);
-            connection.setRequestProperty("User-Agent", "Android");
-            connection.setRequestProperty("Accept-Language", Locale.getDefault().toString());
-            connection.setRequestMethod("GET");
-            connection.setDoOutput(false);
-            connection.setDoInput(true);
-            connection.connect();
-
-
-            InputStream in = connection.getInputStream();
-            responseCode = connection.getResponseCode();
-            Log.d("doInBackground", "doInBackground: "+responseCode);
-            //Log.d("doInBackground", "doInBackground: "+connection.getInputStream());
-
-
-            if (responseCode == 200) {
-                //BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                //try {
-                    StringBuffer stringBUffer = new StringBuffer();
-                    StringBuilder result = new StringBuilder();
-                    InputStreamReader inReader = new InputStreamReader(in);
-                    BufferedReader bufferedReader = new BufferedReader(inReader);
-
-                    // Log.d("doinbackground", "bufferREader"+bufferedReader.readLine());
-                    String line ;
-                    //Log.d("result",result.toString());
-                    while ((line = bufferedReader.readLine()) != null) {
-                        stringBUffer.append(line);
-                        //result.append(line);
-                    }
-                Log.d("aaaaaaa", "doInBackground: "+result);
-                    //jsontext = result.toString();
-                    jsontext = stringBUffer.toString();
-                    try{
-                        Log.d("doInBackground", "doInBackground:");
-                        JSONArray jsonArray = new JSONObject(jsontext).getJSONArray("json");
-                        Log.d("aaaaaaa", "doInBackground: "+jsonArray);
-                    }catch (JSONException e){
-                    }
-                    bufferedReader.close();
-                    inReader.close();
-                    in.close();
-
-
-                    //responseData = convertToArrayList(connection.getInputStream());
-                //} catch (JSONException e) {
-                }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-        //Log.d("execute", "URL:" + urlStr);
-        //Log.d("execute", "HttpStatusCode:" + responseCode);
-        //Log.d("execute", "ResponseData:" + responseData);
-        //Log.d("doinbackground", "結果は"+responseData);
-        Log.d("doInBackground", "jsontext is "+jsontext);
-
-
-        return jsontext;
-
-
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
     }
-
-
-
-
-
-
-
-
-    private ArrayList<LatLng> convertToArrayList(InputStream stream) throws IOException, JSONException {
-        StringBuffer sb = new StringBuffer();
-        String line = "";
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-        StringBuilder builder = new StringBuilder();
-        ArrayList<LatLng> list= new ArrayList<>();
-        //Log.d("convertToArrayList", "convertToArrayList: ここまではおけ");
-
-
-        //String inputStr;
-        while ((line = br.readLine()) != null)
-            //sb.append(line);
-            builder.append(line);
-        Log.d("convertToArrayList", "respiknseStrBuilderは..."+builder);
-
-
-        //streamからJSONオブジェクトを作成する。
-        JSONArray jsonArray = new JSONArray(builder.toString());
-        Log.d("convertToArrayList", "jsonArrayは "+jsonArray);
-        //JSONオブジェクトを作成する。
-        for (int i = 0 ; i<jsonArray.length(); i++){
-            JSONObject jsonobject = jsonArray.getJSONObject(i);
-            double lat = jsonobject.getDouble("latitude");
-            double lng = jsonobject.getDouble("longitude");
-            list.add(new LatLng(lat,lng));
-            //Log.d("convertToArrayList", "convertToArrayList:"+jsonobject);
-        }
-
-        /*
-        String json = new Scanner(stream).useDelimiter("\\A").next();
-        JSONArray array = new JSONArray(json);
-        Log.d("convertTOArrayList", "convertToArrayList: "+array);
-
-        //JSONオブジェクトから一つずつ辞書を取り出し、リストに加える
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject object = array.getJSONObject(i);
-            double lat = object.getDouble("lat");
-            double lng = object.getDouble("lng");
-            list.add(new LatLng(lat, lng));
-        }
-        Log.d("convertToArrayList", "convertToArrayList: "+list);
-        */
-        Log.d("convertToArrayList", "" +list);
-
-
-
-        return list;
-
-
-
-        /*while ((line = br.readLine()) != null) {
-            sb.append(line);
-        }
-        try {
-            stream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-        //return sb.toString();
-
-    }
-
-
-
 
     @Override
-    protected void onPostExecute(String jsontext){
-        ArrayList<LatLng> list = new ArrayList<LatLng>();
-        JSONArray jsonarray =new JSONArray();
-
-
-            try {
-                jsonarray = new JSONArray(jsontext);
-            } catch (JSONException e) {
-                Log.d("jsontext", "onPostExecute: " + jsontext);
-            }
-            try {
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject object = jsonarray.getJSONObject(i);
-                    double lat = object.getDouble("lat");
-                    double lng = object.getDouble("lng");
-                    list.add(new LatLng(lat, lng));
-                    Log.d("latlng", "onPostExecute: " + lat + "," + lng);
-                }
-            } catch (JSONException e) {
-            }
-            //得られたデータからHeatMapProviderを作成
-            Log.d("list", "onPostExecute: " + list);
-            HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder().data(list).build();
-            //ヒートマップを表示させる。
-            googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-        
-
-
-
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
     }
-}
 
-
-
-
-        @Override
-        public void onResume() {
-            super.onResume();
-            mMapView.onResume();
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-            mMapView.onPause();
-        }
-
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-            mMapView.onDestroy();
-        }
-
-        @Override
-        public void onLowMemory() {
-            super.onLowMemory();
-            mMapView.onLowMemory();
-        }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
 }

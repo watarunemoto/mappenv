@@ -3,7 +3,6 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,18 +18,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.greenrobot.eventbus.EventBus;
 
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
-import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views.MapsActivity;
 
 /**
  * Created by amimeyaY on 2015/11/18.
@@ -156,11 +148,12 @@ public class MapMarker extends AsyncTask<String, Integer, String> {
         return null;
     }
 
-    /*
+    /**
      * データベースから読み込んだデータをマーカーとして
      * MapsActiviyに表示する
      * フォトリストから飛んできた場合にはIDを受け取りそのIDに対応するマーカーを赤く表示する
-     * @param
+     *
+     * @param s
      */
 
     @Override
@@ -204,22 +197,10 @@ public class MapMarker extends AsyncTask<String, Integer, String> {
                 if (no1.equals("others")) {
                     marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude_list.get(i),
                             longitude_list.get(i))).title(name_list.get(i)).icon(nonleaficon).snippet(snip_list.get(i) + "," + username));
-
                 } else {
                     marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude_list.get(i),
                             longitude_list.get(i))).title(name_list.get(i)).icon(icon).snippet(snip_list.get(i) + "," + username));
                 }
-
-/*
-                //マーカータップイベント
-                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(Marker marker) {
-                        //todo マーカーをタップした時に起きるイベント(画面遷移orTOAST表示)
-                        return false;
-                    }
-                });
-*/
 
                 boolean flag_is_dou = true;
                 if (markerCollections != null && markerCollections.size() > 0) {
@@ -229,14 +210,18 @@ public class MapMarker extends AsyncTask<String, Integer, String> {
                         }
                     }
                 }
+
                 if (flag_is_dou) {
                     MarkerCollection markerC = new MarkerCollection();
                     markerC.setMarker(marker);
                     markerCollections.add(markerC);
                 }
+
                 if (markerCollections.size() > 50) {
                     break;
                 }
+
+
             }
         }
 
@@ -254,21 +239,12 @@ public class MapMarker extends AsyncTask<String, Integer, String> {
             );
             marker_selected.showInfoWindow();
         }
-        /*cd
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                Intent intent = new Intent(context.getApplicationContext(),JmaDataDisp.class);
-                LatLng latlng = marker.getPosition();
-                double lat = latlng.latitude;
-                double lng =latlng.longitude;
-                intent.putExtra("lat",lat);
-                intent.putExtra("lng",lng);
-                context.startActivity(intent);
-                return false;
-            }
-        });*/
+
+
+
     }
+
+
 }
 
 

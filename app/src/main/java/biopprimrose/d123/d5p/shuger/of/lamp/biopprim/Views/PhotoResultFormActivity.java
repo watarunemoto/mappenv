@@ -113,8 +113,7 @@ public class PhotoResultFormActivity extends AppCompatActivity {
 			String no1 = score.split(",")[0];
 			String no2 = score.split(",")[1];
 			String no3 = score.split(",")[2];
-//			text_score.setText("この写真の点数:"+ no1 + "\n" +"点数１:" + no2 + "\n" + "点数２:" + no3 );
-			text_score.setText("獲得した点数は" +no1 + "点です");
+			text_score.setText("この写真の点数:"+ no1 + "\n" +"点数１:" + no2 + "\n" + "点数２:" + no3 );
 //            Toast.makeText(activity, message + no1 + "\n" + s1 + no2 + "\n" + s2 + no3 , Toast.LENGTH_LONG).show();
 		} else {
             text_score.setText(R.string.upload_error);

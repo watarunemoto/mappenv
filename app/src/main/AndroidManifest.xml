@@ -110,9 +110,6 @@
             android:exported="false" />
 
         <activity android:name=".Views.AnnotationActivity" />
-
-        <activity android:name=".Controllers.JmaDataDisp"></activity>
-
         <activity android:name=".Views.RankActivity"></activity>
     </application>
 
