@@ -471,8 +471,7 @@ public class MapsActivity extends AppCompatActivity
                                 transaction.commit();
 
                             }
-                        }
-                        catch(ArrayIndexOutOfBoundsException e){
+                        }catch (ArrayIndexOutOfBoundsException e){
                         }
 
                         return true;

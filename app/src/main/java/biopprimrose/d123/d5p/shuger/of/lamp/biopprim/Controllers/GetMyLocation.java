@@ -1,11 +1,15 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -98,6 +102,7 @@ public class GetMyLocation implements
 
     @Override
     public void onConnected(Bundle bundle) {
+
 //        gpsStatus = Settings.Secure
 //                .getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 //        Location creentlocation = fusedLocationProviderApi.getLastLocation(googleApiClient);
