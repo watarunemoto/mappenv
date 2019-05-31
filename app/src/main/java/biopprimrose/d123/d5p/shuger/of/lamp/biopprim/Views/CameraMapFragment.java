@@ -1,6 +1,7 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.google.android.gms.common.util.CollectionUtils;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -84,6 +87,7 @@ public class CameraMapFragment extends Fragment {
     static String mQueryKey;
     static String mQueryValue;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -113,18 +117,21 @@ public class CameraMapFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
+                CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(35.985233,139.374192),18);
+                googleMap.moveCamera(cUpdate);
 
 
                 // For showing a move to my location button
                 //googleMap.setMyLocationEnabled(true);
 
                 // For dropping a marker at a point on the Map
-                LatLng now = new LatLng(35.985190, 139.374145);
-                googleMap.addMarker(new MarkerOptions().position(now).title("Marker Title").snippet("Marker Description"));
+                //LatLng now = new LatLng(35.985190, 139.374145);
+                //googleMap.addMarker(new MarkerOptions().position(now).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(now).zoom(18).build();
+                //CameraPosition cameraPosition = new CameraPosition.Builder().target(now).zoom(18).build();
                 //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
 
                 /*
                 //OpenWeatherMapから降雨量データを取得、表示させる。
@@ -166,37 +173,14 @@ public class CameraMapFragment extends Fragment {
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));*/
 
-
+                //ヒートマップを表示させる
                 GetData HeatMap = new GetData();
                 HeatMap.execute();
-
-                //ヒートマップを表示させる。
-               //googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(HeatMap.execute()));
-
-
-
-
             }
         });
         return rootView;
     }
 
-/*
-    public HeatmapTileProvider addHeatMap () {
-        List<LatLng> lllist = null;
-        //緯度経度のデータを取得する
-        getdata receiver = new getdata();
-        receiver.execute();
-
-        //Bundle args = new Bundle();
-        //args.putString("URI", UrlCollections.URL_GET_CATEGORY);
-        //getLoaderManager().initLoader(1,args,this);
-
-        //得られたデータからHeatMapProviderを作成
-        HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder().data().build();
-        return mProvider;
-    }
-*/
 
 static class GetData extends AsyncTask<Integer,Integer, String> {
 
@@ -209,7 +193,6 @@ static class GetData extends AsyncTask<Integer,Integer, String> {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException ignored) {
-
         }
 
         int responseCode = 0;
@@ -222,13 +205,11 @@ static class GetData extends AsyncTask<Integer,Integer, String> {
 
         HashMap<String, String> queryParams = new HashMap<>();
         queryParams.put(mQueryKey, mQueryValue);
-//        StringBuilder sb = new StringBuilder();
         Log.d(queryParams.toString(), "PostQueryParams");
         try {
             if (mQueryKey != null | mQueryValue != null) {
                 Uri.Builder builder = new Uri.Builder();
                 Set keys = queryParams.keySet();
-//            URL url = new URL(urlStr);
                 for (Object key : keys) {
                     builder.appendQueryParameter(key.toString(), queryParams.get(key));
                 }
@@ -251,17 +232,13 @@ static class GetData extends AsyncTask<Integer,Integer, String> {
             InputStream in = connection.getInputStream();
             responseCode = connection.getResponseCode();
             Log.d("doInBackground", "doInBackground: "+responseCode);
-            //Log.d("doInBackground", "doInBackground: "+connection.getInputStream());
 
 
             if (responseCode == 200) {
-                //BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                //try {
                     StringBuffer stringBUffer = new StringBuffer();
                     StringBuilder result = new StringBuilder();
                     InputStreamReader inReader = new InputStreamReader(in);
                     BufferedReader bufferedReader = new BufferedReader(inReader);
-
                     // Log.d("doinbackground", "bufferREader"+bufferedReader.readLine());
                     String line ;
                     //Log.d("result",result.toString());
@@ -269,8 +246,7 @@ static class GetData extends AsyncTask<Integer,Integer, String> {
                         stringBUffer.append(line);
                         //result.append(line);
                     }
-                Log.d("aaaaaaa", "doInBackground: "+result);
-                    //jsontext = result.toString();
+                    //Log.d("aaaaaaa", "doInBackground: "+result);
                     jsontext = stringBUffer.toString();
                     try{
                         Log.d("doInBackground", "doInBackground:");
@@ -281,11 +257,10 @@ static class GetData extends AsyncTask<Integer,Integer, String> {
                     bufferedReader.close();
                     inReader.close();
                     in.close();
+            }else{
 
-
-                    //responseData = convertToArrayList(connection.getInputStream());
-                //} catch (JSONException e) {
-                }
+                //Toast.makeText(getActivity(),"ヒートマップを表示できませんでした",Toast.LENGTH_SHORT).show();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -298,116 +273,47 @@ static class GetData extends AsyncTask<Integer,Integer, String> {
         //Log.d("execute", "ResponseData:" + responseData);
         //Log.d("doinbackground", "結果は"+responseData);
         Log.d("doInBackground", "jsontext is "+jsontext);
-
-
         return jsontext;
 
 
     }
 
 
-
-
-
-
-
-
-    private ArrayList<LatLng> convertToArrayList(InputStream stream) throws IOException, JSONException {
-        StringBuffer sb = new StringBuffer();
-        String line = "";
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-        StringBuilder builder = new StringBuilder();
-        ArrayList<LatLng> list= new ArrayList<>();
-        //Log.d("convertToArrayList", "convertToArrayList: ここまではおけ");
-
-
-        //String inputStr;
-        while ((line = br.readLine()) != null)
-            //sb.append(line);
-            builder.append(line);
-        Log.d("convertToArrayList", "respiknseStrBuilderは..."+builder);
-
-
-        //streamからJSONオブジェクトを作成する。
-        JSONArray jsonArray = new JSONArray(builder.toString());
-        Log.d("convertToArrayList", "jsonArrayは "+jsonArray);
-        //JSONオブジェクトを作成する。
-        for (int i = 0 ; i<jsonArray.length(); i++){
-            JSONObject jsonobject = jsonArray.getJSONObject(i);
-            double lat = jsonobject.getDouble("latitude");
-            double lng = jsonobject.getDouble("longitude");
-            list.add(new LatLng(lat,lng));
-            //Log.d("convertToArrayList", "convertToArrayList:"+jsonobject);
-        }
-
-        /*
-        String json = new Scanner(stream).useDelimiter("\\A").next();
-        JSONArray array = new JSONArray(json);
-        Log.d("convertTOArrayList", "convertToArrayList: "+array);
-
-        //JSONオブジェクトから一つずつ辞書を取り出し、リストに加える
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject object = array.getJSONObject(i);
-            double lat = object.getDouble("lat");
-            double lng = object.getDouble("lng");
-            list.add(new LatLng(lat, lng));
-        }
-        Log.d("convertToArrayList", "convertToArrayList: "+list);
-        */
-        Log.d("convertToArrayList", "" +list);
-
-
-
-        return list;
-
-
-
-        /*while ((line = br.readLine()) != null) {
-            sb.append(line);
-        }
-        try {
-            stream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-        //return sb.toString();
-
-    }
-
-
-
-
     @Override
     protected void onPostExecute(String jsontext){
         ArrayList<LatLng> list = new ArrayList<LatLng>();
         JSONArray jsonarray =new JSONArray();
+        Log.d("onPostExecute", jsontext);
+            if (jsontext != "" ){
+                try {
+                    jsonarray = new JSONArray(jsontext);
+                    Log.d("onPostExecute", "onPostExecute: " + jsonarray);
+                } catch (JSONException e) {
 
-
-            try {
-                jsonarray = new JSONArray(jsontext);
-            } catch (JSONException e) {
-                Log.d("jsontext", "onPostExecute: " + jsontext);
-            }
-            try {
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject object = jsonarray.getJSONObject(i);
-                    double lat = object.getDouble("lat");
-                    double lng = object.getDouble("lng");
-                    list.add(new LatLng(lat, lng));
-                    Log.d("latlng", "onPostExecute: " + lat + "," + lng);
                 }
-            } catch (JSONException e) {
+
+
+                try {
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject object = jsonarray.getJSONObject(i);
+                        double lat = object.getDouble("latitude");
+                        double lng = object.getDouble("longitude");
+                        list.add(new LatLng(lat, lng));
+                        //Log.d("latlng", "onPostExecute: " + lat + "," + lng);
+                    }
+                } catch (JSONException e) {
+
+                }
+
+
+                //得られたデータからHeatMapProviderを作成
+                Log.d("list", "onPostExecute: " + list);
+                if (list.size()!=0){
+                HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder().data(list).build();
+                //ヒートマップを表示させる。
+                googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+                }
             }
-            //得られたデータからHeatMapProviderを作成
-            Log.d("list", "onPostExecute: " + list);
-            HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder().data(list).build();
-            //ヒートマップを表示させる。
-            googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-        
-
-
-
     }
 }
 
