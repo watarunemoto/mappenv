@@ -7,7 +7,7 @@ public class UrlCollections  {
 
     public UrlCollections(){}
 
- private static final String SERVER_NAME = "http://133.14.168.203:5900/api/v1/";
+    private static final String SERVER_NAME = "http://133.14.168.203:5900/api/v1/";
     /**
     public static final String URL_UPLOAD_PHOTO = "http://133.14.168.203/inviawefiLigand.php";
     public static final String URL_RANKINGS = "http://133.14.168.203/gacDojisafvesveywo.php";
@@ -46,5 +46,4 @@ public class UrlCollections  {
     public static final String URL_ACCEPT_REQ = SERVER_NAME + "friend/accept";
     public static final String URL_GET_MY_REQ =SERVER_NAME + "friend/check/my_req";
 
-    public static final String URL_GET_LATLNG = SERVER_NAME + "download/latlng";
 }

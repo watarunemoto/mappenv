@@ -9,9 +9,7 @@ android {
             storePassword 'android'
         }
     }
-    dependencies {
-        implementation 'com.google.maps.android:android-maps-utils:0.5+'
-    }
+
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
@@ -53,7 +51,6 @@ android {
         exclude 'META-INF/LICENSE'
     }
 
-
 }
 
 //dependencies {
@@ -74,7 +71,6 @@ android {
 //    compile 'org.greenrobot:eventbus:3.0.0'
 //    testCompile 'junit:junit:4.12'
 //}
-
 
 
 dependencies {
