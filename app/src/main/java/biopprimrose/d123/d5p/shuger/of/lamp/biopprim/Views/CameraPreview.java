@@ -327,8 +327,12 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
             //解像度
 //            params.setPictureSize(640, 480);
 
+//            List<Camera.Size> postSizes = params.getSupportedPictureSizes();
+//            Camera.Size postSize = postSizes.get(5);
+
             List<Camera.Size> postSizes = params.getSupportedPictureSizes();
-            Camera.Size postSize = postSizes.get(5);
+            Camera.Size postSize = postSizes.get(postSizes.size()-2);
+
 //            params.setPictureSize(postSize.width, postSize.height);
             params.setPictureSize(3264,2448);
 
