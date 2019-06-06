@@ -24,7 +24,7 @@
     <string name="pref_dialog_object_name">写真の名前入力</string>
     <string name="pref_dialog_object_name_summ">撮影時に写真の名前の入力欄を表示するか</string>
     <string name="title_toolbar">MappEnv</string>
-    <string name="title_list_text">Total Score Ranking</string>
+    <string name="title_list_text">周辺で取られた写真</string>
     <string name="rank_toolbar">ランキング</string>
     <string name="rank_detail">個人の詳細</string>
     <string name="wrong_text">英数字を入力してください</string>

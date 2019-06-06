@@ -11,6 +11,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
+import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,8 +25,6 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
-import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
-import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -178,9 +179,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                 String no1 = str.split(",")[0];
                 String no2 = str.split(",")[1];
                 String no3 = str.split(",")[2];
-//                Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数２:" + no3, Toast.LENGTH_LONG).show();
-                Toast.makeText(activity, message + no1  , Toast.LENGTH_LONG).show();
-
+                Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数２:" + no3, Toast.LENGTH_LONG).show();
             }
         }
         catch (java.lang.ArrayIndexOutOfBoundsException e){
