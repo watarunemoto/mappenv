@@ -17,6 +17,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
@@ -49,8 +50,11 @@ public class CameraMapFragment extends Fragment {
 
     static MapView mMapView;
     static GoogleMap googleMap;
+    static TileOverlay mOverlay;
     static String mQueryKey;
     static String mQueryValue;
+    static String mlatitude;
+    static String mlongitude;
 
 
     @Override
@@ -66,10 +70,15 @@ public class CameraMapFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_camera_map, container, false);
 
-        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+//        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView = rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
+
+        Bundle camerabundle = getArguments();
+        mlatitude = camerabundle.getString("latitude");
+        mlongitude = camerabundle.getString("longitude");
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -82,62 +91,14 @@ public class CameraMapFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
-                CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(35.720148,139.744347),18);
+                CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(mlatitude),Double.parseDouble(mlongitude)),15);
+//                CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(35.720148,139.744347),18);
 //                CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(35.985233,139.374192),18);
                 googleMap.moveCamera(cUpdate);
 
-
                 // For showing a move to my location button
-                //googleMap.setMyLocationEnabled(true);
+//                googleMap.setMyLocationEnabled(true);
 
-                // For dropping a marker at a point on the Map
-                //LatLng now = new LatLng(35.985190, 139.374145);
-                //googleMap.addMarker(new MarkerOptions().position(now).title("Marker Title").snippet("Marker Description"));
-
-                // For zooming automatically to the location of the marker
-                //CameraPosition cameraPosition = new CameraPosition.Builder().target(now).zoom(18).build();
-                //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
-                /*
-                //OpenWeatherMapから降雨量データを取得、表示させる。
-                TileProvider tileProvider = new UrlTileProvider(256, 256) {
-                    @Override
-                    public URL getTileUrl(int x, int y, int zoom) {
-
-                        /* Define the URL pattern for the tile images */
-                 /*       String s = String.format("https://tile.openweathermap.org/map/precipitation_new/%d/%d/%d.png?appid=bf8fa0e5d53ae71cdde5ad8851372be4", zoom, x, y);
-
-                        if (!checkTileExists(x, y, zoom)) {
-                            return null;
-                        }
-
-                        try {
-                            return new URL(s);
-                        } catch (MalformedURLException e) {
-                            throw new AssertionError(e);
-                        }
-                    }
-
-                    /*
-                     * Check that the tile server supports the requested x, y and zoom.
-                     * Complete this stub according to the tile range you support.
-                     * If you support a limited range of tiles at different zoom levels, then you
-                     * need to define the supported x, y range at each zoom level.
-                     */
-                   /* private boolean checkTileExists(int x, int y, int zoom) {
-                        int minZoom = 0;
-                        int maxZoom = 18;
-
-                        if ((zoom < minZoom || zoom > maxZoom)) {
-                            return false;
-                        }
-                        return true;
-                    }
-                };
-
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));*/
 
                 //ヒートマップを表示させる
                 GetData HeatMap = new GetData();
@@ -148,41 +109,42 @@ public class CameraMapFragment extends Fragment {
     }
 
 
-static class GetData extends AsyncTask<Integer,Integer, String> {
+    static class GetData extends AsyncTask<Integer,Integer, String> {
+        @Override
+        protected String doInBackground(Integer... value) {
 
+            Log.d("SampleLoader", "loadInBackground");
 
-    @Override
-    protected String doInBackground(Integer... value) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException ignored) {
 
-        Log.d("SampleLoader", "loadInBackground");
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ignored) {
-        }
-
-        int responseCode = 0;
-        ArrayList<LatLng> responseData = null;
-        HttpURLConnection connection = null;
-        URL url;
-        String urlStr = URL_GET_LATLNG.toString();
-        Log.d(urlStr, "Urlstr");
-        String jsontext="";
-
-        HashMap<String, String> queryParams = new HashMap<>();
-        queryParams.put(mQueryKey, mQueryValue);
-        Log.d(queryParams.toString(), "PostQueryParams");
-        try {
-            if (mQueryKey != null | mQueryValue != null) {
-                Uri.Builder builder = new Uri.Builder();
-                Set keys = queryParams.keySet();
-                for (Object key : keys) {
-                    builder.appendQueryParameter(key.toString(), queryParams.get(key));
-                }
-                url = new URL(urlStr + builder.toString());
-            } else {
-                url = new URL(urlStr);
             }
+
+            int responseCode = 0;
+            ArrayList<LatLng> responseData = null;
+            HttpURLConnection connection = null;
+            URL url;
+            String urlStr = URL_GET_LATLNG.toString();
+            Log.d(urlStr, "Urlstr");
+            String jsontext="";
+
+            HashMap<String, String> queryParams = new HashMap<>();
+            queryParams.put(mQueryKey, mQueryValue);
+            Log.d(queryParams.toString(), "PostQueryParams");
+            try {
+                if (mQueryKey != null | mQueryValue != null) {
+                    Uri.Builder builder = new Uri.Builder();
+                    Set keys = queryParams.keySet();
+                    for (Object key : keys) {
+                        builder.appendQueryParameter(key.toString(), queryParams.get(key));
+                    }
+                    url = new URL(urlStr + builder.toString());
+                } else {
+                    url = new URL(urlStr);
+                }
+
+
 
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(100000);
@@ -219,17 +181,18 @@ static class GetData extends AsyncTask<Integer,Integer, String> {
                         JSONArray jsonArray = new JSONObject(jsontext).getJSONArray("json");
                         Log.d("aaaaaaa", "doInBackground: "+jsonArray);
                     }catch (JSONException e){
-                    }
-                    bufferedReader.close();
-                    inReader.close();
-                    in.close();
-            }else{
 
+                    }
+                        bufferedReader.close();
+                        inReader.close();
+                        in.close();
+            }else{
                 //Toast.makeText(getActivity(),"ヒートマップを表示できませんでした",Toast.LENGTH_SHORT).show();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+
+            } catch (IOException e) {
+             e.printStackTrace();
+            } finally {
             if (connection != null) {
                 connection.disconnect();
             }
@@ -277,36 +240,51 @@ static class GetData extends AsyncTask<Integer,Integer, String> {
                 if (list.size()!=0){
                 HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder().data(list).build();
                 //ヒートマップを表示させる。
-                googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+                mOverlay = googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+//                mOverlay.remove();
+                    }
                 }
-            }
+        }
     }
-}
 
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
 
-        @Override
-        public void onResume() {
-            super.onResume();
-            mMapView.onResume();
-        }
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("onpause",mOverlay.toString());
+        mOverlay.clearTileCache();
+        mOverlay.remove();
+        mMapView.removeAllViewsInLayout();
+        mMapView.removeAllViews();
+        mMapView.clearFocus();
+        mMapView.destroyDrawingCache();
+        mMapView.onPause();
 
-        @Override
-        public void onPause() {
-            super.onPause();
-            mMapView.onPause();
-        }
+    }
 
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-            mMapView.onDestroy();
-        }
+    @Override
+    public void onStop() {
+        super.onStop();
+        mOverlay.remove();
+    }
 
-        @Override
-        public void onLowMemory() {
-            super.onLowMemory();
-            mMapView.onLowMemory();
-        }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
+
 }

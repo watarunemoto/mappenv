@@ -15,14 +15,14 @@
         android:layout_height="45dp"
         android:id="@+id/CameraMapbutton"
         android:text="@string/cameramap_button"
-        android:layout_gravity="left|top"
+        android:layout_gravity="start"
         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/anobutton"
         android:text="@string/photopreview_btn_label_transitionannotation"
-        android:layout_gravity="right|top"
+        android:layout_gravity="end"
 
 
         />

@@ -163,8 +163,18 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
         mapfragmentbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle camerabundle = new Bundle();
+                if (longi != null && lati != null) {
+                    camerabundle.putString("longitude", longi);
+                    camerabundle.putString("latitude", lati);
+                } else {
+                    camerabundle.putString("longitude", "139.744347");
+                    camerabundle.putString("latitude", "35.720148");
+                }
+                CMF.setArguments(camerabundle);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.add(R.id.container,CMF);
+//                transaction.addToBackStack("camera");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -327,8 +337,6 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
             //解像度
 //            params.setPictureSize(640, 480);
 
-//            List<Camera.Size> postSizes = params.getSupportedPictureSizes();
-//            Camera.Size postSize = postSizes.get(5);
 
             List<Camera.Size> postSizes = params.getSupportedPictureSizes();
             Camera.Size postSize = postSizes.get(postSizes.size()-2);
