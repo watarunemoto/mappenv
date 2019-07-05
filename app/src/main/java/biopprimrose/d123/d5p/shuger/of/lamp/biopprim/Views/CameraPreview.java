@@ -341,8 +341,8 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
             List<Camera.Size> postSizes = params.getSupportedPictureSizes();
             Camera.Size postSize = postSizes.get(postSizes.size()-2);
 
-//            params.setPictureSize(postSize.width, postSize.height);
-            params.setPictureSize(3264,2448);
+            params.setPictureSize(postSize.width, postSize.height);
+//            params.setPictureSize(3264,2448);
 
             mCamera.setParameters(params);
 
@@ -498,6 +498,7 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
         inputFilters[0] = new InputFilter.LengthFilter(50);
         editView.setFilters(inputFilters);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(CameraPreview.this);
+        Camera.Size mSize = mCamera.getParameters().getSupportedPictureSizes().get(0);
 
         //ネットワークがオンあればアップロードオフなら別のデータベースに保存
         if (nwi != null) {
@@ -513,6 +514,8 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
             bundle.putString("last_longitude",loc_data[1]);
             bundle.putString("userid",userID);
             bundle.putString("annotation",anoret);
+            bundle.putInt("width",mSize.width);
+            bundle.putInt("height",mSize.height);
             PhotoPreviewFragment fragment = new PhotoPreviewFragment();
             fragment.setArguments(bundle);
 

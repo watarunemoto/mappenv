@@ -52,7 +52,6 @@ public class PhotoPreviewFragment extends Fragment {
         Log.v("aotation?:",""+ annotation);
         final String imgname = img_path.replace("/data/data/biopprimrose.d123.d5p.shuger.of.lamp/cmr/","");
 //        final String photoname;
-
 //        if (editpname.getText().toString().equals("")){
 //            pname = "";
 //        }else{
@@ -64,11 +63,29 @@ public class PhotoPreviewFragment extends Fragment {
 
 
 
-        Bitmap bitmap = BitmapFactory.decodeFile(img_path);
+//        Bitmap bitmap = BitmapFactory.decodeFile(img_path);
         Matrix matrix = new Matrix();
-        matrix.postRotate(90);
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+//        matrix.postRotate(90);
+//        matrix.postRotate(90);
+
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeResource(getResources(), bitmap, options);
+//        Bitmap bitmap = decodeSampledBitmapFromResource(img_path, 600, 800);
+        Bitmap bitmap = decodeSampledBitmapFromResource(img_path, bundle.getInt("width"), bundle.getInt("height"));
         upload_img.setImageBitmap(bitmap);
+        upload_img.setRotation(90);
+        upload_img.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//        upload_img.getMaxHeight()
+
+
+
+//        upload_img.setImageBitmap(
+//                decodeSampledBitmapFromResource(img_path, 240, 320));
+
+//        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+//        upload_img.setImageBitmap(bitmap);
 
         upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +131,50 @@ public class PhotoPreviewFragment extends Fragment {
         });
         view.setClickable(true);
         return view;
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 4;
+            final int halfWidth = width / 4;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 4;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(String resPath,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeResource(res, resId, options);
+        BitmapFactory.decodeFile(resPath,options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+
+
+
+        return BitmapFactory.decodeFile(resPath,options);
     }
 
 }

@@ -15,12 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
 
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.Util;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
@@ -48,7 +50,7 @@ public class PhotoResultActivity extends Activity{
 		Intent intent = getIntent();
 		posr = intent.getLongExtra(PhotoResultFormActivity.RINGO, 0L);
 
-		myListView = (GridView) findViewById(R.id.gridView);
+		myListView = findViewById(R.id.gridView);
 		myListView.setEmptyView(findViewById(R.id.emptyView));
 		registerForContextMenu(myListView);
 
@@ -278,7 +280,6 @@ public class PhotoResultActivity extends Activity{
 					} else {
                         detected.setTextColor(Color.GREEN);
                     }
-
                     detected.setText(no1);
                     return true;
                 }
@@ -286,6 +287,20 @@ public class PhotoResultActivity extends Activity{
                 return false;
             }
         });
+
+		adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+			private int columnIndex;
+
+			public boolean setViewValue(View view, Cursor c, int columnIndex) {
+				if(view.getId() == R.id.icon){
+					Log.d("getid","getid" );
+					((ImageView)view).setImageBitmap(Util.decodeSampledBitmapFromResource(c.getString(c.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME)),120,120));
+					return true; //true because the data was bound to the view
+				}
+				return false;
+			}
+		});
+
 
         return adapter;
 

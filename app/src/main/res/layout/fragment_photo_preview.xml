@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:clickable="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusable="true">
 
 
     <LinearLayout
@@ -31,10 +32,13 @@
             <ImageView
                 android:id="@+id/upload_img"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_margin="20dp"
                 android:layout_weight="1"
-                android:clickable="true" />
+                android:clickable="true"
+                android:focusable="true"
+
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,12 +52,12 @@
                     android:layout_gravity="center|bottom"
                     android:id="@+id/editpname"
                     android:inputType="text"
-
-                />
+                    android:layout_weight="1"
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:gravity="center"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="5dp"
@@ -64,8 +68,9 @@
                         android:id="@+id/upload_button"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="はい"
+                        android:text="@string/label_yes"
                         android:layout_marginRight="10dp"
+                        style="?android:attr/buttonBarButtonStyle"
                         />
                     <!--android:text="@string/yes_dialog" -->
 
@@ -73,11 +78,9 @@
                         android:id="@+id/save_button"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="いいえ"
+                        android:text="@string/no_dialog"
+                        style="?android:attr/buttonBarButtonStyle"
                         />
-
-                    <!--android:text="@string/no_dialog" -->
-
                 </LinearLayout>
 
 

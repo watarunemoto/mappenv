@@ -1,8 +1,6 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Adapters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.Util;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 
 /**
@@ -70,8 +68,9 @@ public class OtherUsersListAdapter extends BaseAdapter {
         }
 
         ((TextView) view.findViewById(R.id.detected_result)).setText(otherUsersLists.get(i).getName());
-        ((ImageView) view.findViewById(R.id.icon)).setImageBitmap(BitmapFactory.decodeFile(otherUsersLists.get(i).getFilepath()));
-
+//        ((ImageView) view.findViewById(R.id.icon)).setImageBitmap(BitmapFactory.decodeFile(otherUsersLists.get(i).getFilepath()));
+//        Bitmap bitmap = Util.decodeSampledBitmapFromResource(otherUsersLists.get(i).getFilepath(),20,20);
+        ((ImageView) view.findViewById(R.id.icon)).setImageBitmap(Util.decodeSampledBitmapFromResource(otherUsersLists.get(i).getFilepath(),20,20));
         return view;
     }
 }

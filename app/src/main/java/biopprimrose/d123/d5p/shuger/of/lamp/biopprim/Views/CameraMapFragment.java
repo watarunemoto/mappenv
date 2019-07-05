@@ -260,7 +260,6 @@ public class CameraMapFragment extends Fragment {
         super.onPause();
         Log.d("onpause",mOverlay.toString());
         mOverlay.clearTileCache();
-        mOverlay.remove();
         mMapView.removeAllViewsInLayout();
         mMapView.removeAllViews();
         mMapView.clearFocus();

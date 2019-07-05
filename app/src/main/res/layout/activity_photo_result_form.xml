@@ -18,6 +18,17 @@
             android:layout_height="wrap_content"/>
 
 
+        <!--<ImageView-->
+            <!--android:id="@+id/image"-->
+            <!--android:padding="10dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="top|center"-->
+            <!--android:adjustViewBounds="true"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:rotation="90"-->
+            <!--android:src="@mipmap/ic_launcher"/>-->
+
         <ImageView
             android:id="@+id/image"
             android:padding="10dp"
@@ -25,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY"
             android:rotation="90"
             android:src="@mipmap/ic_launcher"/>
 
