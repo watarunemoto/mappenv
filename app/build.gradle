@@ -8,6 +8,12 @@ android {
             storeFile file('/Users/tsuchiya/.android/debug.keystore')
             storePassword 'android'
         }
+        mappenvconfig {
+            storeFile file('/Users/tsuchiya/.android/mappenv.keystore')
+            storePassword 'yntT_vjeY:ljDdy@qbp8*PpBNoB[P-/p1]+reA%L'
+            keyPassword 'aE#Rb1unuflC@Po=LjU&1mQj@^Ia_tb(me*UTze/'
+            keyAlias = 'MappEnv'
+        }
     }
     dependencies {
         implementation 'com.google.maps.android:android-maps-utils:0.5+'
