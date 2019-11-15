@@ -6,9 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 
 import java.io.File;
 
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.Util;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
@@ -60,82 +64,172 @@ public class PhotoResultFormActivity extends AppCompatActivity {
 
 		Button button = (Button) findViewById(R.id.toMap);
 		button.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/HuiFontP29.ttf"));
-
-		ImgOpenHelper iph = new ImgOpenHelper(PhotoResultFormActivity.this);
-		SQLiteDatabase db = iph.getReadableDatabase();
-
-		Cursor c = db.query(
-				ImgContract.Images.TABLE_NAME,
-				null,
-				ImgContract.Images._ID +" = "+imgId ,
-				null,
-				null,
-				null,
-				null
-		);
-
-		c.moveToFirst();
-		WindowManager wm = getWindowManager();
-		Display disp = wm.getDefaultDisplay();
-
-		photoFile = c.getString(c.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME));
-		imageView.setImageBitmap(BitmapFactory.decodeFile(photoFile));
-		imageView.setRotation(90);
-		String pname = c.getString(c.getColumnIndex(ImgContract.Images.COL_PNAME));
-        Log.v("id_form",imgId+"");
-        if (pname.equals("")) {
-			textView.setText("unknown");
-		} else {
-			textView.setText(pname);
-		}
-
-		ViewGroup.LayoutParams params = imageView.getLayoutParams();
-		params.width = disp.getWidth();
-		imageView.setLayoutParams(params);
-		String score = c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE));
 //
-//		String[] result_list = score.split("@");
-//		if (result_list.length != 7) {
-//			text_score.setText(R.string.error);
-//			return;
+//		ImgOpenHelper iph = new ImgOpenHelper(PhotoResultFormActivity.this);
+//		SQLiteDatabase db = iph.getReadableDatabase();
+//
+//		Cursor c = db.query(
+//				ImgContract.Images.TABLE_NAME,
+//				null,
+//				ImgContract.Images._ID +" = "+imgId ,
+//				null,
+//				null,
+//				null,
+//				null
+//		);
+//
+//		c.moveToFirst();
+//		WindowManager wm = getWindowManager();
+//		Display disp = wm.getDefaultDisplay();
+//
+//		photoFile = c.getString(c.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME));
+//        ViewGroup.LayoutParams params = imageView.getLayoutParams();
+//        params.width = disp.getWidth();
+//        params.height = disp.getHeight();
+//        Bitmap bitmap = Util.decodeSampledBitmapFromResource(photoFile,params.width,params.height);
+//
+////        Bitmap bitmap = Util.decodeSampledBitmapFromResource(photoFile,50,50);
+//        imageView.setImageBitmap(bitmap);
+////        bitmap.recycle();
+//
+//
+////		imageView.setImageBitmap(BitmapFactory.decodeFile(photoFile));
+//		imageView.setRotation(90);
+//		String pname = c.getString(c.getColumnIndex(ImgContract.Images.COL_PNAME));
+//        Log.v("id_form",imgId+"");
+//        if (pname.equals("")) {
+//			textView.setText("unknown");
+//		} else {
+//			textView.setText(pname);
 //		}
-//		text_score.setText( result_list[1] );
-        score = score.replaceAll("\"","");
-        score = score.replaceAll("\n","");
-		score = score.replaceAll("[A-Z]]","[a-z]");
-//        String [] score1 = score.split("");
-//        System.out.println(Arrays.deepToString(score1));
-//        String cc = "Somethingwentwrong";
-        String cc = getResources().getString(R.string.upload_error_return);
-//        String aa = String.valueOf(score.equals(cc));
-		if (!(score.equals("error")) && !(score.equals(cc))) {
-//			score = score.replaceAll("\"","");
-			String no1 = score.split(",")[0];
-			String no2 = score.split(",")[1];
-			String no3 = score.split(",")[2];
-			text_score.setText("この写真の点数:"+ no1 + "\n" +"点数１:" + no2 + "\n" + "点数２:" + no3 );
-//            Toast.makeText(activity, message + no1 + "\n" + s1 + no2 + "\n" + s2 + no3 , Toast.LENGTH_LONG).show();
-		} else {
-            text_score.setText(R.string.upload_error);
-//            text_score.setText(R.string.);
-
-		}
-
-//		score = score.replaceAll("\"","");
-//		String no1 = score.split(",")[0];
-//		String no2 = score.split(",")[1];
-//		String no3 = score.split(",")[2];
 //
-//		text_score.setText("この写真の点数:"+ no1 + "\n" +"点数１:" + no2 + "\n" + "点数２:" + no3 );
-//		text_score.setText(score);
-
-
-
-		c.close();
+//		imageView.setLayoutParams(params);
+//		String score = c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE));
+//        score = score.replaceAll("\"","");
+//        score = score.replaceAll("\n","");
+//		score = score.replaceAll("[A-Z]]","[a-z]");
+//        String cc = getResources().getString(R.string.upload_error_return);
+////        String aa = String.valueOf(score.equals(cc));
+//		if (!(score.equals("error")) && !(score.equals(cc))) {
+////			score = score.replaceAll("\"","");
+//			String no1 = score.split(",")[0];
+//			String no2 = score.split(",")[1];
+//			String no3 = score.split(",")[2];
+//			text_score.setText("獲得した点数は" +no1 + "点です");
+//		} else {
+//            text_score.setText(R.string.upload_error);
+////            text_score.setText(R.string.);
+//
+//		}
+//
+//
+//
+//
+//		c.close();
 
 	}
 
-	public void toMaps(View view) {
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+//        imageView.setImageBitmap(null);
+//        imageView.destroyDrawingCache();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ImgOpenHelper iph = new ImgOpenHelper(PhotoResultFormActivity.this);
+        SQLiteDatabase db = iph.getReadableDatabase();
+
+        Cursor c = db.query(
+                ImgContract.Images.TABLE_NAME,
+                null,
+                ImgContract.Images._ID +" = "+imgId ,
+                null,
+                null,
+                null,
+                null
+        );
+
+        c.moveToFirst();
+        WindowManager wm = getWindowManager();
+        Display disp = wm.getDefaultDisplay();
+
+        photoFile = c.getString(c.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME));
+        ViewGroup.LayoutParams params = imageView.getLayoutParams();
+        params.width = disp.getWidth();
+        params.height = disp.getHeight();
+        Bitmap bitmap = Util.decodeSampledBitmapFromResource(photoFile,params.width,params.height);
+
+//        Bitmap bitmap = Util.decodeSampledBitmapFromResource(photoFile,10,10);
+        imageView.setImageBitmap(bitmap);
+//        imageView.setImageBitmap(Util.decodeSampledBitmapFromResource(photoFile,10,10));
+
+
+//		imageView.setImageBitmap(BitmapFactory.decodeFile(photoFile));
+        imageView.setRotation(90);
+        String pname = c.getString(c.getColumnIndex(ImgContract.Images.COL_PNAME));
+        Log.v("id_form",imgId+"");
+        if (pname.equals("")) {
+            textView.setText("unknown");
+        } else {
+            textView.setText(pname);
+        }
+
+        imageView.setLayoutParams(params);
+        String score = c.getString(c.getColumnIndex(ImgContract.Images.COL_SCORE));
+        score = score.replaceAll("\"","");
+        score = score.replaceAll("\n","");
+        score = score.replaceAll("[A-Z]]","[a-z]");
+        String cc = getResources().getString(R.string.upload_error_return);
+//        String aa = String.valueOf(score.equals(cc));
+        if (!(score.equals("error")) && !(score.equals(cc))) {
+//			score = score.replaceAll("\"","");
+            String no1 = score.split(",")[0];
+//            String no2 = score.split(",")[1];
+//            String no3 = score.split(",")[2];
+            text_score.setText("獲得した点数は" +no1 + "点です");
+        } else {
+            text_score.setText(R.string.upload_error);
+//            text_score.setText(R.string.);
+
+        }
+
+
+
+
+        c.close();
+
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        imageView.setImageBitmap(null);
+//        imageView.destroyDrawingCache();
+        Drawable drawable = imageView.getDrawable();
+        if(drawable!= null){
+            ((BitmapDrawable)drawable).getBitmap().recycle();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Drawable drawable = imageView.getDrawable();
+        if(drawable!= null){
+            ((BitmapDrawable)drawable).getBitmap().recycle();
+        }
+        imageView =null;
+    }
+
+
+    public void toMaps(View view) {
 		Intent intent = new Intent(PhotoResultFormActivity.this, MapsActivity.class);
 		intent.putExtra(MAP_ID, imgId);
 		startActivity(intent);
@@ -204,5 +298,10 @@ public class PhotoResultFormActivity extends AppCompatActivity {
 	public void onBackPressed() {
 
 		super.onBackPressed();
+        Drawable drawable = imageView.getDrawable();
+        if(drawable!= null){
+            ((BitmapDrawable)drawable).getBitmap().recycle();
+        }
+//        imageView = null;
 	}
 }

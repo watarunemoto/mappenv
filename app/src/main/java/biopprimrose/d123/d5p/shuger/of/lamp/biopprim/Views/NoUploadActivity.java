@@ -17,11 +17,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.NoUploadedPhotoTransfer;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.Util;
+import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.ImgContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempContract;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Databases.TempOpenHelper;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
@@ -30,15 +33,16 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
 public class NoUploadActivity extends Activity {
 
-	private SimpleCursorAdapter adapter;
+    SimpleCursorAdapter adapter;
 	GridView myListView;
 	TempOpenHelper imgOpenHelper;
 
 
 	static final int CONTEXT_MENU1_ID = 0;
 	static final int CONTEXT_MENU2_ID = 1;
+    private int columnIndex;
 
-	/**
+    /**
 	 * ATTENTION: This was auto-generated to implement the App Indexing API.
 	 * See https://g.co/AppIndexing/AndroidStudio for more information.
 	 */
@@ -49,18 +53,25 @@ public class NoUploadActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_no_upload);
 
-		myListView = (GridView) findViewById(R.id.list_gird_no);
-		registerForContextMenu(myListView);
-		TextView empy = (TextView) findViewById(R.id.emptyView);
-		empy.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/HuiFontP29.ttf"));
-		myListView.setEmptyView(empy);
-		SimpleCursorAdapter adapter = setAdapter();
-		myListView.setAdapter(adapter);
-
 	}
 
 
-	/**
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        super.onStart();
+        myListView =  findViewById(R.id.list_gird_no);
+        registerForContextMenu(myListView);
+        TextView empy = findViewById(R.id.emptyView);
+        empy.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/HuiFontP29.ttf"));
+        myListView.setEmptyView(empy);
+        SimpleCursorAdapter adapter = setAdapter();
+
+        myListView.setAdapter(adapter);
+    }
+
+    /**
 	 * 未アップロードリストへ移動
 	 */
 
@@ -85,7 +96,6 @@ public class NoUploadActivity extends Activity {
                             nupt.execute(UrlCollections.URL_UPLOAD_PHOTO, pos);
                         } else{
                             String hoge = getString(R.string.camera_err_network);
-                            ;
                             Toast.makeText(NoUploadActivity.this, hoge, Toast.LENGTH_SHORT).show();
                         }
 
@@ -197,8 +207,37 @@ public class NoUploadActivity extends Activity {
 				to,
 				0
 		);
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            private int columnIndex;
+            public boolean setViewValue(View view, Cursor c, int columnIndex) {
+                if(view.getId() == R.id.icon){
+//                	topContainer = (ImageView) findViewById(R.id.icon);
+                    Log.d("getid","getid" );
+//                    int reqWidth = view.getWidth();
+//                    int reqHeight = view.getHeight();
+                    ((ImageView)view).setImageBitmap(Util.decodeSampledBitmapFromResource(c.getString(c.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME)),120,120));
+//					((ImageView)view).setImageBitmap(Util.decodeSampledBitmapFromResource(c.getString(c.getColumnIndex(ImgContract.Images.COLUMN_FILE_NAME)),reqWidth,reqHeight));
+                    return true; //true because the data was bound to the view
+                }
+                return false;
+            }
+        });
 
 		return adapter;
 	}
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        myListView = null;
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        myListView = null;
+    }
 }

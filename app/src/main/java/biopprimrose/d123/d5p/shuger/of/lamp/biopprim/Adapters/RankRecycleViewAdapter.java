@@ -45,8 +45,11 @@ public class RankRecycleViewAdapter extends RecyclerView.Adapter<RankViewHolder>
         List<RankRecyclerRow> dataset = new ArrayList<>();
         for (HashMap<String, String> map : newdata) {
             RankRecyclerRow data = new RankRecyclerRow();
+            double prescore = Double.parseDouble(map.get("Score"));
+            int score = (int)prescore;
             data.setTitle("UserId : " + map.get("userid"));
-            data.setDetail("Score : " +map.get("Score"));
+//            data.setDetail("Score : " +map.get("Score"));
+            data.setDetail("Score :" + Integer.toString(score));
             Log.d("kaesardata", data.toString());
             dataset.add(data);
         }

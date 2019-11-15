@@ -55,7 +55,8 @@ public class LoginActivity extends Activity {
         //テキストボックスにヒントを表示
         editView.setHint("userid");
 
-        editView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+//        editView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        editView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         /**
          * Edittextの入力制限
          * 16文字以内、英数字のみ、1行に表示
@@ -74,7 +75,9 @@ public class LoginActivity extends Activity {
                             int dstart,
                             int dend
                     ) {
-                        if (source.toString().matches("[a-zA-Z0-9]"))
+//                        if (source.toString().matches("[a-zA-Z0-9]"))
+                        if (source.toString().matches("^[0-9a-zA-Z@¥.¥_¥¥-]+$"))
+
                         {
                             if (dend < 40) {
                                 return source;

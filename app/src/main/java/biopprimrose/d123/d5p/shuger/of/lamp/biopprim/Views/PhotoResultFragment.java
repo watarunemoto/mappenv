@@ -53,6 +53,7 @@ public class PhotoResultFragment extends Fragment {
 
     @Override
     public void onResume() {
+        super.onResume();
         adapter = adapter_reslash();
         myListView.setAdapter(adapter);
         myListView.setSelection((int)posr);
@@ -291,5 +292,13 @@ public class PhotoResultFragment extends Fragment {
         registerForContextMenu(myListView);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        adapter = null;
+        myListView = null;
+
     }
 }

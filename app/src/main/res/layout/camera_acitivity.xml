@@ -10,55 +10,73 @@
         android:layout_height="match_parent" />
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:id="@+id/CameraMapbutton"
-        android:text="@string/cameramap_button"
-        android:layout_gravity="left|top"
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/anobutton"
-        android:text="@string/photopreview_btn_label_transitionannotation"
-        android:layout_gravity="right|top"
-
-
-        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center|bottom"
-        android:gravity="bottom"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
-        <Button
-            android:id="@+id/shutter"
-            android:layout_width="70dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center|bottom"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/camera_1" />
-
-
-
-        <LinearLayout
+        <RelativeLayout
+            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            >
+
+            <Button
+                android:id="@+id/CameraMapbutton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/cameramap_button"
+
+                />
+
+            <Button
+                android:id="@+id/anobutton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:text="@string/photopreview_btn_label_transitionannotation"
+                />
+
+        </RelativeLayout>
+
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/shutter"
+                android:layout_width="70dp"
+                android:layout_height="45dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/camera_1"
+                android:layout_above="@id/zoom_seek"
+                android:layout_centerInParent="true"
+                />
 
             <SeekBar
                 android:id="@+id/zoom_seek"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
+                android:layout_alignParentBottom="true"
                 android:layout_marginBottom="10dp"
                 android:background="#3000ff00" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
+
 
 
     </LinearLayout>
@@ -68,22 +86,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8">
-
     </RelativeLayout>
+
 
     <LinearLayout
         android:id="@+id/container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/container2"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     </LinearLayout>
 
