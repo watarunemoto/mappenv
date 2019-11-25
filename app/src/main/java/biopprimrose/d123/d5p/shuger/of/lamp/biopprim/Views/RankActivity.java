@@ -92,7 +92,8 @@ public class RankActivity extends AppCompatActivity implements RankFragment.Rank
             Bundle bundle = new Bundle();
             Log.d("onloadfinishRank",mTaskResult);
             bundle.putStringArray("kurage" , mTaskResult.split(","));
-            RankFragment fragment = new RankFragment();
+//            RankFragment fragment = new RankFragment();
+            RankListFragment fragment = new RankListFragment();
             fragment.setArguments(bundle);
             FragmentManager manager = getSupportFragmentManager();
             // フラグメントをアクティビティに追加する FragmentTransaction を利用する
