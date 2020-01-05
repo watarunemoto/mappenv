@@ -62,9 +62,7 @@ public class RankCategory extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_rank_category, container, false);
-//        View view = inflater.inflate(R.layout.fragment_rank_category, container, false);
+
         View view = inflater.inflate(R.layout.fragment_rank_category, container, false);
 
         String kurage;

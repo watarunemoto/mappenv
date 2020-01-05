@@ -181,14 +181,13 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
 //                Toast.makeText(activity, message + no1 + "\n" + "点数１:" + no2 + "\n" + "点数２:" + no3, Toast.LENGTH_LONG).show();
 //                Toast.makeText(activity, message + no1  , Toast.LENGTH_LONG).show();
                 if (no2.equals("-1")) {
-                    Toast.makeText(activity, message + no1 + "\n" + "範囲外かもしれません"  , Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, message + no1 + "\n" + "範囲外かもしれません", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(activity, message + no1  , Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, message + no1, Toast.LENGTH_LONG).show();
                 }
 
             }
-        }
-        catch (java.lang.ArrayIndexOutOfBoundsException e){
+        } catch (java.lang.ArrayIndexOutOfBoundsException e) {
             Toast.makeText(activity, R.string.upload_error, Toast.LENGTH_LONG).show();
         }
         dialog.dismiss();

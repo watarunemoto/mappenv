@@ -22,7 +22,7 @@ import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Controllers.Util;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.UrlCollections;
 
-public class RankActivity extends AppCompatActivity implements RankFragment.RankItemclicklistener{
+public class RankActivity extends AppCompatActivity {
     private static final int LOADER_ID = 1;
     private static final String SAVE_INSTANCE_TASK_RESULT = "info.loader.RankCategoryGetDownloader.SAVE_INSTANCE_TASK_RESULT";
     private static final String ARG_URI = "URI";
@@ -114,18 +114,19 @@ public class RankActivity extends AppCompatActivity implements RankFragment.Rank
         }
     };
 
-    @Override
-    public void onRankItemClicked(String selected) {
-        Bundle bundle = new Bundle ();
-        bundle.putString("selected",selected);
-        RankCategory fragment = new RankCategory();
-        fragment.setArguments(bundle);
-        FragmentManager manager2 = getSupportFragmentManager();
-        FragmentTransaction transaction = manager2.beginTransaction();
-        transaction.replace(R.id.container_new_rank, fragment, "fragment");
-        transaction.addToBackStack(null);
-        transaction.commitAllowingStateLoss();
-//        transaction.commit();
-    }
+//    @Override
+//    public void onRankItemClicked(String selected) {
+//        Bundle bundle = new Bundle ();
+//        bundle.putString("selected",selected);
+//        RankCategory fragment = new RankCategory();
+//        fragment.setArguments(bundle);
+//        FragmentManager manager2 = getSupportFragmentManager();
+//        FragmentTransaction transaction = manager2.beginTransaction();
+//        transaction.replace(R.id.container_new_rank, fragment, "fragment");
+//        transaction.addToBackStack(null);
+//        transaction.commitAllowingStateLoss();
+////        transaction.commit();
+//    }
+
 
 }

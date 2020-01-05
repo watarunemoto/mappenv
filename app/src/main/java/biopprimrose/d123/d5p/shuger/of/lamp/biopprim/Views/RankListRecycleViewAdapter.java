@@ -1,5 +1,6 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,8 @@ public class RankListRecycleViewAdapter extends RecyclerView.Adapter<RankListRec
     public RankListRecycleViewAdapter(String[] myDataset) {
         mDataset = myDataset;
     }
+    protected void onRankListClicked(@NonNull String onrank) {
+    }
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -41,7 +44,15 @@ public class RankListRecycleViewAdapter extends RecyclerView.Adapter<RankListRec
 //        TextView v = (TextView) LayoutInflater.from(parent.getContext())
 //                .inflate(R.layout.recycle_ranklist_row, parent, false);
         View v2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_ranklist_row, parent, false);
-        RankListRecycleViewHolder vh = new RankListRecycleViewHolder(v2);
+        final RankListRecycleViewHolder vh = new RankListRecycleViewHolder(v2);
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = vh.getAdapterPosition();
+                String kurage = mDataset[position];
+                onRankListClicked(kurage);
+            }
+        });
         return vh;
     }
 

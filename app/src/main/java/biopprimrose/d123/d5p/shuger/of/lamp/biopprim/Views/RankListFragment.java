@@ -3,13 +3,17 @@ package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import biopprimrose.d123.d5p.shuger.of.lamp.biopprim.R;
 
@@ -24,14 +28,6 @@ public class RankListFragment extends Fragment {
         // Required empty public constructor
     }
 
-//    public static RankListFragment newInstance(String param1, String param2) {
-//        RankListFragment fragment = new RankListFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +35,7 @@ public class RankListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //        return inflater.inflate(R.layout.fragment_rank_list, container, false);
@@ -53,7 +49,24 @@ public class RankListFragment extends Fragment {
         if (getArguments() != null && getArguments().containsKey("kurage")) {
             String[] kurage = getArguments().getStringArray("kurage");
 //            String[] kurage = {"hoge","fuga"};
-            mAdapter = new RankListRecycleViewAdapter(kurage);
+//            mAdapter = new RankListRecycleViewAdapter(kurage);
+            mAdapter = new RankListRecycleViewAdapter(kurage){
+                @Override
+                protected void onRankListClicked(@NonNull String onrank) {
+                    super.onRankListClicked(onrank);
+                    Toast.makeText(getContext(),onrank,Toast.LENGTH_LONG).show();
+                            Bundle bundle = new Bundle ();
+                            bundle.putString("selected",onrank);
+                            RankCategory fragment = new RankCategory();
+                            fragment.setArguments(bundle);
+                            FragmentManager manager = getFragmentManager();
+                            FragmentTransaction transaction = manager.beginTransaction();
+                            transaction.replace(R.id.container_new_rank, fragment, "fragment");
+                            transaction.addToBackStack(null);
+                            transaction.commitAllowingStateLoss();
+//        transaction.commit();
+                }
+            };
             recyclerView.setAdapter(mAdapter);
             Log.d("Ranklist","ranklist");
         }
@@ -88,5 +101,6 @@ public class RankListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+//                void onFragmentInteraction(String );
     }
 }

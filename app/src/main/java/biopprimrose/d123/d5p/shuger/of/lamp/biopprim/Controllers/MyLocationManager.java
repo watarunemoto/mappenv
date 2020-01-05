@@ -79,6 +79,7 @@ public class MyLocationManager extends LocationCallback {
         return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
     }
 
+    // TODO: 2019-12-26  
     private void showLocationPermissionSettingDialog(){
         new android.app.AlertDialog.Builder(context)
                 .setMessage("位置情報取得ができない場合はこの機能は使用できません")
@@ -87,6 +88,7 @@ public class MyLocationManager extends LocationCallback {
 
     }
 
+    // TODO: 2019-12-26  
     private void showLocationSettingDialog() {
         new android.app.AlertDialog.Builder(context)
                 .setMessage("設定画面で位置情報サービスを有効にしてください")
