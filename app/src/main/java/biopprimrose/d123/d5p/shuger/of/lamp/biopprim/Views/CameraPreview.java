@@ -133,9 +133,6 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                gpsStatus = Settings.Secure
-//                        .getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-//                Log.v("gpsstatus", gpsStatus);
 
                 if (!take_cut) {
                     if (mCamera != null) {
@@ -394,15 +391,13 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
             take_cut = false;
             // SDカードにJPEGデータを保存する
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(CameraPreview.this);
-            //デバックオンリー
-            DecimalFormat df = new DecimalFormat("0.000000");
+//            DecimalFormat df = new DecimalFormat("0.000000");
 
             if (data != null) {
 
                 if (lati != null || longi != null) {
                     loc = lati + "," + longi;
                 }
-                //loc = Gpskun();
                 if (loc == null) {
                     Toast.makeText(CameraPreview.this, R.string.camera_err_getlocation, Toast.LENGTH_LONG).show();
 
@@ -439,16 +434,62 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
                     String logia[] = locations[1].split("\\.");
 
                     //exifの形式変換を行っている改善の余地がある
+//                    String lat = lata[0] + "/1," + lata[1].substring(0, 2) + "/1," + lata[1].substring(2, 6) + "/1000";
+//                    String logi = logia[0] + "/1," + logia[1].substring(0, 2) + "/1," + logia[1].substring(2, 6) + "/1000";
+
+
+//                    左手系での南北東西の対応
+                    Boolean south;
+                    Boolean west;
+                    if (lata[0].contains("-")) {
+                        south = Boolean.TRUE;
+                        lata[0] = lata[0].replaceAll("-","");
+                    } else{
+                        south = Boolean.FALSE;
+                    }
+                    if (logia[0].contains("-")) {
+                         west = Boolean.TRUE;
+                         logia[0] = logia[0].replace("-","");
+                    }else{
+                        west = Boolean.FALSE;
+                    }
+
                     String lat = lata[0] + "/1," + lata[1].substring(0, 2) + "/1," + lata[1].substring(2, 6) + "/1000";
                     String logi = logia[0] + "/1," + logia[1].substring(0, 2) + "/1," + logia[1].substring(2, 6) + "/1000";
+
+//                    BigDecimal minitter = new BigDecimal("60");
+//                    BigDecimal latdegree = new BigDecimal(lata[0]);
+//                    BigDecimal prelatmin = new BigDecimal("0."+lata[1]);
+//                    BigDecimal latmin =  (prelatmin.multiply(minitter)).setScale(0, RoundingMode.DOWN);
+//                    BigDecimal prelatsecond = prelatmin.multiply(minitter);
+//                    BigDecimal latsecond = (prelatsecond.subtract(latmin)).multiply(minitter);
+//                    BigDecimal longdegree = new BigDecimal(logia[0]);
+//                    BigDecimal prelongmin = new BigDecimal("0."+logia[1]);
+//                    BigDecimal longmin =  (prelongmin.multiply(minitter)).setScale(0,RoundingMode.DOWN);
+//                    BigDecimal prelongsecond = prelongmin.multiply(minitter);
+//                    BigDecimal longsecond = (prelongsecond.subtract(longmin)).multiply(minitter);
+//                    String lat = lata[0] + "/1," + latmin.toPlainString() + "/1," + latsecond.setScale(3 ,RoundingMode.HALF_UP).toPlainString().replace(".","") + "/1000";
+//                    String logi = logia[0] + "/1," + longmin.toPlainString() + "/1," + longsecond.setScale(3,RoundingMode.HALF_UP).toPlainString().replace(".","") + "/1000";
+
                     Log.v("positions", lat + "<" + logi);
 
                     try {
                         ExifInterface ex = new ExifInterface(imgName);
+                        if (south) {
+                            ex.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
+                        } else {
+                            ex.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
+                        }
+                        if (west) {
+                            ex.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
+                        } else {
+                            ex.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
+                        }
+
                         ex.setAttribute(ExifInterface.TAG_GPS_LATITUDE, lat);
                         ex.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, logi);
-                        ex.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
-                        ex.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
+//                        ex.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
+//                        ex.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
                         ex.saveAttributes();
 
 
@@ -593,7 +634,6 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
             Log.e("GPSError","# No location data.");
             return;
         }
-
         // 緯度・経度を取得
         double latitude = locationResult.getLastLocation().getLatitude();
         double longitude = locationResult.getLastLocation().getLongitude();

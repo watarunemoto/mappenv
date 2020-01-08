@@ -62,9 +62,7 @@ public class RankCategory extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_rank_category, container, false);
-//        View view = inflater.inflate(R.layout.fragment_rank_category, container, false);
+
         View view = inflater.inflate(R.layout.fragment_rank_category, container, false);
 
         String kurage;
@@ -159,20 +157,8 @@ public class RankCategory extends Fragment {
 //                Log.d("onloadfinishcat",mTaskResultList.toString());
                 Log.d("hoge",mTaskResultList.get(1).get("Score"));
 
-
-
-//                try{
-//                    TextView textview = (TextView) getView().findViewById(R.id.categorybutton);
-////                    textview.setText(mTaskResultList.toString());
-//                    textview.setText("");
-//                }catch(NullPointerException e){
-//                    return;
-//                }
-
-
-
             }catch (NullPointerException e){
-                Log.d("ぬるぽ", data);
+                Log.d("RankCate_Nu", data);
             }
         }
 
