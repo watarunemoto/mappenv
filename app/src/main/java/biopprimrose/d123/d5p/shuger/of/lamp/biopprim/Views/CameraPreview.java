@@ -41,8 +41,6 @@ import com.google.android.gms.location.LocationResult;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -456,22 +454,22 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
                         west = Boolean.FALSE;
                     }
 
-//                    String lat = lata[0] + "/1," + lata[1].substring(0, 2) + "/1," + lata[1].substring(2, 6) + "/1000";
-//                    String logi = logia[0] + "/1," + logia[1].substring(0, 2) + "/1," + logia[1].substring(2, 6) + "/1000";
+                    String lat = lata[0] + "/1," + lata[1].substring(0, 2) + "/1," + lata[1].substring(2, 6) + "/1000";
+                    String logi = logia[0] + "/1," + logia[1].substring(0, 2) + "/1," + logia[1].substring(2, 6) + "/1000";
 
-                    BigDecimal minitter = new BigDecimal("60");
-                    BigDecimal latdegree = new BigDecimal(lata[0]);
-                    BigDecimal prelatmin = new BigDecimal("0."+lata[1]);
-                    BigDecimal latmin =  (prelatmin.multiply(minitter)).setScale(0, RoundingMode.DOWN);
-                    BigDecimal prelatsecond = prelatmin.multiply(minitter);
-                    BigDecimal latsecond = (prelatsecond.subtract(latmin)).multiply(minitter);
-                    BigDecimal longdegree = new BigDecimal(logia[0]);
-                    BigDecimal prelongmin = new BigDecimal("0."+logia[1]);
-                    BigDecimal longmin =  (prelongmin.multiply(minitter)).setScale(0,RoundingMode.DOWN);
-                    BigDecimal prelongsecond = prelongmin.multiply(minitter);
-                    BigDecimal longsecond = (prelongsecond.subtract(longmin)).multiply(minitter);
-                    String lat = lata[0] + "/1," + latmin.toPlainString() + "/1," + latsecond.setScale(3 ,RoundingMode.HALF_UP).toPlainString().replace(".","") + "/1000";
-                    String logi = logia[0] + "/1," + longmin.toPlainString() + "/1," + longsecond.setScale(3,RoundingMode.HALF_UP).toPlainString().replace(".","") + "/1000";
+//                    BigDecimal minitter = new BigDecimal("60");
+//                    BigDecimal latdegree = new BigDecimal(lata[0]);
+//                    BigDecimal prelatmin = new BigDecimal("0."+lata[1]);
+//                    BigDecimal latmin =  (prelatmin.multiply(minitter)).setScale(0, RoundingMode.DOWN);
+//                    BigDecimal prelatsecond = prelatmin.multiply(minitter);
+//                    BigDecimal latsecond = (prelatsecond.subtract(latmin)).multiply(minitter);
+//                    BigDecimal longdegree = new BigDecimal(logia[0]);
+//                    BigDecimal prelongmin = new BigDecimal("0."+logia[1]);
+//                    BigDecimal longmin =  (prelongmin.multiply(minitter)).setScale(0,RoundingMode.DOWN);
+//                    BigDecimal prelongsecond = prelongmin.multiply(minitter);
+//                    BigDecimal longsecond = (prelongsecond.subtract(longmin)).multiply(minitter);
+//                    String lat = lata[0] + "/1," + latmin.toPlainString() + "/1," + latsecond.setScale(3 ,RoundingMode.HALF_UP).toPlainString().replace(".","") + "/1000";
+//                    String logi = logia[0] + "/1," + longmin.toPlainString() + "/1," + longsecond.setScale(3,RoundingMode.HALF_UP).toPlainString().replace(".","") + "/1000";
 
                     Log.v("positions", lat + "<" + logi);
 
