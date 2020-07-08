@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file('/Users/tsuchiya/.android/debug.keystore')
+            storeFile file('/Users/genchan/.android/debug.keystore')
             storePassword 'android'
         }
         mappenvconfig {
@@ -80,7 +80,6 @@ android {
 //    compile 'org.greenrobot:eventbus:3.0.0'
 //    testCompile 'junit:junit:4.12'
 //}
-
 
 
 dependencies {

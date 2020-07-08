@@ -5,17 +5,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
-
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus"
-        />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-
     <!--
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
@@ -28,8 +25,9 @@
         android:icon="@mipmap/iconleaf"
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar"
-        android:usesCleartextTraffic="true"
-        >
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Adapters.EventContents"></activity>
+        <activity android:name=".Views.EventContentsActivity" />
         <activity
             android:name=".Views.LoginActivity"
             android:label="@string/title_activity_login">
@@ -112,10 +110,8 @@
             android:exported="false" />
 
         <activity android:name=".Views.AnnotationActivity" />
-
-        <activity android:name=".Controllers.JmaDataDisp"></activity>
-
-        <activity android:name=".Views.RankActivity"></activity>
+        <activity android:name=".Controllers.JmaDataDisp" />
+        <activity android:name=".Views.RankActivity" />
     </application>
 
 </manifest>

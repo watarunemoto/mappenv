@@ -289,7 +289,11 @@ public class TitleActivity
             Intent intent = new Intent(TitleActivity.this, RankActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-        } else if (id == R.id.nav_upload) {
+        }else if (id ==R.id.event){
+            Intent intent = new Intent(TitleActivity.this, EventContentsActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_upload) {
             upload_dialog();
 
 //        } else if (id == R.id.nav_reset_upload_state) {

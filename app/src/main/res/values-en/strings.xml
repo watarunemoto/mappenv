@@ -12,7 +12,7 @@
     <string name="label_loadingnotification">Loading...</string>
     <string name="dialog_title">Map data</string>
     <string name="title_activity_no_upload">NoUploadActivity</string>
-    <string name="title_grid_menu">menu</string>
+    <string name="title_grid_menu">Menu</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

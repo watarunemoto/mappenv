@@ -29,6 +29,14 @@
         </menu>
     </item>
 
+    <item android:title="Event menu">
+        <menu>
+            <item
+                android:id="@+id/event"
+                android:title="Join event" />
+        </menu>
+    </item>
+
     <item android:title="@string/title_nav_menu">
         <menu>
 
