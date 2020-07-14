@@ -50,4 +50,7 @@ public class UrlCollections  {
     public static final String URL_GET_MY_REQ =SERVER_NAME + "friend/check/my_req";
 
     public static final String URL_GET_LATLNG = SERVER_NAME + "download/latlng";
+
+    //event で使用するurl
+    public static final String URL_GET_EVENT = SERVER_NAME + "event";
 }
