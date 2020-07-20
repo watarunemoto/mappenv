@@ -1,25 +1,20 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
-import android.nfc.Tag;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,8 +23,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +35,11 @@ public class EventContentsActivity extends AppCompatActivity {
     //イベント情報リストにおける主催者のキー値
     String key2 = "organizer";
     //イベント情報リストにおけるコンテンツ内容のキー値
-    String key3 = "eventscontents";
+    String key3 = "eventcontents";
+
+
+
+
 
 
 
@@ -58,6 +55,13 @@ public class EventContentsActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
+
+
+
     //非同期処理のクラス
     private class EventInfoReceiver extends AsyncTask<String,String,String> {
         @Override
@@ -67,7 +71,6 @@ public class EventContentsActivity extends AppCompatActivity {
             //取得したイベント情報を格納する
             String result ="";
 
-            //サーバに接続、JSONを取得する
             //HTTP接続を行うHttpURLConnectionオブジェクトを宣言
             HttpURLConnection con = null;
             //HTTP接続のレスポンスデータとして取得するInputStreamオブジェクトを宣言。
@@ -131,7 +134,7 @@ public class EventContentsActivity extends AppCompatActivity {
             }
             catch (IOException ex){
             }
-            //Log.d("aiueo",result);
+            Log.d("aiueo",result);
         }
 
 
@@ -160,7 +163,10 @@ public class EventContentsActivity extends AppCompatActivity {
         public TextView _tvMenuName;
         //リスト一行分で金額を表示する画面部品
         public TextView _tvMenuPrice;
+        //
+        public TextView _AboutText;
 
+        public Button _AboutButton;
         /**
          * コンストラクタ
          * @param itemView　リスト一行分の画面部品
@@ -171,6 +177,7 @@ public class EventContentsActivity extends AppCompatActivity {
             //引数で渡されたリスト一行分の画面部品中から表示に使われるTextViewを取得
             _tvMenuName = itemView.findViewById(R.id.tvMenuName);
             _tvMenuPrice = itemView.findViewById(R.id.tvMenuPrice);
+            _AboutButton = itemView.findViewById(R.id.aboutButton);
         }
     }
 
@@ -203,7 +210,13 @@ public class EventContentsActivity extends AppCompatActivity {
             return holder;
         }
 
-        @Override
+
+
+
+
+
+
+
         public void onBindViewHolder(RecyclerListViewHolder holder, int position) {
             //リストデータから該当一行分のデータを取得
             Map<String, Object> item = _listData.get(position);
@@ -216,12 +229,39 @@ public class EventContentsActivity extends AppCompatActivity {
             //メニュー名と金額をビューホルダー中のTextViewに設定。
             holder._tvMenuName.setText(menuName);
             holder._tvMenuPrice.setText(menuPriceStr);
+
+
+
+            String contents = (String) item.get(key3);
+            //holder._AboutText.setText(contents);
+
+
+
+            holder._AboutButton.setOnClickListener(new ItemClickListener(contents));
+            Log.d("aiueo",contents);
+
         }
 
         @Override
         public int getItemCount() {
             //リストデータ中の件数をリターン
             return _listData.size();
+        }
+    }
+
+    private class ItemClickListener implements View.OnClickListener{
+        private String contents;
+
+        public ItemClickListener(String Eventcontents){
+            this.contents= Eventcontents;
+        }
+
+        @Override
+        public void onClick(View view){
+            Intent intent = new Intent(EventContentsActivity.this, EventInfomationActivity.class);
+            intent.putExtra("AboutEvent",contents);
+            startActivity(intent);
+
         }
     }
 

@@ -119,3 +119,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.4.4@jar'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.4.4@jar'
 }
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
