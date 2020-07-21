@@ -27,7 +27,6 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity android:name=".Views.EventInfomationActivity"></activity>
-        <activity android:name=".Adapters.EventContents" />
         <activity android:name=".Views.EventContentsActivity" />
         <activity
             android:name=".Views.LoginActivity"

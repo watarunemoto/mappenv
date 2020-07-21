@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +37,8 @@ public class EventContentsActivity extends AppCompatActivity {
     String key2 = "organizer";
     //イベント情報リストにおけるコンテンツ内容のキー値
     String key3 = "eventcontents";
+    //イベントIDのキー値
+    String key4 = "event_id";
 
 
 
@@ -163,10 +166,11 @@ public class EventContentsActivity extends AppCompatActivity {
         public TextView _tvMenuName;
         //リスト一行分で金額を表示する画面部品
         public TextView _tvMenuPrice;
-        //
-        public TextView _AboutText;
-
+        //詳細ボタンの画面部品
         public Button _AboutButton;
+        //参加ボタンの画面部品
+        public Button _JoinButton;
+
         /**
          * コンストラクタ
          * @param itemView　リスト一行分の画面部品
@@ -178,6 +182,7 @@ public class EventContentsActivity extends AppCompatActivity {
             _tvMenuName = itemView.findViewById(R.id.tvMenuName);
             _tvMenuPrice = itemView.findViewById(R.id.tvMenuPrice);
             _AboutButton = itemView.findViewById(R.id.aboutButton);
+            _JoinButton  = itemView.findViewById(R.id.JoinButton);
         }
     }
 
@@ -203,7 +208,7 @@ public class EventContentsActivity extends AppCompatActivity {
             //レイアウトインフレーターを取得
             LayoutInflater inflater = LayoutInflater.from(EventContentsActivity.this);
             //my_text_viewをインフレートし、一行分の画面部品とする。
-            View view = inflater.inflate(R.layout.my_text_view, parent, false);
+            View view = inflater.inflate(R.layout.event_choice_elements, parent, false);
             //ビューホルダーを生成
             RecyclerListViewHolder holder = new RecyclerListViewHolder(view);
             //生成したビューホルダーを返す。
@@ -234,11 +239,12 @@ public class EventContentsActivity extends AppCompatActivity {
 
             String contents = (String) item.get(key3);
             //holder._AboutText.setText(contents);
+            int eventid = (int) item.get(key4);
 
+            holder._AboutButton.setOnClickListener(new ItemClickListener(contents,eventid));
+            holder._JoinButton.setOnClickListener(new ItemClickListener(contents,eventid));
 
-
-            holder._AboutButton.setOnClickListener(new ItemClickListener(contents));
-            Log.d("aiueo",contents);
+            //Log.d("aiueo",contents);
 
         }
 
@@ -251,16 +257,30 @@ public class EventContentsActivity extends AppCompatActivity {
 
     private class ItemClickListener implements View.OnClickListener{
         private String contents;
+        private int eventID;
 
-        public ItemClickListener(String Eventcontents){
-            this.contents= Eventcontents;
+
+        public ItemClickListener(String Eventcontents, int eventid){
+            this.contents = Eventcontents;
+            this.eventID = eventid;
         }
 
         @Override
         public void onClick(View view){
-            Intent intent = new Intent(EventContentsActivity.this, EventInfomationActivity.class);
-            intent.putExtra("AboutEvent",contents);
-            startActivity(intent);
+            switch (view.getId()){
+                case (R.id.aboutButton):
+                    Intent intent = new Intent(EventContentsActivity.this, EventInfomationActivity.class);
+                    intent.putExtra("AboutEvent",contents);
+                    startActivity(intent);
+                    break;
+
+                case (R.id.JoinButton):
+
+                    Toast.makeText(EventContentsActivity.this, String.valueOf(eventID),Toast.LENGTH_LONG).show();
+
+                    break;
+            }
+
 
         }
     }
