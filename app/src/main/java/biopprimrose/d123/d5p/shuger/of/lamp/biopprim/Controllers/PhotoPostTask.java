@@ -6,8 +6,10 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
     private String filename;
     private String imgpath;
     private String annotations;
+    private int EventID;
 //    private int anocount;
 //    Resources res = Resources.getSystem();
 //    String s1 = res.getString(R.string.score1);
@@ -55,13 +58,14 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
     SQLiteDatabase db;
 
 
-    public PhotoPostTask( Activity activity, String lati, String longi, String pname ,String annotations ) {
+    public PhotoPostTask( Activity activity, String lati, String longi, String pname ,String annotations, int EventID ) {
 //    public PhotoPostTask( Activity activity, String lati, String longi, String pname, String annotations ,int anocount) {
         this.activity = activity;
         this.lati = lati;
         this.longi = longi;
         this.pname = pname;
         this.annotations = annotations;
+        this.EventID = EventID;
 //        this.anocount = anocount;
     }
 
@@ -75,8 +79,9 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         filename = params[3];
         annotations = params[4];
 
-        //インスタンスの作成
 
+
+        //インスタンスの作成
         File file = new File(imgpath);
         final MediaType IMAGE = MediaType.parse("image/jpg");
 
@@ -102,6 +107,8 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
                 )
                 .addFormDataPart(
                         "annotation", annotations
+                ).addFormDataPart(
+                        "eventid", String.valueOf(EventID)
                 )
                 .build();
 

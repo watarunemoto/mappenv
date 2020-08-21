@@ -1,10 +1,13 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -87,6 +90,11 @@ public class PhotoPreviewFragment extends Fragment {
 //        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 //        upload_img.setImageBitmap(bitmap);
 
+        //SharedPreferenceに保存されているイベントIDを取得する
+        SharedPreferences pref = getContext().getSharedPreferences("EventIDSave",Context.MODE_PRIVATE);
+        final int Event_ID = pref.getInt("EventID",100);
+        //Log.d("event",String.valueOf(intvalue));
+
         upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +110,7 @@ public class PhotoPreviewFragment extends Fragment {
                 }
                 Log.v("photopreview",last_latitude+last_longitude+ photoname);
 //                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname);
-                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, photoname,annotation);
+                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, photoname,annotation, Event_ID);
 //                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID);
                 Log.v("annotation",annotation);
                 hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID, imgname, annotation);
@@ -125,7 +133,7 @@ public class PhotoPreviewFragment extends Fragment {
                 }
                 Log.v("photopreview",last_latitude+last_longitude+pname);
                 Log.v("annotation:",""+ annotation);
-                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, photoname, annotation);
+                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, photoname, annotation, Event_ID);
                 hpt.nouploaddb(img_path);
             }
         });

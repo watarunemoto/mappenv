@@ -1,7 +1,10 @@
 package biopprimrose.d123.d5p.shuger.of.lamp.biopprim.Views;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,16 +44,15 @@ public class EventContentsActivity extends AppCompatActivity {
     String key4 = "event_id";
 
 
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_contents);
+
+        Button _NotJoinButton = findViewById(R.id.notjoinbutton);
+        ItemClickListener listener = new ItemClickListener("a",0);
+        _NotJoinButton.setOnClickListener(listener);
+
         //非同期処理
         EventInfoReceiver receiver = new EventInfoReceiver();
         //EventInfoReceiverを実行
@@ -123,7 +125,6 @@ public class EventContentsActivity extends AppCompatActivity {
                 ObjectMapper mapper = new ObjectMapper();
                 TypeReference<List<Map<String,Object>>> type = new TypeReference<List<Map<String, Object>>>(){};
                 List<Map<String,Object>> eventlist = mapper.readValue(result,type);
-
                 //RecyclerViewを取得
                 RecyclerView lvMenu = findViewById(R.id.MyRecyclerView);
                 //LinearLayoutManagerオブジェクトを生成
@@ -137,7 +138,7 @@ public class EventContentsActivity extends AppCompatActivity {
             }
             catch (IOException ex){
             }
-            Log.d("aiueo",result);
+            //Log.d("aiueo",result);
         }
 
 
@@ -189,6 +190,7 @@ public class EventContentsActivity extends AppCompatActivity {
 
 
 
+
     private class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListViewHolder> {
         //リストデータを保持するフィールド
         private List<Map<String, Object>> _listData;
@@ -217,33 +219,26 @@ public class EventContentsActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
         public void onBindViewHolder(RecyclerListViewHolder holder, int position) {
             //リストデータから該当一行分のデータを取得
             Map<String, Object> item = _listData.get(position);
             //”eventname”の文字列を取得
-            String menuName = (String) item.get(key1);
+            String eventName = (String) item.get(key1);
             //"organizer"の文字列を取得
-            String menuPrice = (String) item.get(key2);
-            //金額を文字列に変換
-            String menuPriceStr = String.valueOf(menuPrice);
-            //メニュー名と金額をビューホルダー中のTextViewに設定。
-            holder._tvMenuName.setText(menuName);
-            holder._tvMenuPrice.setText(menuPriceStr);
+            String eventOrganizer = (String) item.get(key2);
+            //イベント名と主催者名をビューホルダー中のTextViewに設定。
+            holder._tvMenuName.setText(eventName);
+            holder._tvMenuPrice.setText(eventOrganizer);
 
 
 
             String contents = (String) item.get(key3);
             //holder._AboutText.setText(contents);
             int eventid = (int) item.get(key4);
-
+            //ABOUTボタンにクリックリスナを設定
             holder._AboutButton.setOnClickListener(new ItemClickListener(contents,eventid));
+            //JOINボタンにクリックリスナを設定
             holder._JoinButton.setOnClickListener(new ItemClickListener(contents,eventid));
-
             //Log.d("aiueo",contents);
 
         }
@@ -255,6 +250,7 @@ public class EventContentsActivity extends AppCompatActivity {
         }
     }
 
+    //画面内のボタンのリスナクラス
     private class ItemClickListener implements View.OnClickListener{
         private String contents;
         private int eventID;
@@ -267,18 +263,32 @@ public class EventContentsActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view){
+            //イベントIDを保存するためのSharedPreferenceの呼び出し(Mode_PRIVATEにすることでこのアプリからしかアクセスできなくする。)
+            SharedPreferences data = getSharedPreferences("EventIDSave",getApplication().MODE_PRIVATE);
+            SharedPreferences.Editor editor = data.edit();
             switch (view.getId()){
+                //Aboutボタンを押した場合の処理
                 case (R.id.aboutButton):
                     Intent intent = new Intent(EventContentsActivity.this, EventInfomationActivity.class);
                     intent.putExtra("AboutEvent",contents);
                     startActivity(intent);
                     break;
 
+                //Joinボタンを押した場合の処理
                 case (R.id.JoinButton):
-
+                    Log.d("event",String.valueOf(eventID));
                     Toast.makeText(EventContentsActivity.this, String.valueOf(eventID),Toast.LENGTH_LONG).show();
-
+                    //イベントIDの書き込み
+                    editor.putInt("EventID",eventID).apply();
                     break;
+
+                //Not joinボタンを押した場合の処理
+                case (R.id.notjoinbutton):
+                    editor.putInt("EventID",0).apply();
+                    Toast.makeText(EventContentsActivity.this, "イベントに参加していません。",Toast.LENGTH_LONG).show();
+                    break;
+
+
             }
 
 

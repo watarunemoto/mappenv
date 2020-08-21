@@ -586,7 +586,11 @@ public class CameraPreview extends AppCompatActivity implements MyLocationManage
                             if (anoret.equals(null)){
                                 anoret = "";
                             }
-                            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname, anoret);
+                            //SharedPreferenceに保存されているイベントIDを取得する
+                            SharedPreferences pref = getSharedPreferences("EventIDSave",Context.MODE_PRIVATE);
+                            final int Event_ID = pref.getInt("EventID",100);
+                            //Log.d("event",String.valueOf(intvalue));
+                            PhotoPostTask hpt = new PhotoPostTask(activity, loc_data[0], loc_data[1], pname, anoret,Event_ID);
                             hpt.nouploaddb(iMGNAME);
                             Log.v("imgpath/" , iMGNAME);
                             Toast.makeText(CameraPreview.this, R.string.label_reservenotification, Toast.LENGTH_SHORT).show();
