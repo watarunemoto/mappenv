@@ -55,6 +55,11 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
     private String isDeleted;
     ProgressBar progressBar;
 
+    /**
+     * add by GentaKunitomo on 2020/09/21
+     */
+    private String eventid;
+
 
     String lati;
     String longi;
@@ -111,10 +116,14 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                 longi = c.getString(c.getColumnIndex(ImgContract.Images.COL_LNG));
                 updated = c.getString(c.getColumnIndex(ImgContract.Images.COL_UPDATED));
                 pname = c.getString(c.getColumnIndex(ImgContract.Images.COL_PNAME));
+
+                eventid = c.getString(c.getColumnIndex(ImgContract.Images.COL_EVENT_ID));
+
                 annotations = c.getString(c.getColumnIndex(ImgContract.Images.COL_ANNOTATION));
                 isDeleted = c.getString(c.getColumnIndex(ImgContract.Images.COL_ISDELETED));
 
             }
+              Log.d("PhotoMultiTransferlog",eventid);
 //            Log.v("watcher",annotations);
 
 
@@ -156,6 +165,9 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
                         )
                         .addFormDataPart("images", fname,
                                 RequestBody.create(IMAGE, file)
+                        )
+                        .addFormDataPart(
+                                "eventid",eventid
                         )
                         .addFormDataPart(
 //                            "annotation", annotations
@@ -301,6 +313,7 @@ public class PhotoMultiTransfer extends AsyncTask<String, Integer, List<String>>
             values.put(ImgContract.Images.COL_VERSION, "new");
             values.put(ImgContract.Images.COL_ISDELETED, "0");
             values.put(ImgContract.Images.COL_ANNOTATION, ano);
+            values.put(ImgContract.Images.COL_EVENT_ID,eventid);
             Log.v("dbch_anotation",ano);
 
 

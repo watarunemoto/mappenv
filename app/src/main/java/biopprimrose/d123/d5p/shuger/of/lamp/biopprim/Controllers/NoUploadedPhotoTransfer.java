@@ -48,6 +48,13 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
     private String pname;
     private String annotation;
     private String imgname;
+
+    /**
+     * add by GentaKunitomo on 2020/09/21
+     */
+    private String eventid;
+
+
     String id;
 
     private Integer responseCode;
@@ -95,8 +102,9 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
             updated = c.getString(c.getColumnIndex(TempContract.TempImages.COL_UPDATED));
             pname = c.getString(c.getColumnIndex(TempContract.TempImages.COL_PNAME));
             annotation = c.getString(c.getColumnIndex(TempContract.TempImages.COL_ANNOTATION));
+            eventid = c.getString(c.getColumnIndex(TempContract.TempImages.COL_EVENT_ID));
         }
-
+        //Log.d("NoUploadedPhotoTransfer",eventid);
         c.close();
         db.close();
 
@@ -135,6 +143,9 @@ public class NoUploadedPhotoTransfer extends AsyncTask<String, Integer, String> 
                 )
                 .addFormDataPart(
                         "filename", imgname
+                )
+                .addFormDataPart(
+                        "eventid",eventid
                 )
                 .addFormDataPart(
                         "annotation", annotation

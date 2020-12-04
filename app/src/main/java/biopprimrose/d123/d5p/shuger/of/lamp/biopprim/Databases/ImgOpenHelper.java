@@ -25,6 +25,7 @@ public class ImgOpenHelper extends SQLiteOpenHelper {
 					ImgContract.Images.COL_ISDELETED + " text, " +
 					ImgContract.Images.COL_VERSION  + " text, " +
 					ImgContract.Images.COL_ANNOTATION + " text, " +
+					ImgContract.Images.COL_EVENT_ID + " text, " +
 					"created datetime default current_timestamp, " +
 					"updated datetime default current_timestamp)";
 

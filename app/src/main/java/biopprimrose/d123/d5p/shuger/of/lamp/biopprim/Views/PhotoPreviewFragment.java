@@ -92,7 +92,7 @@ public class PhotoPreviewFragment extends Fragment {
 
         //SharedPreferenceに保存されているイベントIDを取得する
         SharedPreferences pref = getContext().getSharedPreferences("EventIDSave",Context.MODE_PRIVATE);
-        final int Event_ID = pref.getInt("EventID",100);
+        final int Event_ID = pref.getInt("EventID",1);
         //Log.d("event",String.valueOf(intvalue));
 
         upload_button.setOnClickListener(new View.OnClickListener() {
@@ -112,10 +112,10 @@ public class PhotoPreviewFragment extends Fragment {
 //                PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, pname);
                 PhotoPostTask hpt = new PhotoPostTask(getActivity(), last_latitude, last_longitude, photoname,annotation, Event_ID);
 //                hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID);
-                Log.v("annotation",annotation);
+                //Log.v("annotation",annotation);
                 hpt.execute(UrlCollections.URL_UPLOAD_PHOTO , img_path, userID, imgname, annotation);
-                Log.v("imgname",imgname);
-                Log.v("photoname",photoname);
+                //Log.v("imgname",imgname);
+                //Log.v("photoname",photoname);
             }
         });
 

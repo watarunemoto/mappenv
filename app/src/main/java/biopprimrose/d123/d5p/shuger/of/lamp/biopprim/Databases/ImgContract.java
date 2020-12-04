@@ -22,6 +22,8 @@ public final class ImgContract {
 		//緯度経度
 		public static final String COL_LAT = "lat";
 		public static final String COL_LNG = "lng";
+		//イベントID
+		public static final String COL_EVENT_ID = "EventID";
 		//自由に付ける名前
 		public static final String COL_PNAME = "pname";
 		//new表示するやつ

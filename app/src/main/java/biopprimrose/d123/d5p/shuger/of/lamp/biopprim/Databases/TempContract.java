@@ -21,6 +21,8 @@ public class TempContract {
 		//緯度経度
 		public static final String COL_LAT = "lat";
 		public static final String COL_LNG = "lng";
+		//イベントID
+		public static final String COL_EVENT_ID="EventID";
 		//個別につける名前
 		public static final String COL_PNAME = "pname";
 		//アップロードしたか否か

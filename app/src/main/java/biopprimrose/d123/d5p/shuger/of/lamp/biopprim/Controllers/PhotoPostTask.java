@@ -169,17 +169,21 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
 //        String no3 = str.split(",")[2];
         try {
             if (str == null) {
+
                 new AlertDialog.Builder(activity)
                         .setTitle(R.string.cant_upload)
                         .setMessage(R.string.do_you_reserved)
-                        .setNegativeButton(R.string.label_yes, null)
-                        .setPositiveButton(R.string.no_dialog, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.no_dialog, null)
+                        .setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 nouploaddb(imgpath);
+                                Toast.makeText(activity, R.string.label_reservenotification, Toast.LENGTH_LONG).show();
                             }
                         }).show();
-                Toast.makeText(activity, R.string.label_reservenotification, Toast.LENGTH_LONG).show();
+                //Toast.makeText(activity, R.string.label_reservenotification, Toast.LENGTH_LONG).show();
+
+
             } else if (str != null) {
                 str = str.replaceAll("\"", "");
                 String no1 = str.split(",")[0];
@@ -254,6 +258,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         String fname = imgpath;
         String ano = annotations;
 
+
         score = "不明";
         ContentValues values = new ContentValues();
         values.put(TempContract.TempImages.COL_LAT, lat);
@@ -265,6 +270,10 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
         values.put(TempContract.TempImages.COL_ISUPLOADED, "0");
         values.put(TempContract.TempImages.COL_ISDELETED, "0");
         values.put(TempContract.TempImages.COL_ANNOTATION, ano);
+        values.put(TempContract.TempImages.COL_EVENT_ID,EventID);
+
+        Log.d("EventID",String.valueOf(EventID));
+
 //        values.put(ImgContract.Images.COL_ANNOTATION, annotations);
 
         db.insert(
@@ -300,6 +309,7 @@ public class PhotoPostTask extends AsyncTask<String, Integer, String> {
             values.put(ImgContract.Images.COL_VERSION, "new");
             values.put(ImgContract.Images.COL_ISDELETED, "0");
             values.put(ImgContract.Images.COL_ANNOTATION, ano);
+            values.put(ImgContract.Images.COL_EVENT_ID,EventID);
 
 
             db.insert(

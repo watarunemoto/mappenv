@@ -137,6 +137,7 @@ public class EventContentsActivity extends AppCompatActivity {
                 lvMenu.setAdapter(adapter);
             }
             catch (IOException ex){
+                Toast.makeText(EventContentsActivity.this, "現在、イベントは開催されていません。",Toast.LENGTH_LONG).show();
             }
             //Log.d("aiueo",result);
         }
@@ -277,15 +278,16 @@ public class EventContentsActivity extends AppCompatActivity {
                 //Joinボタンを押した場合の処理
                 case (R.id.JoinButton):
                     Log.d("event",String.valueOf(eventID));
-                    Toast.makeText(EventContentsActivity.this, String.valueOf(eventID),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(EventContentsActivity.this, String.valueOf(eventID),Toast.LENGTH_LONG).show();
+                    Toast.makeText(EventContentsActivity.this,"イベントに参加しました。",Toast.LENGTH_LONG).show();
                     //イベントIDの書き込み
                     editor.putInt("EventID",eventID).apply();
                     break;
 
                 //Not joinボタンを押した場合の処理
                 case (R.id.notjoinbutton):
-                    editor.putInt("EventID",0).apply();
-                    Toast.makeText(EventContentsActivity.this, "イベントに参加していません。",Toast.LENGTH_LONG).show();
+                    editor.putInt("EventID",1).apply();
+                    Toast.makeText(EventContentsActivity.this, "現在、イベントに参加していません。",Toast.LENGTH_LONG).show();
                     break;
 
 
