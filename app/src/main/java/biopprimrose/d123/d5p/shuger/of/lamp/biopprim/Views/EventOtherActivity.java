@@ -64,11 +64,13 @@ public class EventOtherActivity extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-        buttonSave.setOnClickListener( v -> {
-            String text = _tvLatitude.getText().toString();
-            String text = _tvLongitude.getText().toString();
-            saveFile(text);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = _tvLatitude.getText().toString();
+                saveFile(text);
 
+            }
         });
     }
 

@@ -30,11 +30,12 @@
     </item>
 
     <item android:title="Event menu">
-        <menu>
             <item
                 android:id="@+id/event"
                 android:title="Join event" />
-        </menu>
+            <item
+                android:id="@+id/event_other"
+                android:title="event追加機能" />
     </item>
 
     <item android:title="@string/title_nav_menu">

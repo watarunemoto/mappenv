@@ -292,6 +292,9 @@ public class TitleActivity
         }else if (id ==R.id.event){
             Intent intent = new Intent(TitleActivity.this, EventContentsActivity.class);
             startActivity(intent);
+        }else if(id ==R.id.event_other) {
+            Intent intent = new Intent(TitleActivity.this, EventOtherActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_upload) {
             upload_dialog();
